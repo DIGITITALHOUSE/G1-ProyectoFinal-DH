@@ -1,0 +1,33 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+*::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.swiper-pagination {
+    position: relative !important;
+    padding: 15px;
+}
+.swiper-pagination-bullet-active {
+    background-color: #0274ae !important;
+}
+@media (min-width: 640px) {
+    .swiper-pagination {
+        display: none !important;
+    }
+}
+body {
+    min-height: 100vh;
+}

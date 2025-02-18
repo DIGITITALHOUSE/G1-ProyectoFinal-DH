@@ -1,0 +1,3 @@
+export const PrivateOffice = () => {                                                                                                                       
+    return <div>PrivateOfficePage</div>;                                                                                                                                                                                                                                       
+}     
