@@ -7,7 +7,7 @@ export const CategoriesAndRecommended = () => {
         <Section>
             <div>
                 <h2 className="text-lg sm:text-2xl font-semibold pb-2">
-                    Busca por tipo de oficina
+                    Categorías
                 </h2>
                 <CardsSwiper />
             </div>
