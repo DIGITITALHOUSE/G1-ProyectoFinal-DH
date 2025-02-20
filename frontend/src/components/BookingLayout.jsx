@@ -4,12 +4,12 @@ import { Footer } from "./Footer";
 
 export const BookingLayout = () => {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Header />
-            <main>
+            <main className="flex-1 p-4">
                 <Outlet />
             </main>
             <Footer />
-        </>
+        </div>
     )
 }
