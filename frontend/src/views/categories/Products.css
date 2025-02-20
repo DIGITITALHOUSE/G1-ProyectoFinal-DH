@@ -1,0 +1,110 @@
+.space{
+    display: flex;
+    background: #3C79CF;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.space h2{
+    margin-left: 1rem;
+    font-weight: bold;
+    color: white;
+}
+
+.space button{
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #AB0D6A;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+    white-space: nowrap;
+}
+.form-section h3{
+    font-size: 20px;
+    font-weight: bold;
+}
+/* Contenedor del formulario */
+.form-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 10.5rem;
+    gap: 2rem;
+    padding: 1rem;
+  }
+  
+  /* Secciones del formulario */
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    margin-right: 15rem;
+    gap: 1rem;
+  }
+  
+  /* Estilos para los grupos de label e input */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Estilo uniforme para labels */
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: start;
+  }
+  
+  /* Ajustes para los inputs y selects */
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 14px;
+    border: 1px black solid;
+  }
+  
+  /* Sección de imágenes y botón */
+  .add-img {
+    display: flex;
+    flex-direction: column;
+  }
+  .add-img label{
+    text-align: start;
+    margin-bottom: 1rem;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  /* Estilos para el botón */
+  .add-img button {
+    margin-top: 1rem;
+    height: 2.8rem;
+    width: 12rem;
+    background-color: #AB0D6A;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .add-img input{
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-left: 12rem;
+    margin-right: -15rem;
+  }
+  .describeSite input{
+    height: 5rem;
+  }
+  button:hover {
+    background-color: #8A0B57;
+  }
