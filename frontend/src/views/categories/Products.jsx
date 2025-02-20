@@ -7,11 +7,11 @@ export const Products = () => {
     <>
       <div className="space">
         <h2>Agregar producto</h2>
-        <Link to="/">
+        <Link to="/list-products">
             <button><i className="fas fa-arrow-left"></i> Regresar</button>
         </Link>
       </div>
-      <form action="" method="post" className="form-container">
+      <form action="" method="" className="form-container">
         <div className="form-section">
           <h3>Información</h3>
           <div className="form-group">

@@ -5,6 +5,7 @@ import { MeetingRooms } from "../views/categories/MeetingRooms";
 import { PrivateOffice } from "../views/categories/PrivateOffice";
 import { DedicatedDesk } from "../views/categories/DedicatedDesk";
 import { Products } from "../views/categories/Products";
+import { ListProducts } from "../views/categories/ListProducts";
 import { Home } from "../views/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -22,6 +23,7 @@ export const BookingAppRouter = () => {
                 <Route path="event" element={<Events />} />
                 <Route path="private-offices" element={<PrivateOffice />} />
                 <Route path="products" element={<Products />} />
+                <Route path="list-products" element={<ListProducts />} />
                 
                 {/* Redirección para cualquier otra ruta no encontrada */}
                 <Route path="/*" element={<Navigate to="/" />} />
