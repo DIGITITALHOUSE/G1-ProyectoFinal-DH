@@ -87,7 +87,7 @@ const CardsSwiper = () => {
                                 //  cambiar el tamanio a gusto
                                 className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
                             />
-                            <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-primary ease-in-out duration-200">
+                            <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-secondary ease-in-out duration-200">
                                 <h3 className="text-lg font-medium">
                                     {item.name}
                                 </h3>
@@ -101,8 +101,6 @@ const CardsSwiper = () => {
                 className="flex gap-2 w-full justify-center mt-5
             "
             >
-                {/* <IoIosArrowDropleft className="prev-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" />
-                <IoIosArrowDropright className="next-slide text-2xl sm:text-3xl text-neutral-800 hover:text-primary cursor-pointer ease-in-out duration-200 hidden sm:block" /> */}
             </div>
             <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
 
