@@ -1,0 +1,21 @@
+version: '3'
+networks:
+  reservation-db:
+    name: reservation-db
+
+services:
+  reservation-db:
+    container_name: reservation-db
+    image: mysql:8.4.4
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 3308:3306
+    volumes:
+      - reservation-db:/var/lib/mysql
+    networks:
+      - reservation-db
+
+volumes:
+  reservation-db:

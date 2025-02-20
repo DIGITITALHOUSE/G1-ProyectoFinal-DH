@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
-    let Links = [{ name: "Administrar", link: "/" }];
+    let Links = [{ name: "Administrar", link: "/list-products" }];
     let [open, setOpen] = useState(false);
 
     return (
