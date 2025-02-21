@@ -1,7 +1,20 @@
-import "./ListProducts.css";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import "./ListProducts.css";
 
 export const ListProducts = () => {
+    const [products, setProducts] = useState([
+        { id: "12345678", name: "Estilo Palermo" },
+        { id: "12345679", name: "Estilo Madrid" },
+        { id: "12345680", name: "Estilo Barcelona" },
+        { id: "12345681", name: "Estilo Londres" },
+        { id: "12345682", name: "Estilo Paris" },
+        { id: "12345683", name: "Estilo Roma" }
+    ]);
+
+    const eliminarFila = (id) => {
+        setProducts(products.filter(product => product.id !== id));
+    };
 
     return (
         <>
@@ -30,41 +43,19 @@ export const ListProducts = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-                            </tr>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-                            </tr>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-                            </tr>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-                            </tr>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)">Eliminar</button></td>
-                            </tr>
-                            <tr>
-                                <td>12345678</td>
-                                <td>Estilo Palermo</td>
-                                <td><button onclick="eliminarFila(this)" className="">Eliminar</button></td>
-                            </tr>
+                            {products.map(product => (
+                                <tr key={product.id}>
+                                    <td>{product.id}</td>
+                                    <td>{product.name}</td>
+                                    <td>
+                                        <button onClick={() => eliminarFila(product.id)}>Eliminar</button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
         </>
-    )
-
-}
+    );
+};

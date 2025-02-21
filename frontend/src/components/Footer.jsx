@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 export const Footer = () => {
   return (
-    <footer className='  bg-tertiary h-10 '>
+    <footer className='bg-[#1E3F75] h-10 '>
       <div className='flex flex-col p-2 gap-4 md:flex-row items-center max-w-[1200px] mx-auto justify-between'>
         <div className='items-center justify-center w-full  text-white text-xs font-bold  md:text-sm md:w-auto'>
         &copy; 2025 CoWork, Inc.
