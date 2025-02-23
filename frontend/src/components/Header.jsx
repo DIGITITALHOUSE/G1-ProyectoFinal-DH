@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaBars } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 export const Header = () => {
     let Links = [{ name: "Administrar", link: "/list-products" }];
@@ -15,10 +14,10 @@ export const Header = () => {
                     src="/src/assets/logo.jpeg"
                     alt="logo"
                 />
-                <span className="hidden md:block text-lg font-bold text-tertiary-700 leading-tight">
-                    Donde las ideas se conectan <br />
-                    y los espacios se unen
-                </span>
+               <span className="hidden md:block text-sm font-semibold text-gray-600 italic leading-tight">
+    Conectando ideas y espacios
+</span>
+
             </a>
             </div>
 
