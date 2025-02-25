@@ -1,9 +1,11 @@
 
-import { useState } from "react"; import "./Products.css";
+import { useEffect, useState } from "react"; import "./Products.css";
 import { Link } from "react-router-dom";
 
 export const Products = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
+
+  const [countries, setCountries] = useState([]);
 
   const handleImageChange = (event) => {
     const files = event.target.files;
@@ -28,6 +30,17 @@ export const Products = () => {
   const handleImageRemove = (id) => {
     setImagePreviews(imagePreviews.filter((image) => image.id !== id));
   };
+
+  useEffect(() => {
+    fetch("https://restcountries.com/v3.1/lang/spanish?fields=name,cca2,flag,flags")
+      .then((response) => response.json())
+      .then((data) => {
+        const filteredCountries = data.filter(
+          (country) => !["GU", "GQ","BZ","EH"].includes(country.cca2)
+        );
+        setCountries(filteredCountries);
+      });
+  }, []);
 
   return (
     <>
@@ -69,11 +82,16 @@ export const Products = () => {
           <h3 className="text-xl font-bold">Localización</h3>
           <div className="flex flex-col">
             <label htmlFor="country" className="font-bold mb-1">País:</label>
-            <select name="country" id="country" className="w-full px-4 py-2 border border-black rounded-lg text-sm">
-              <option value="seleccionar" disabled selected>Seleccionar</option>
-              <option value="argentina">Argentina</option>
-              <option value="colombia">Colombia</option>
-              <option value="ecuador">Ecuador</option>
+            <select name="country" id="country" className="w-full px-4 py-2 border border-black rounded-lg text-sm"
+            >
+              <option value="">Seleccione un país</option>
+              {
+                countries.map((country) => (
+                  <option key={country.name.nativeName.spa.common} value={country.name.common} className="before:content-['asd']">
+                    {country.flag + " " + country.name.nativeName.spa.common}
+                  </option>
+                ))
+              }
             </select>
           </div>
           <div className="flex flex-col">
@@ -97,7 +115,8 @@ export const Products = () => {
         <div className="flex flex-col gap-4">
           <label htmlFor="img" className="font-bold text-lg mb-4">Agrega imágenes:</label>
           <div>
-            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="img" id="img" className="w-full mt-4 mb-2" />
+            <label htmlFor="img" className="font-bold mb-1 rounded-lg bg-primary text-white px-4 py-2 cursor-pointer hover:bg-[#8A0B57]">Subir imagenes</label>
+            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="img" id="img" className="w-full mt-4 mb-2 hidden" />
             <div className="image-previews flex flex-wrap mt-4">
               {imagePreviews.map((preview) => (
                 <div key={preview.id} className="relative mb-4 mr-4">
