@@ -1,10 +1,15 @@
-import { useState, useEffect, useRef   } from "react";
-import { Link, useNavigate  } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import DataTable from "react-data-table-component";
+import { FaTrash, FaSearch } from "react-icons/fa";
 import "./ListProducts.css";
 
 export const ListProducts = () => {
     const navigate = useNavigate();
     const hasRedirected = useRef(false);
+    const [loading, setLoading] = useState(true);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [search, setSearch] = useState("");
     const [products, setProducts] = useState([
         { id: "12345678", name: "Estilo Palermo" },
         { id: "12345679", name: "Estilo Madrid" },
@@ -13,6 +18,95 @@ export const ListProducts = () => {
         { id: "12345682", name: "Estilo Paris" },
         { id: "12345683", name: "Estilo Roma" }
     ]);
+    const API_URL = "http://api/productos";
+
+    // Función para obtener productos desde la API
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch(API_URL); // Petición GET
+            if (!response.ok) {
+                throw new Error("Error al obtener los productos");
+            }
+            const data = await response.json();
+            setProducts(data);
+            setFilteredProducts(data);
+        } catch (error) {
+            console.error("Error obteniendo los productos:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Función para eliminar producto desde la API con fetch
+    const deleteProducts = async (id) => {
+        try {
+            const response = await fetch(`${API_URL}/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) {
+                throw new Error("No se pudo eliminar el producto");
+            }
+
+            // Filtrar la lista de productos para quitar el eliminado
+            const updatedProducts = products.filter((product) => product.id !== id);
+            setProducts(updatedProducts);
+            setFilteredProducts(updatedProducts);
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            alert("No se pudo eliminar el producto.");
+        }
+    };
+
+    // Cargar datos cuando el componente se monte
+    useEffect(() => {
+        const filtered = products.filter((product) =>
+            product.id.toString().includes(search) ||
+            product.name.toLowerCase().includes(search.toLowerCase())
+        );
+    }, [search, products]);
+
+    // Definir columnas para la tabla
+    const columns = [
+        {
+            name: "ID",
+            selector: (row) => row.id,
+            sortable: true,
+            center: true,
+            style: {
+                backgroundColor: "#f0f8ff", 
+                fontWeight: "bold",
+                fontSize: "16px",
+            },
+        },
+        {
+            name: "Nombre",
+            selector: (row) => row.name,
+            sortable: true,
+            style: {
+                backgroundColor: "#f0f8ff", 
+                fontWeight: "bold",
+                fontSize: "16px",
+            },
+        },
+        {
+            name: "Acción",
+            cell: (row) => (
+                <button
+                    onClick={() => eliminarFila(row.id)} //deleteProducts
+                    className="bg-[#AB0D6A] text-white px-5 py-1 rounded-full font-bold text-lg transition duration-300 hover:bg-pink-700 flex items-center gap-2"
+                >
+                    Eliminar
+                    <FaTrash />
+                </button>
+            ),
+            center: true,
+            style: {
+                backgroundColor: "#f0f8ff", 
+                fontWeight: "bold",
+            },
+        },
+    ];
 
     const eliminarFila = (id) => {
         setProducts(products.filter(product => product.id !== id));
@@ -24,11 +118,11 @@ export const ListProducts = () => {
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
-          alert("Acceso restringido a dispositivos móviles.");
-          hasRedirected.current = true; 
-          navigate("/"); // Redirige a inicio
+            alert("Acceso restringido a dispositivos móviles.");
+            hasRedirected.current = true;
+            navigate("/"); // Redirige a inicio
         }
-      }, []);
+    }, []);
 
     return (
         <>
@@ -52,32 +146,45 @@ export const ListProducts = () => {
                 <div className="flex flex-col mt-10 px-4">
                     <div className="text-2xl font-bold mb-4">Listado de productos</div>
 
-                    <div className="mt-8 mb-8 overflow-x-auto">
-                        <table className="w-full min-w-[600px] border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-                            <thead>
-                                <tr className="bg-[#3C79CF] text-white uppercase">
-                                    <th className="p-3">ID</th>
-                                    <th className="p-3">Nombre</th>
-                                    <th className="p-3">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {products.map((product) => (
-                                    <tr key={product.id} className="even:bg-gray-200 hover:bg-gray-300 transition duration-300">
-                                        <td className="p-3 text-center">{product.id}</td>
-                                        <td className="p-3">{product.name}</td>
-                                        <td className="p-3 text-center">
-                                            <button
-                                                onClick={() => eliminarFila(product.id)}
-                                                className="bg-[#AB0D6A] text-white border-none px-6 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700"
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="mt-4 mb-4 p-4">
+                        <div className="flex justify-end mb-4">
+                            <div className="relative">
+                                <FaSearch className="absolute left-2 top-3 text-gray-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar..."
+                                    className="p-2 pl-8 border border-gray-300 rounded-full w-80 bg-gray-100 focus:ring-2 focus:ring-blue-400"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <DataTable
+                            columns={columns}
+                            data={products} //filteredProducts
+                            //progressPending={loading}
+                            pagination
+                            highlightOnHover
+                            responsive
+                            customStyles={{
+                                headRow: {
+                                    style: {
+                                        backgroundColor: "#3C79CF",
+                                        color: "white",
+                                        fontSize: "16px",
+                                        fontWeight: "bold",
+                                    },
+                                },
+                                rows: {
+                                    style: {
+                                        backgroundColor: "#ffffff",
+                                        "&:nth-of-type(odd)": {
+                                            backgroundColor: "#f8f9fa",
+                                        },
+                                    },
+                                },
+                            }}
+                        />
                     </div>
                 </div>
             </div>
