@@ -5,9 +5,9 @@ import CardsSwiper from './CardsSwiper';
 export const CategoriesAndRecommended = () => {
     return (
         <Section>
-            <div>
-                <h2 className="text-lg sm:text-2xl font-semibold pb-2">
-                    Categorías
+            <div className="px-4">
+                <h2 className="text-xl font-semibold mb-8">
+                    Elige las categorías que te interesan
                 </h2>
                 <CardsSwiper />
             </div>

@@ -43,65 +43,67 @@ export const data = [
 
 const CardsSwiper = () => {
     return (
-        <Swiper
-            className="relative"
-            modules={[Navigation, Pagination]}
-            // esto es para poder ponerle una clase a cualquier elemnto y que tenga la funcionalidad de siguiente y previo
-            navigation={{
-                nextEl: ".next-slide",
-                prevEl: ".prev-slide",
-            }}
-            // es para que sea infinito
-            // loop
-            // es para que aparezcan las pelotitas de la paginacion
-            pagination={{
-                // para que pueda  clickear en las pelotitas
-                clickable: true,
-            }}
-            breakpoints={{
-                640: {
-                    slidesPerView: 1,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 2,
-                    spaceBetween: 30,
-                },
-                1024: {
-                    slidesPerView: 4,
-                    spaceBetween: 30,
-                },
-            }}
-        >
-            {data.map((item) => (
-                <SwiperSlide key={item.id}>
-                    <div className="cursor-pointer rounded-2xl overflow-hidden mx-10 group ">
-                        <Link to={item.category}>
-                            <img
-                                src={item.img}
-                                alt="imagen referente a la categoria"
-                                //  cambiar el tamanio a gusto
-                                className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
-                            />
-                            <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-secondary ease-in-out duration-200">
-                                <h3 className="text-lg font-medium">
-                                    {item.name}
-                                </h3>
-                            </div>
-                        </Link>
-                    </div>
-                    {/* <SkeletonCardsSweiper /> */}
-                </SwiperSlide>
-            ))}
-            <div
-                className="flex gap-2 w-full justify-center mt-5
-            "
+        <div className="relative w-full flex items-center">
+            <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary left-0 text-3xl z-50 -translate-x-10 hidden sm:block" />
+            <Swiper
+                className="w-full"
+                modules={[Navigation, Pagination]}
+                // esto es para poder ponerle una clase a cualquier elemnto y que tenga la funcionalidad de siguiente y previo
+                navigation={{
+                    nextEl: ".next-slide",
+                    prevEl: ".prev-slide",
+                }}
+                // es para que sea infinito
+                // loop
+                // es para que aparezcan las pelotitas de la paginacion
+                pagination={{
+                    // para que pueda  clickear en las pelotitas
+                    clickable: true,
+                }}
+                breakpoints={{
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 15,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 15,
+                    },
+                }}
             >
-            </div>
-            <IoIosArrowDropleft className="absolute prev-slide cursor-pointer text-neutral-800 hover:text-primary top-1/2 z-10 left-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
+                {data.map((item) => (
+                    <SwiperSlide key={item.id} className="px-1">
+                        <div className="cursor-pointer rounded-2xl overflow-hidden group">
+                            <Link to={item.category}>
+                                <img
+                                    src={item.img}
+                                    alt="imagen referente a la categoria"
+                                    //  cambiar el tamanio a gusto
+                                    className="w-full h-40 object-cover object-center transition-transform group-hover:scale-105 ease-in-out duration-200"
+                                />
+                                <div className=" bg-neutral-800 h-12 flex justify-center  items-center text-white group-hover:bg-secondary ease-in-out duration-200">
+                                    <h3 className="text-lg font-medium">
+                                        {item.name}
+                                    </h3>
+                                </div>
+                            </Link>
+                        </div>
+                        {/* <SkeletonCardsSweiper /> */}
+                    </SwiperSlide>
+                ))}
+                <div
+                    className="flex gap-2 w-full justify-center mt-5
+                "
+                >
+                </div>
+            </Swiper>
 
-            <IoIosArrowDropright className="absolute next-slide cursor-pointer text-neutral-800 hover:text-primary z-10 top-1/2 right-2 text-2xl  transform -translate-y-1/2 ease-in-out duration-200 hidden sm:block" />
-        </Swiper>
+            <IoIosArrowDropright className="absolute next-slide cursor-pointer text-neutral-800 hover:text-primary right-0 text-3xl z-50 translate-x-10 hidden sm:block" />
+        </div>
     );
 };
 export default CardsSwiper;

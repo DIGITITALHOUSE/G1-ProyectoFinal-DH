@@ -12,32 +12,46 @@ export const SearchBar = ({ setSearchLocation }) => {
 
   return (
     <Section>
-      <div className="bg-[#1E3F75] py-8">
-        <h2 className="text-white text-lg md:text-xl font-medium text-center">
-          Reserva tu espacio, crea tu ambiente
-        </h2>
+      <div
+        className="relative w-full h-96 bg-cover bg-center flex items-center rounded-lg"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZXNwYWNpb3MlMjBkZSUyMGNvd29ya2luZ3xlbnwwfHwwfHx8MA%3D%3D')",
+        }}
+      >
 
-        <div className="flex justify-center items-center gap-4 bg-blue-50 p-4 rounded-lg mt-6 max-w-4xl mx-auto shadow-lg">
-          <input
-            type="text"
-            placeholder="País/Ciudad"
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              setSearchLocation(e.target.value); // Dynamically filter results
-            }}
-            className="w-1/3 px-6 py-3 border border-gray-300 rounded-full outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-          />
+      <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
 
-          <button
-            onClick={handleSearch}
-            className="flex items-center gap-3 bg-pink-600 text-white px-6 py-3 rounded-full hover:bg-pink-700 transition-all"
-          >
-            <FaSearch />
-            Buscar
-          </button>
+        <div className="relative z-10 max-w-3xl pl-12 text-left">
+          <h1 className="text-4xl font-bold text-white">
+            Encuentra tu espacio ideal para trabajar
+          </h1>
+          <p className="mt-2 text-lg text-gray-200">
+            Descubre espacios de coworking únicos en tu ciudad
+          </p>
+
+          <div className="mt-4 flex w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Buscar espacios..."
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                setSearchLocation(e.target.value); // Filtrado dinámico
+              }}
+              className="flex-grow p-2 rounded-l-full text-gray-800 outline-none shadow-md"
+            />
+
+            <button
+              onClick={handleSearch}
+              className="p-2 bg-red-500 rounded-r-full hover:bg-red-600 transition-all shadow-md"
+            >
+              <FaSearch className="text-white text-lg" />
+            </button>
+          </div>
         </div>
       </div>
+
     </Section>
   );
 };
