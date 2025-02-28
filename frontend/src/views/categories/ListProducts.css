@@ -43,7 +43,9 @@ tr:hover {
     background: #ddd;
     transition: 0.3s;
 }
-button{
+
+/* Considerar remover el archivo css */
+/* button{
     margin-right: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -57,4 +59,4 @@ button{
     font-size: 16px;
     transition: background 0.3s ease-in-out;
     white-space: nowrap;
-}
+} */

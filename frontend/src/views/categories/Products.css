@@ -105,6 +105,8 @@
   .describeSite input{
     height: 5rem;
   }
-  button:hover {
+
+  /* Considerar remover clases css /*
+  /* button:hover {
     background-color: #8A0B57;
-  }
+  } */
