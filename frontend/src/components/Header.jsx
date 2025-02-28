@@ -1,24 +1,30 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
+import Button from "./buttons/Button";
 
 export const Header = () => {
-    let Links = [{ name: "Administrar", link: "/list-products" }];
+    let links = [
+        { name: "Espacios", link: "/" },
+        { name: "Precios", link: "/" },
+        { name: "Contacto", link: "/" },
+    ];
     let [open, setOpen] = useState(false);
 
     return (
-        <header className="px-[5%] lg:px-[2%] flex items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30">
+        <header className="px-8 flex items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30 h-20">
+            {/* <header className="px-[5%] lg:px-[2%] grid grid-cols-3 items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30 h-20"> */}
             <div className="flex items-center gap-3">
-            <a href="/" className="flex items-center text-center space-y-2 gap-5">
-                <img
-                    className="max-w-[150px] max-h-[60px]"
-                    src="/src/assets/logo.jpeg"
-                    alt="logo"
-                />
-               <span className="hidden md:block text-sm font-semibold text-gray-600 italic leading-tight">
-    Conectando ideas y espacios
-</span>
+                <a href="/" className="flex items-center text-center space-y-2 gap-5">
+                    <img className="max-w-[150px] max-h-[60px]" src="/src/assets/logo.png" alt="logo" />
+                </a>
+            </div>
 
-            </a>
+            <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:flex items-center gap-4">
+                {links.map((link) => (
+                    <a href={link.link} className="text-grayTertiary" key={link.name}>
+                        {link.name}
+                    </a>
+                ))}
             </div>
 
             <div
@@ -29,30 +35,29 @@ export const Header = () => {
             </div>
 
             <ul
-                className={`lg:flex lg:items-center lg:pb-0 pb-6 absolute lg:static bg-white lg:z-auto lg:gap-4 z-50 left-0 w-full lg:w-auto transition-all duration-500 ease-in ${
+                className={`hidden lg:flex lg:items-center lg:pb-0 pb-6 absolute lg:static bg-white lg:z-auto lg:gap-4 z-50 left-0 w-full lg:w-auto transition-all duration-500 ease-in ${
                     open ? "top-[113px]" : "top-[-490px]"
                 }`}
             >
-                {Links.map((link) => (
-                    <li key={link.name} className="lg:ml-2 text-lg font-bold my-6 lg:my-0">
-                        <a
-                            href={link.link}
-                            className="text-neutral-800 text-tertiary transition-all hover:opacity-75 duration-500"
-                        >
-                            {link.name}
-                        </a>
-                    </li>
+                <a href="/list-products" className="hidden lg:block">
+                    Administrar
+                </a>
+                <Button text="Crear Cuenta" filled={false} />
+                <Button text="Iniciar Sesión" filled={true} />
+            </ul>
+
+            <ul
+                className={`lg:hidden absolute bottom-0 shadow-lg border-t border-primary translate-y-full bg-white w-full left-0 flex flex-col gap-4 items-center py-4 transition-all duration-500 ease-in
+                ${open ? "bottom-0 " : "bottom-[500px]"}
+                `}
+            >
+                {links.map((link) => (
+                    <a href={link.link} className="text-grayTertiary text-lg" key={link.name}>
+                        {link.name}
+                    </a>
                 ))}
-                <button
-                    className="rounded-full border bg-primary py-3 px-6 text-xs font-bold uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-tertiary"
-                >
-                    Crear Cuenta
-                </button>
-                <button
-                    className="rounded-full bg-primary py-3 px-6 text-xs font-bold uppercase text-white shadow-sm transition-all hover:shadow-secondary"
-                >
-                    Iniciar Sesión
-                </button>
+                <Button text="Crear Cuenta" filled={false} />
+                <Button text="Iniciar Sesión" filled={true} />
             </ul>
         </header>
     );
