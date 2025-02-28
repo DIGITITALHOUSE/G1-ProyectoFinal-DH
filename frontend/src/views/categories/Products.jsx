@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react"; import "./Products.css";
 import { Link } from "react-router-dom";
+import { FaArrowLeft, FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 
 export const Products = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -70,45 +71,54 @@ export const Products = () => {
 
   return (
     <>
-      <div className="flex bg-[#3C79CF] justify-between items-center mb-4">
-        <h2 className="ml-4 font-bold text-white">Agregar producto</h2>
-        <Link to="/list-products">
-          <button className="mr-4 mt-2 mb-2 bg-[#AB0D6A] text-white border-none px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-[#8A0B57] whitespace-nowrap">
-            <i className="fas fa-arrow-left"></i> Regresar
-          </button>
-        </Link>
+      <div className="flex justify-between items-center bg-[#3C79CF] flex-col md:flex-row p-4">
+        <h2 className="ml-4 text-xl font-bold text-white">Panel de administración</h2>
+        <div className="flex gap-3 mr-2 flex flex-col md:flex-row">          
+          <Link to="/list-products">
+            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700 w-auto flex items-center gap-2">
+              <FaArrowLeft /> Regresar
+            </button>
+          </Link>
+        </div>
       </div>
 
-      <form className="grid grid-cols-2 gap-8 mx-auto p-4">
+      <form className="max-w-4xl bg-white shadow-lg rounded-xl p-8 mx-auto grid grid-cols-2 gap-6">
+
+        {/* Información */}
         <div className="flex flex-col gap-4">
-          <h3 className="text-xl font-bold">Información</h3>
+          <h3 className="text-2xl font-bold text-gray-700">Información</h3>
           <div className="flex flex-col">
-            <label htmlFor="title" className="font-bold mb-1">Nombre:</label>
-            <input type="text" name="title" id="title" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="title" className="font-semibold text-gray-600 mb-1">Nombre:</label>
+            <input type="text" name="title" id="title" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="describe" className="font-bold mb-1">Descripción:</label>
-            <input type="text" name="describe" id="describe" className="w-full px-4 py-2 border border-black rounded-lg text-sm h-20" />
+            <label htmlFor="describe" className="font-semibold text-gray-600 mb-1">Descripción:</label>
+            <textarea name="describe" id="describe" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg h-20 focus:ring focus:ring-primary"></textarea>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="type" className="font-bold mb-1">Tipo espacio:</label>
-            <input type="text" name="type" id="type" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="type" className="font-semibold text-gray-600 mb-1">Tipo de espacio:</label>
+            <select name="type" id="type" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
+              <option value="">Seleccione un tipo</option>
+              <option value="oficina">Oficina</option>
+              <option value="coworking">Coworking</option>
+              <option value="sala_reuniones">Sala de reuniones</option>
+            </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="capacity" className="font-bold mb-1">Capacidad:</label>
-            <input type="text" name="capacity" id="capacity" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="capacity" className="font-semibold text-gray-600 mb-1">Capacidad:</label>
+            <input type="number" name="capacity" id="capacity" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="price" className="font-bold mb-1">Precio hora:</label>
-            <input type="text" name="price" id="price" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="price" className="font-semibold text-gray-600 mb-1">Precio por hora:</label>
+            <input type="text" name="price" id="price" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
         </div>
-
+        {/*Seccion Localizacion*/ } 
         <div className="flex flex-col gap-4">
-          <h3 className="text-xl font-bold">Localización</h3>
+          <h3 className="text-2xl font-bold text-gray-700">Localización</h3>
           <div className="flex flex-col">
-            <label htmlFor="country" className="font-bold mb-1">País:</label>
-            <select name="country" id="country" className="w-full px-4 py-2 border border-black rounded-lg text-sm bg-white"
+            <label htmlFor="country" className="font-semibold text-gray-600 mb-1">País:</label>
+            <select name="country" id="country" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary"
               onChange={(e) => {
                 if (e.target.value === "") {
                   setSelectedCountry(null);
@@ -132,8 +142,8 @@ export const Products = () => {
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="region" className="font-bold mb-1">Ciudad:</label>
-            <select name="region" id="region" className="w-full px-4 py-2 border border-black rounded-lg text-sm bg-white">
+            <label htmlFor="region" className="font-semibold text-gray-600 mb-1">Ciudad:</label>
+            <select name="region" id="region" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
               <option value="">Seleccione una ciudad</option>
               {cities.map((city) => (
                 <option key={city.name} value={city.name}>{city.name}</option>
@@ -141,53 +151,50 @@ export const Products = () => {
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="suite" className="font-bold mb-1">Localidad:</label>
-            <input type="text" name="suite" id="suite" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="suite" className="font-semibold text-gray-600 mb-1">Localidad:</label>
+            <input type="text" name="suite" id="suite" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="zip" className="font-bold mb-1">Código postal:</label>
-            <input type="text" name="zip" id="zip" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="zip" className="font-semibold text-gray-600 mb-1">Código postal:</label>
+            <input type="text" name="zip" id="zip" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="extra" className="font-bold mb-1">Indicaciones extras:</label>
-            <input type="text" name="extra" id="extra" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="extra" className="font-semibold text-gray-600 mb-1">Indicaciones extras:</label>
+            <input type="text" name="extra" id="extra" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
+        </div>
+        {/*Seccion Imagenes*/ }       
+        <div className="col-span-2 flex flex-col gap-4">
+          <label htmlFor="img" className="text-xl font-bold text-gray-700">Agrega imágenes:</label>
+          <div className="flex items-center gap-4">
+            <label htmlFor="img" className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-[#8A0B57] transition">
+              <FaCloudUploadAlt className="text-2xl" />
+              <span>Subir imágenes</span>
+            </label>
+            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="img" id="img" className="hidden" />
+          </div>
+          <div className="image-previews grid grid-cols-3 gap-6 mt-4">
+            {imagePreviews.map((preview) => (
+              <div key={preview.id} className="relative flex flex-col items-center">
+                <img src={preview.src} alt={`Preview ${preview.id}`} className="w-80 h-40 object-cover rounded-md border border-gray-300 shadow-md" />
+                <button
+                  onClick={() => handleImageRemove(preview.id)}
+                  className="mt-2 bg-red-500 text-white px-3 py-1 rounded-lg flex items-center gap-2 hover:bg-red-600 transition">
+                  <FaTrash /> 
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/*Boton Guardar*/ } 
+        <div className="col-span-2 flex justify-center mt-6">
+          <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-lg font-bold text-lg transition duration-300 hover:bg-[#8A0B57]">
+            Guardar
+          </button>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <label htmlFor="img" className="font-bold text-lg mb-4">Agrega imágenes:</label>
-          <div>
-            <label htmlFor="img" className="font-bold mb-1 rounded-lg bg-primary text-white px-4 py-2 cursor-pointer hover:bg-[#8A0B57]">Subir imagenes</label>
-            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="img" id="img" className="w-full mt-4 mb-2 hidden" />
-            <div className="image-previews flex flex-wrap mt-4">
-              {imagePreviews.map((preview) => (
-                <div key={preview.id} className="relative mb-4 mr-4">
-                  <img
-                    src={preview.src}
-                    alt={`Preview ${preview.id}`}
-                    style={{ width: 100, height: 100, objectFit: 'cover' }}
-                    className="rounded-md"
-                  />
-                  <button
-                    onClick={() => handleImageRemove(preview.id)} // Eliminar la imagen usando su id único
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                    style={{ fontSize: '12px' }}
-                  >
-                    &times;
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-end justify-start mt-4">
-            <button className="bg-[#AB0D6A] text-white px-6 py-2 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-[#8A0B57]">
-              Guardar
-            </button>
-          </div>
-        </div>
       </form>
-
     </>
   )
-
 }

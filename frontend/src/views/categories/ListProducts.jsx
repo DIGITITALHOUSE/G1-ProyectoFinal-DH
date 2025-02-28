@@ -167,7 +167,7 @@ export const ListProducts = () => {
                                     Lista de productos
                                 </button>
                             </Link>
-                            <Link to="/">
+                            <Link to="/products">
                                 <button className="bg-[#AB0D6A] text-white px-4 py-2 rounded-full font-bold text-sm transition duration-300 hover:bg-pink-700">
                                     Agregar producto
                                 </button>
