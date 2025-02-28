@@ -1,4 +1,4 @@
-import { BookingLayout } from "../components/BookingLayout";
+import { BookingLayout } from "../components/layouts/BookingLayout";
 import { Events } from "../views/categories/Events";
 import { FullFloorOffice } from "../views/categories/FullFloorOffice";
 import { MeetingRooms } from "../views/categories/MeetingRooms";
