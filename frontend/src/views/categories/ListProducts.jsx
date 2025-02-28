@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { FaTrash, FaSearch } from "react-icons/fa";
+import { FaTrash, FaSearch, FaArrowLeft, FaPlus } from "react-icons/fa";
 import "./ListProducts.css";
 
 export const ListProducts = () => {
@@ -124,24 +124,57 @@ export const ListProducts = () => {
         }
     }, []);
 
+    //Verifica tamaño de pantalla y redirecciona a access-denied-products
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                navigate("/access-denied-products", { replace: true });
+            }
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [navigate]);
+
     return (
         <>
             <div>
-                <div className="flex justify-between items-center bg-[#3C79CF] flex-col md:flex-row">
+                <div className="flex justify-between items-center bg-[#3C79CF] flex-col md:flex-row p-4">
                     <h2 className="ml-4 text-xl font-bold text-white">Panel de administración</h2>
-                    <div className="flex gap-3 mr-2flex flex-col md:flex-row gap-1">
+                    <div className="flex gap-3 mr-2 flex flex-col md:flex-row">
+                        {/*
                         <Link to="/products">
-                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700">
+                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700 w-auto">
                                 <i className="fas fa-plus"></i> Agregar
                             </button>
                         </Link>
+                        */}
                         <Link to="/">
-                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700">
-                                <i className="fas fa-arrow-left"></i> Regresar
+                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700 w-auto flex items-center gap-2">
+                                <FaArrowLeft /> Regresar
                             </button>
                         </Link>
                     </div>
                 </div>
+
+                 {/* Nueva cabecera con contenedor central */}
+                <div className="flex justify-center items-center mt-10">
+                    <div className="border border-gray-400 p-6 rounded-lg bg-white shadow-md text-center">
+                        <h3 className="text-lg font-semibold mb-4">Gestiona tus productos desde aquí</h3>
+                        <div className="flex gap-4 justify-center">
+                            <Link to="/">
+                                <button className="bg-[#AB0D6A] text-white px-4 py-2 rounded-full font-bold text-sm transition duration-300 hover:bg-pink-700">
+                                    Lista de productos
+                                </button>
+                            </Link>
+                            <Link to="/">
+                                <button className="bg-[#AB0D6A] text-white px-4 py-2 rounded-full font-bold text-sm transition duration-300 hover:bg-pink-700">
+                                    Agregar producto
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>  
 
                 <div className="flex flex-col mt-10 px-4">
                     <div className="text-2xl font-bold mb-4">Listado de productos</div>
