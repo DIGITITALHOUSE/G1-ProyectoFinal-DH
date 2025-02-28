@@ -6,6 +6,9 @@ export const Products = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const [countries, setCountries] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [cities, setCities] = useState([]);
 
   const handleImageChange = (event) => {
     const files = event.target.files;
@@ -36,11 +39,34 @@ export const Products = () => {
       .then((response) => response.json())
       .then((data) => {
         const filteredCountries = data.filter(
-          (country) => !["GU", "GQ","BZ","EH"].includes(country.cca2)
+          (country) => !["GU", "GQ","BZ","EH","PR"].includes(country.cca2)
         );
         setCountries(filteredCountries);
       });
   }, []);
+
+  const fetchCities = async (country) => {
+    if (!country) {
+      setCities([]);
+      return;
+    }
+  
+    try {
+      const response = await fetch(`https://countriesnow.space/api/v0.1/countries/states`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country }),
+      });
+  
+      const data = await response.json();
+      setCities(data.data.states.map((state) => ({
+        ...state,
+        name: state.name.replace(/ Department| Province| Region$/, '')
+      })));
+    } catch (error) {
+      console.error("Error fetching cities:", error);
+    }
+  };
 
   return (
     <>
@@ -82,21 +108,37 @@ export const Products = () => {
           <h3 className="text-xl font-bold">Localización</h3>
           <div className="flex flex-col">
             <label htmlFor="country" className="font-bold mb-1">País:</label>
-            <select name="country" id="country" className="w-full px-4 py-2 border border-black rounded-lg text-sm"
+            <select name="country" id="country" className="w-full px-4 py-2 border border-black rounded-lg text-sm bg-white"
+              onChange={(e) => {
+                if (e.target.value === "") {
+                  setSelectedCountry(null);
+                  return;
+                }
+                const country = countries.find(c => c.name.nativeName.spa.common === e.target.value);
+                setSelectedCountry(country);
+                fetchCities(country.name.common);
+              }}
             >
               <option value="">Seleccione un país</option>
               {
-                countries.map((country) => (
-                  <option key={country.name.nativeName.spa.common} value={country.name.common} className="before:content-['asd']">
-                    {country.flag + " " + country.name.nativeName.spa.common}
+                countries.map((country) => {
+                  const countryName = country.name.nativeName.spa.common;
+                  return (
+                  <option key={countryName} value={countryName}>
+                    {country.flag + " " + countryName}
                   </option>
-                ))
+                )})
               }
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="region" className="font-bold mb-1">Región:</label>
-            <input type="text" name="region" id="region" className="w-full px-4 py-2 border border-black rounded-lg text-sm" />
+            <label htmlFor="region" className="font-bold mb-1">Ciudad:</label>
+            <select name="region" id="region" className="w-full px-4 py-2 border border-black rounded-lg text-sm bg-white">
+              <option value="">Seleccione una ciudad</option>
+              {cities.map((city) => (
+                <option key={city.name} value={city.name}>{city.name}</option>
+              ))}
+            </select>
           </div>
           <div className="flex flex-col">
             <label htmlFor="suite" className="font-bold mb-1">Localidad:</label>
