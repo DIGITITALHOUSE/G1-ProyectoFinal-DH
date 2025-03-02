@@ -52,7 +52,7 @@ public class UserService implements IUserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> {
                     logger.error("User with id: "+ id + " not found");
-                    return new NotFoundException("Patient with id " + id + " not found");
+                    return new NotFoundException("User with id " + id + " not found");
                 }
         );
         logger.info("User found with id: "+ id);
@@ -67,7 +67,7 @@ public class UserService implements IUserService {
         User user = userRepository.findById(id).orElseThrow(
                 () -> {
                     logger.error("User with id: "+ id + " not found");
-                    return new NotFoundException("Patient with id " + id + " not found");
+                    return new NotFoundException("User with id " + id + " not found");
                 }
         );
 
@@ -88,7 +88,7 @@ public class UserService implements IUserService {
         logger.info("Deleting user by id: "+ id);
         Optional<User> userFind = userRepository.findById(id);
         if(userFind.isEmpty()) {
-            throw new NotFoundException("Patient with id " + id + " not found");
+            throw new NotFoundException("User with id " + id + " not found");
         }
         userRepository.deleteById(id);
         logger.info("User deleted with id: "+ id);

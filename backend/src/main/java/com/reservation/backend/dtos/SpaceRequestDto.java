@@ -1,0 +1,48 @@
+package com.reservation.backend.dtos;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+@Getter
+@Setter
+public class SpaceRequestDto {
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    @NotBlank(message = "Description is required")
+    private String description;
+
+    @NotNull(message = "Capacity is required")
+    private Integer capacity;
+
+    @NotNull(message = "Hour price is required")
+    private Integer hourPrice;
+
+    @NotBlank(message = "Direction is required")
+    private String direction;
+
+    @NotBlank(message = "Locality is required")
+    private String locality;
+
+    @NotBlank(message = "Region is required")
+    private String region;
+
+    @NotBlank(message = "Country is required")
+    private String country;
+
+    @NotBlank(message = "Zip code is required")
+    private String zipCode;
+
+    @NotBlank(message = "State is required")
+    private String state;
+
+    @NotNull(message = "Space type id is required")
+    private Long spaceTypeId;
+
+    private List<MultipartFile> images;
+}

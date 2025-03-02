@@ -5,9 +5,11 @@ import com.reservation.backend.dtos.ReservationRequestDto;
 import com.reservation.backend.dtos.ReservationRequestToUpdateDto;
 import com.reservation.backend.dtos.ReservationResponseDto;
 import com.reservation.backend.entities.Reservation;
+import com.reservation.backend.entities.Space;
 import com.reservation.backend.entities.User;
 import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.IReservationRepository;
+import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.IUserRepository;
 import com.reservation.backend.services.IReservationService;
 
@@ -22,11 +24,13 @@ public class ReservationService implements IReservationService {
     private static final Logger logger = Logger.getLogger(ReservationService.class);
     private final IReservationRepository reservationRepository;
     private final IUserRepository userRepository;
+    private final ISpaceRepository spaceRepository;
     private final ObjectMapper objectMapper;
 
-    public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository, ObjectMapper objectMapper) {
+    public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository, ISpaceRepository spaceRepository, ObjectMapper objectMapper) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
+        this.spaceRepository = spaceRepository;
         this.objectMapper = objectMapper;
     }
 
@@ -108,6 +112,10 @@ public class ReservationService implements IReservationService {
             reservationResponseDto.setUser(reservation.getUser().getName() + " " + reservation.getUser().getLastName());
         }
 
+        if (reservation.getSpace() != null) {
+            reservationResponseDto.setSpaceName(reservation.getSpace().getName());
+        }
+
         return reservationResponseDto;
     }
 
@@ -119,6 +127,11 @@ public class ReservationService implements IReservationService {
         if (reservationRequestDto.getUserId() != null) {
             Optional<User> userOptional = userRepository.findById(reservationRequestDto.getUserId());
             userOptional.ifPresent(reservation::setUser);
+        }
+
+        if (reservationRequestDto.getSpaceId() != null) {
+            Optional<Space> spaceOptional = spaceRepository.findById(reservationRequestDto.getSpaceId());
+            spaceOptional.ifPresent(reservation::setSpace);
         }
 
         return reservation;

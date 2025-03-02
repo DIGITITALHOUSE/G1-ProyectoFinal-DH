@@ -17,6 +17,9 @@ public class ReservationRequestDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private LocalDateTime endDate;
 
-    @NotNull(message = "Dentist id is required")
+    @NotNull(message = "User id is required")
     private Long userId;
+
+    @NotNull(message = "Space id is required")
+    private Long spaceId;
 }

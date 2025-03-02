@@ -27,4 +27,8 @@ public class Reservation extends Base {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "space_id")
+    private Space space;
 }
