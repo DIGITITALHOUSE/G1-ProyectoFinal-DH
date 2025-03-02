@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { FaTrash, FaSearch, FaArrowLeft, FaPlus } from "react-icons/fa";
-import "./ListProducts.css";
+import { FaTrash, FaSearch, FaEdit, FaArrowLeft } from "react-icons/fa";
+import CenteredMessage from "../../components/MessageDialog";
 
 export const ListProducts = () => {
     const navigate = useNavigate();
@@ -18,6 +18,18 @@ export const ListProducts = () => {
         { id: "12345682", name: "Estilo Paris" },
         { id: "12345683", name: "Estilo Roma" }
     ]);
+
+    const [message, setMessage] = useState({ isOpen: false, type: "info", message: "", onConfirm: null });
+
+
+    const showMessage = (type, message, onConfirm = null) => {
+        setMessage({ isOpen: true, type, message, onConfirm });
+    };
+
+    const closeMessage = () => {
+        setMessage((prev) => ({ ...prev, isOpen: false })); // 🔹 Cierra el mensaje correctamente
+    };
+
     const API_URL = "http://api/productos";
 
     // Función para obtener productos desde la API
@@ -64,8 +76,10 @@ export const ListProducts = () => {
             product.id.toString().includes(search) ||
             product.name.toLowerCase().includes(search.toLowerCase())
         );
+        fetchProducts()
     }, [search, products]);
-
+    //showMessage("warning", "Ten cuidado con esta acción")
+    //onClick={() => eliminarFila(row.id)
     // Definir columnas para la tabla
     const columns = [
         {
@@ -74,7 +88,7 @@ export const ListProducts = () => {
             sortable: true,
             center: true,
             style: {
-                backgroundColor: "#f0f8ff", 
+                backgroundColor: "#f0f8ff",
                 fontWeight: "bold",
                 fontSize: "16px",
             },
@@ -84,7 +98,7 @@ export const ListProducts = () => {
             selector: (row) => row.name,
             sortable: true,
             style: {
-                backgroundColor: "#f0f8ff", 
+                backgroundColor: "#f0f8ff",
                 fontWeight: "bold",
                 fontSize: "16px",
             },
@@ -92,17 +106,21 @@ export const ListProducts = () => {
         {
             name: "Acción",
             cell: (row) => (
-                <button
-                    onClick={() => eliminarFila(row.id)} //deleteProducts
-                    className="bg-[#AB0D6A] text-white px-5 py-1 rounded-full font-bold text-lg transition duration-300 hover:bg-pink-700 flex items-center gap-2"
-                >
-                    Eliminar
-                    <FaTrash />
-                </button>
+                <div className="flex gap-4"> {/* Usa flex para alinear los botones en fila */}
+                    <button onClick={() => showMessage("confirm", "¿Estás seguro de eliminar esto?", () => alert("Dato eliminado"))} //deleteProducts //deleteProducts
+                        className="bg-[#F43F5E] text-white px-4 py-1 rounded-full font-bold text-lg transition duration-300 flex items-center gap-2">
+                        <FaTrash />
+                    </button>
+                    <Link to="/edit-products">
+                        <button className="bg-[#111827] text-white px-4 py-1 rounded-full font-bold text-lg transition duration-300 flex items-center gap-2">
+                            <FaEdit />
+                        </button>
+                    </Link>
+                </div>
             ),
             center: true,
             style: {
-                backgroundColor: "#f0f8ff", 
+                backgroundColor: "#f0f8ff",
                 fontWeight: "bold",
             },
         },
@@ -139,45 +157,24 @@ export const ListProducts = () => {
     return (
         <>
             <div>
-                <div className="flex justify-between items-center bg-[#3C79CF] flex-col md:flex-row p-4">
+                <div className="flex justify-between items-center bg-[#111827] flex-col md:flex-row p-4">
                     <h2 className="ml-4 text-xl font-bold text-white">Panel de administración</h2>
                     <div className="flex gap-3 mr-2 flex flex-col md:flex-row">
-                        {/*
                         <Link to="/products">
-                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700 w-auto">
+                            <button className="bg-[#F43F5E] text-white px-6 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 w-auto">
                                 <i className="fas fa-plus"></i> Agregar
                             </button>
                         </Link>
-                        */}
                         <Link to="/">
-                            <button className="bg-[#AB0D6A] text-white px-6 py-3 rounded-full cursor-pointer font-bold text-lg transition duration-300 hover:bg-pink-700 w-auto flex items-center gap-2">
+                            <button className="bg-[#F43F5E] text-white px-5 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 w-auto flex items-center gap-2">
                                 <FaArrowLeft /> Regresar
                             </button>
                         </Link>
                     </div>
-                </div>
-
-                 {/* Nueva cabecera con contenedor central */}
-                <div className="flex justify-center items-center mt-10">
-                    <div className="border border-gray-400 p-6 rounded-lg bg-white shadow-md text-center">
-                        <h3 className="text-lg font-semibold mb-4">Gestiona tus productos desde aquí</h3>
-                        <div className="flex gap-4 justify-center">
-                            <Link to="/">
-                                <button className="bg-[#AB0D6A] text-white px-4 py-2 rounded-full font-bold text-sm transition duration-300 hover:bg-pink-700">
-                                    Lista de productos
-                                </button>
-                            </Link>
-                            <Link to="/products">
-                                <button className="bg-[#AB0D6A] text-white px-4 py-2 rounded-full font-bold text-sm transition duration-300 hover:bg-pink-700">
-                                    Agregar producto
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>  
+                </div> 
 
                 <div className="flex flex-col mt-10 px-4">
-                    <div className="text-2xl font-bold mb-4">Listado de productos</div>
+                    <div className="text-2xl font-bold mb-4">Listado espacios</div>
 
                     <div className="mt-4 mb-4 p-4">
                         <div className="flex justify-end mb-4">
@@ -202,7 +199,7 @@ export const ListProducts = () => {
                             customStyles={{
                                 headRow: {
                                     style: {
-                                        backgroundColor: "#3C79CF",
+                                        backgroundColor: "#111827",
                                         color: "white",
                                         fontSize: "16px",
                                         fontWeight: "bold",
@@ -221,6 +218,27 @@ export const ListProducts = () => {
                     </div>
                 </div>
             </div>
+            {loading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-50">
+                    <div className="bg-white p-6 rounded-lg flex flex-col items-center">
+                        <svg className="animate-spin h-8 w-8 text-[#F43F5E]" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="4" fill="none" />
+                        </svg>
+                        <p className="mt-2 text-gray-700">Cargando...</p>
+                    </div>
+                </div>
+            )}
+            <CenteredMessage
+                isOpen={message.isOpen}
+                type={message.type}
+                message={message.message}
+                onClose={closeMessage}
+                onConfirm={() => {
+                    if (message.onConfirm) message.onConfirm();
+                    closeMessage();
+                }}
+            />
         </>
     );
 };

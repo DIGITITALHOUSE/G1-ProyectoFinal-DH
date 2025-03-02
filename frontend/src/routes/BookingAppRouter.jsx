@@ -5,6 +5,7 @@ import { MeetingRooms } from "../views/categories/MeetingRooms";
 import { PrivateOffice } from "../views/categories/PrivateOffice";
 import { DedicatedDesk } from "../views/categories/DedicatedDesk";
 import { Products } from "../views/categories/Products";
+import { EditProducts } from "../views/categories/EditProducts";
 import { ListProducts } from "../views/categories/ListProducts";
 import { SpaceDetail } from "../views/SpaceDetail";
 import { Home } from "../views/Home";
@@ -27,6 +28,7 @@ export const BookingAppRouter = () => {
                 <Route path="private-offices" element={<PrivateOffice />} />
                 <Route path="products" element={<Products />} />
                 <Route path="list-products" element={<ListProducts />} />
+                <Route path="edit-products" element={<EditProducts />} />
                 <Route path="access-denied-products" element={<AccessDeniedProducts />} />
                 
                 {/* Redirección para cualquier otra ruta no encontrada */}

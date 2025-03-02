@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 
-export const Products = () => {
+export const EditProducts = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const [countries, setCountries] = useState([]);
@@ -187,10 +187,10 @@ export const Products = () => {
             ))}
           </div>
         </div>
-        {/*Boton Guardar*/ } 
+        {/*Boton Actualizar*/ } 
         <div className="col-span-2 flex justify-center mt-6">
           <button className="bg-[#F43F5E] text-white px-6 py-3 rounded-lg font-bold text-lg transition duration-300">
-            Guardar
+            Actualizar
           </button>
         </div>
 

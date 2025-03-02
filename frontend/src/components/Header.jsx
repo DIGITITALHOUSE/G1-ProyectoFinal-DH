@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import Button from "./buttons/Button";
 
@@ -43,7 +44,9 @@ export const Header = () => {
                     Administrar
                 </a>
                 <Button text="Crear Cuenta" filled={false} />
-                <Button text="Iniciar Sesión" filled={true} />
+                <Link to="/auth/login">
+                    <Button text="Iniciar Sesión" filled={true} />
+                </Link>
             </ul>
 
             <ul
@@ -57,7 +60,9 @@ export const Header = () => {
                     </a>
                 ))}
                 <Button text="Crear Cuenta" filled={false} />
-                <Button text="Iniciar Sesión" filled={true} />
+                <Link to="/auth/login">
+                    <Button text="Iniciar Sesión" filled={true} />
+                </Link>
             </ul>
         </header>
     );
