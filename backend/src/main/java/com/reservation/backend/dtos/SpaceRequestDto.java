@@ -26,11 +26,8 @@ public class SpaceRequestDto {
     @NotBlank(message = "Direction is required")
     private String direction;
 
-    @NotBlank(message = "Locality is required")
-    private String locality;
-
-    @NotBlank(message = "Region is required")
-    private String region;
+    @NotBlank(message = "City is required")
+    private String city;
 
     @NotBlank(message = "Country is required")
     private String country;
@@ -40,6 +37,9 @@ public class SpaceRequestDto {
 
     @NotBlank(message = "State is required")
     private String state;
+
+    @NotNull(message = "Extras is required")
+    private String extras;
 
     @NotNull(message = "Space type id is required")
     private Long spaceTypeId;

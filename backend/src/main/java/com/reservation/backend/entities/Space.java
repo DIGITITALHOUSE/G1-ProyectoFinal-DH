@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Space extends Base {
-    @Column( name = "name", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "description", nullable = true)
@@ -31,11 +31,8 @@ public class Space extends Base {
     @Column(name = "direction", nullable = false)
     private String direction;
 
-    @Column(name = "locality", nullable = false)
-    private String locality;
-
-    @Column(name = "region", nullable = false)
-    private String region;
+    @Column(name = "city", nullable = false)
+    private String city;
 
     @Column(name = "country", nullable = false)
     private String country;
@@ -45,6 +42,9 @@ public class Space extends Base {
 
     @Column(name = "state", nullable = true)
     private String state;
+
+    @Column(name = "extras", nullable = true)
+    private String extras;
 
     @OneToMany(mappedBy = "space")
     @JsonIgnore

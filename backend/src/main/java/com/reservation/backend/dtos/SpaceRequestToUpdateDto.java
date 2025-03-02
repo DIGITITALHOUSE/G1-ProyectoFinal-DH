@@ -1,5 +1,7 @@
 package com.reservation.backend.dtos;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +13,9 @@ public class SpaceRequestToUpdateDto {
     private Integer capacity;
     private Integer hourPrice;
     private String direction;
-    private String locality;
-    private String region;
+    private String city;
     private String country;
     private String zipCode;
     private String state;
+    private JsonNode extras;
 }

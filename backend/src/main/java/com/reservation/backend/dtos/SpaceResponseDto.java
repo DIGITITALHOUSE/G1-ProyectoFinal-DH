@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 @Getter
 @Setter
 public class SpaceResponseDto {
@@ -14,11 +16,11 @@ public class SpaceResponseDto {
     private Integer capacity;
     private Integer hourPrice;
     private String direction;
-    private String locality;
-    private String region;
+    private String city;
     private String country;
     private String zipCode;
     private String state;
+    private JsonNode extras;
 
     private String spaceTypeName;
     private List<SpaceImageResponseDto> spaceImages;

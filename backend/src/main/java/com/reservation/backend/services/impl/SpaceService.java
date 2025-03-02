@@ -89,11 +89,11 @@ public class SpaceService implements ISpaceService {
         if(spaceRequestToUpdateDto.getCapacity() != null) space.setCapacity(spaceRequestToUpdateDto.getCapacity());
         if(spaceRequestToUpdateDto.getHourPrice() != null) space.setHourPrice(spaceRequestToUpdateDto.getHourPrice());
         if(spaceRequestToUpdateDto.getDirection() != null) space.setDirection(spaceRequestToUpdateDto.getDirection());
-        if(spaceRequestToUpdateDto.getLocality() != null) space.setLocality(spaceRequestToUpdateDto.getLocality());
-        if(spaceRequestToUpdateDto.getRegion() != null) space.setRegion(spaceRequestToUpdateDto.getRegion());
+        if(spaceRequestToUpdateDto.getCity() != null) space.setCity(spaceRequestToUpdateDto.getCity());
         if(spaceRequestToUpdateDto.getCountry() != null) space.setCountry(spaceRequestToUpdateDto.getCountry());
         if(spaceRequestToUpdateDto.getZipCode() != null) space.setZipCode(spaceRequestToUpdateDto.getZipCode());
         if(spaceRequestToUpdateDto.getState() != null) space.setState(spaceRequestToUpdateDto.getState());
+        if(spaceRequestToUpdateDto.getExtras() != null) space.setExtras(spaceRequestToUpdateDto.getExtras().toString());
 
         space = spaceRepository.save(space);
         logger.info("Space updated with id: "+ id);
@@ -119,11 +119,19 @@ public class SpaceService implements ISpaceService {
         spaceResponseDto.setCapacity(space.getCapacity());
         spaceResponseDto.setHourPrice(space.getHourPrice());
         spaceResponseDto.setDirection(space.getDirection());
-        spaceResponseDto.setLocality(space.getLocality());
-        spaceResponseDto.setRegion(space.getRegion());
-        spaceResponseDto.setCountry(spaceResponseDto.getCountry());
+        spaceResponseDto.setCity(space.getCity());
+        spaceResponseDto.setCountry(space.getCountry());
         spaceResponseDto.setZipCode(space.getZipCode());
         spaceResponseDto.setState(space.getState());
+
+        if (space.getExtras() != null) {
+            try {
+                spaceResponseDto.setExtras(objectMapper.readTree(space.getExtras()));
+            } catch (Exception e) {
+                logger.error("Error parsing extras JSON", e);
+                spaceResponseDto.setExtras(null);
+            }
+        }
 
         if (space.getSpaceType() != null) {
             spaceResponseDto.setSpaceTypeName(space.getSpaceType().getName());
@@ -144,11 +152,11 @@ public class SpaceService implements ISpaceService {
         space.setCapacity(spaceRequestDto.getCapacity());
         space.setHourPrice(spaceRequestDto.getHourPrice());
         space.setDirection(spaceRequestDto.getDirection());
-        space.setLocality(spaceRequestDto.getLocality());
-        space.setRegion(spaceRequestDto.getRegion());
+        space.setCity(spaceRequestDto.getCity());
         space.setCountry(spaceRequestDto.getCountry());
         space.setZipCode(spaceRequestDto.getZipCode());
         space.setState(spaceRequestDto.getState());
+        space.setExtras(spaceRequestDto.getExtras().toString());
 
         if (spaceRequestDto.getSpaceTypeId() != null) {
             Optional<SpaceType> spaceTypeOptional = spaceTypeRepository.findById(spaceRequestDto.getSpaceTypeId());
