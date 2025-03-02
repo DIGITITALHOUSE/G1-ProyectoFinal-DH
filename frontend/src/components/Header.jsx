@@ -43,7 +43,9 @@ export const Header = () => {
                 <a href="/list-products" className="hidden lg:block">
                     Administrar
                 </a>
+                <Link to="/auth/register">
                 <Button text="Crear Cuenta" filled={false} />
+                </Link>
                 <Link to="/auth/login">
                     <Button text="Iniciar Sesión" filled={true} />
                 </Link>
