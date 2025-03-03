@@ -120,3 +120,36 @@ export const spacesData = [
         pais: "Brasil",
     },
 ];
+
+export class SpaceModel {
+    constructor({
+      id,
+      name,
+      description,
+      capacity,
+      hourPrice,
+      direction,
+      city,
+      country,
+      zipCode,
+      state,
+      extras,
+      spaceImages = [],
+      spaceType = {},
+    }) {
+      this.id = id;
+      this.name = name;
+      this.description = description;
+      this.capacity = capacity;
+      this.hourPrice = hourPrice;
+      this.direction = direction;
+      this.city = city;
+      this.country = country;
+      this.zipCode = zipCode;
+      this.state = state;
+      this.extras = extras;
+      this.spaceImages = spaceImages;
+      this.spaceType = spaceType;
+    }
+  }
+  

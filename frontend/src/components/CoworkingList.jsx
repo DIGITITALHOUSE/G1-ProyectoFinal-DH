@@ -67,3 +67,82 @@ export const CoworkingList = ({ searchLocation }) => {
 CoworkingList.propTypes = {
   searchLocation: PropTypes.string.isRequired,
 };
+
+
+// import { useState, useEffect } from "react";
+// import { getAllSpaces } from "../services/spaceService";
+// import Section from "../views/Section";
+// import { Link } from "react-router-dom";
+// import PropTypes from "prop-types";
+// import Pagination from "./Pagination"; 
+
+// const shuffleArray = (array) => {
+//   const shuffled = [...array];
+//   for (let i = shuffled.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+//   }
+//   return shuffled;
+// };
+
+// export const CoworkingList = ({ searchLocation }) => {
+//   const [filteredSpaces, setFilteredSpaces] = useState([]);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 10;
+
+//   useEffect(() => {
+//     const fetchSpaces = async () => {
+//       try {
+//         const spaces = await getAllSpaces();
+//         setFilteredSpaces(spaces);
+//       } catch (error) {
+//         console.error("Error fetching spaces:", error);
+//       }
+//     };
+
+//     fetchSpaces();
+//   }, []);
+
+//   const searchTerm = (searchLocation || "").toLowerCase();
+//   const filtered = filteredSpaces.filter((space) =>
+//     searchTerm === "" ||
+//     (space.city && space.city.toLowerCase().includes(searchTerm)) ||
+//     (space.country && space.country.toLowerCase().includes(searchTerm))
+//   );
+
+//   const startIndex = (currentPage - 1) * itemsPerPage;
+//   const currentSpaces = shuffleArray(filtered).slice(startIndex, startIndex + itemsPerPage);
+
+//   return (
+//     <Section>
+//       <div className="container mx-auto max-w-7xl p-4">
+//         {currentSpaces.length > 0 ? (
+//           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+//             {currentSpaces.map((space) => (
+//               <Link to={`/space/${space.id}`} key={space.id} className="bg-white rounded-lg shadow-md p-4">
+//                 <img src={space.spaceImages.length > 0 ? space.spaceImages[0] : "/default-image.jpg"} alt={space.name} className="w-full h-48 object-cover rounded-md" />
+//                 <h2 className="text-lg font-semibold mt-2">{space.name}</h2>
+//                 <p className="text-xl font-bold text-gray-700">${space.hourPrice}/hr</p>
+//                 <p className="text-gray-500">{space.description}</p>
+//                 <p className="text-sm text-gray-600">{space.city}, {space.country}</p>
+//               </Link>
+//             ))}
+//           </div>
+//         ) : (
+//           <p className="text-gray-500 text-center">No se encontraron resultados</p>
+//         )}
+
+//         <Pagination
+//           totalItems={filtered.length}
+//           itemsPerPage={itemsPerPage}
+//           currentPage={currentPage}
+//           onPageChange={setCurrentPage}
+//         />
+//       </div>
+//     </Section>
+//   );
+// };
+
+// CoworkingList.propTypes = {
+//   searchLocation: PropTypes.string.isRequired,
+// };
