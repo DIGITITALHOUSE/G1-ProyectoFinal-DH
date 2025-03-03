@@ -40,10 +40,10 @@ public class Space extends Base {
     @Column(name = "zip_code", nullable = false)
     private String zipCode;
 
-    @Column(name = "state", nullable = true)
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "extras", nullable = true)
+    @Column(name = "extras", nullable = false)
     private String extras;
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)

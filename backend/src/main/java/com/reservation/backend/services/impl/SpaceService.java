@@ -155,7 +155,7 @@ public class SpaceService implements ISpaceService {
         space.setCity(spaceRequestDto.getCity());
         space.setCountry(spaceRequestDto.getCountry());
         space.setZipCode(spaceRequestDto.getZipCode());
-        space.setState(spaceRequestDto.getState());
+        space.setState(spaceRequestDto.getState() != null ? spaceRequestDto.getState() : "Publicado");
         space.setExtras(spaceRequestDto.getExtras().toString());
 
         if (spaceRequestDto.getSpaceTypeId() != null) {

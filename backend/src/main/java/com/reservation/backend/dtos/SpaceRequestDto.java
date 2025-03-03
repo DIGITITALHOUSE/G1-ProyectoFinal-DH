@@ -32,10 +32,8 @@ public class SpaceRequestDto {
     @NotBlank(message = "Country is required")
     private String country;
 
-    @NotBlank(message = "Zip code is required")
     private String zipCode;
 
-    @NotBlank(message = "State is required")
     private String state;
 
     @NotNull(message = "Extras is required")
