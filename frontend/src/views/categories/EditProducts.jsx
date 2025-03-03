@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { FaArrowLeft, FaCloudUploadAlt, FaTrash } from "react-icons/fa";
+import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 
 export const EditProducts = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -71,17 +70,6 @@ export const EditProducts = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center bg-[#111827] flex-col md:flex-row p-4">
-        <h2 className="ml-4 text-xl font-bold text-white">Panel de administración</h2>
-        <div className="flex gap-3 mr-2 flex flex-col md:flex-row">          
-          <Link to="/list-products">
-            <button className="bg-[#F43F5E] text-white px-5 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 w-auto flex items-center gap-2">
-              <FaArrowLeft /> Regresar
-            </button>
-          </Link>
-        </div>
-      </div>
-
       <form className="max-w-4xl bg-white shadow-lg rounded-xl p-8 mx-auto grid grid-cols-2 gap-6">
 
         {/* Información */}

@@ -46,7 +46,7 @@ public class Space extends Base {
     @Column(name = "extras", nullable = true)
     private String extras;
 
-    @OneToMany(mappedBy = "space")
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<SpaceImage> spaceImages;
 

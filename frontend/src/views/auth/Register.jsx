@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AiFillCheckCircle, AiFillClockCircle, AiFillSafetyCertificate } from "react-icons/ai";
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -31,12 +32,12 @@ export const Register = () => {
             return;
         }
         console.log("Datos enviados:", formData);
-        navigate("/login"); 
+        navigate("/login");
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <div className="flex flex-col items-center justify-center w-full -mb-3.5">
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md mt-8">
                 <h2 className="text-2xl font-bold text-center">¡Bienvenido a CoWork!</h2>
                 <p className="text-center text-gray-500 mb-4">Únete a nuestra comunidad de trabajo colaborativo</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -50,7 +51,7 @@ export const Register = () => {
                             <input type="text" name="lastName" placeholder="Tu apellido" className="w-full p-2 border rounded" onChange={handleChange} required />
                         </div>
                     </div>
-                    
+
                     {/* Avatar */}
                     <div className="flex items-center gap-4">
                         {formData.avatar ? (
@@ -95,13 +96,41 @@ export const Register = () => {
                         type="submit"
                         className={`w-full mt-6 px-4 py-2 text-white rounded-full transition bg-[#F43F5E] hover:bg-[#E11D48]`}
                     >
-                    Crear cuenta
+                        Crear cuenta
                     </button>
 
                     <p className="text-center text-sm mt-2">
                         ¿Ya tienes una cuenta? <a href="/auth/login" className="text-[#F43F5E]">Inicia sesión</a>
                     </p>
                 </form>
+            </div>
+            <div className="w-screen flex flex-col mt-20 bg-gray-100">
+                <div className="text-center mt-5">
+                    <p className="text-3xl">¿Porqué elegir Cowork?</p>
+                </div>
+                <div className="flex justify-between items-center mt-8 text-center mb-8">
+                    <div className="flex-1 flex flex-col items-center">
+                        <AiFillCheckCircle className="text-4xl text-[#F43F5E]" />
+                        <p className="font-semibold">Espacios verificados</p>
+                        <p className="text-sm max-w-xs">
+                            Todos nuestros espacios son verificados para poder garantizar la mejor calidad
+                        </p>
+                    </div>
+                    <div className="flex-1 flex flex-col items-center">
+                        <AiFillClockCircle className="text-4xl text-[#F43F5E]" />
+                        <p className="font-semibold">Reserva Flexible</p>
+                        <p className="text-sm max-w-xs">
+                            Reserva por hora según tus necesidades
+                        </p>
+                    </div>
+                    <div className="flex-1 flex flex-col items-center">
+                        <AiFillSafetyCertificate className="text-4xl text-[#F43F5E]" />
+                        <p className="font-semibold">100% seguro</p>
+                        <p className="text-sm max-w-xs">
+                            Pagos seguros y soporte 24/7 para tu tranquilidad
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     );

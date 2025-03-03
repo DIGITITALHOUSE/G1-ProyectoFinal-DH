@@ -1,26 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { FaTrash, FaSearch, FaEdit, FaArrowLeft } from "react-icons/fa";
+import { FaTrash, FaSearch, FaEdit } from "react-icons/fa";
 import CenteredMessage from "../../components/MessageDialog";
 
 export const ListProducts = () => {
     const navigate = useNavigate();
-    const hasRedirected = useRef(false);
     const [loading, setLoading] = useState(true);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [search, setSearch] = useState("");
-    const [products, setProducts] = useState([
-        { id: "12345678", name: "Estilo Palermo" },
-        { id: "12345679", name: "Estilo Madrid" },
-        { id: "12345680", name: "Estilo Barcelona" },
-        { id: "12345681", name: "Estilo Londres" },
-        { id: "12345682", name: "Estilo Paris" },
-        { id: "12345683", name: "Estilo Roma" }
-    ]);
-
+    const [products, setProducts] = useState([]);
     const [message, setMessage] = useState({ isOpen: false, type: "info", message: "", onConfirm: null });
-
+    const API_URL = "http://localhost:8081/spaces";
+    // Cargar datos cuando el componente se monte
+    useEffect(() => {
+        fetchProducts()
+    }, []);
 
     const showMessage = (type, message, onConfirm = null) => {
         setMessage({ isOpen: true, type, message, onConfirm });
@@ -30,12 +25,16 @@ export const ListProducts = () => {
         setMessage((prev) => ({ ...prev, isOpen: false })); // 🔹 Cierra el mensaje correctamente
     };
 
-    const API_URL = "http://api/productos";
-
     // Función para obtener productos desde la API
     const fetchProducts = async () => {
         try {
-            const response = await fetch(API_URL); // Petición GET
+            const response = await fetch(API_URL,{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                mode: "cors"
+            }); // Petición GET
             if (!response.ok) {
                 throw new Error("Error al obtener los productos");
             }
@@ -54,51 +53,80 @@ export const ListProducts = () => {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
                 method: "DELETE",
+                mode: "cors"
             });
 
             if (!response.ok) {
                 throw new Error("No se pudo eliminar el producto");
             }
-
             // Filtrar la lista de productos para quitar el eliminado
             const updatedProducts = products.filter((product) => product.id !== id);
             setProducts(updatedProducts);
             setFilteredProducts(updatedProducts);
+            showMessage("success", `Producto eliminado correctamente`)
         } catch (error) {
             console.error("Error al eliminar el producto:", error);
-            alert("No se pudo eliminar el producto.");
+            showMessage("error", `${error}`)
         }
     };
-
-    // Cargar datos cuando el componente se monte
+    // Para buscar datos
     useEffect(() => {
         const filtered = products.filter((product) =>
-            product.id.toString().includes(search) ||
-            product.name.toLowerCase().includes(search.toLowerCase())
+            product.name.toString().includes(search) ||
+            product.country.toLowerCase().includes(search.toLowerCase())
         );
-        fetchProducts()
+        setFilteredProducts(filtered)
     }, [search, products]);
-    //showMessage("warning", "Ten cuidado con esta acción")
-    //onClick={() => eliminarFila(row.id)
+
     // Definir columnas para la tabla
     const columns = [
         {
-            name: "ID",
-            selector: (row) => row.id,
+            name: "Nombre",
+            selector: (row) => row.name,
             sortable: true,
             center: true,
             style: {
-                backgroundColor: "#f0f8ff",
+                backgroundColor: "",
                 fontWeight: "bold",
                 fontSize: "16px",
             },
         },
         {
-            name: "Nombre",
-            selector: (row) => row.name,
+            name: "Capacidad",
+            selector: (row) => row.capacity,
             sortable: true,
             style: {
-                backgroundColor: "#f0f8ff",
+                backgroundColor: "",
+                fontWeight: "bold",
+                fontSize: "16px",
+            },
+        },
+        {
+            name: "Precio Hora",
+            selector: (row) => "$ "+row.hourPrice,
+            sortable: true,
+            style: {
+                backgroundColor: "",
+                fontWeight: "bold",
+                fontSize: "16px",
+            },
+        },
+        {
+            name: "País",
+            selector: (row) => row.country,
+            sortable: true,
+            style: {
+                backgroundColor: "",
+                fontWeight: "bold",
+                fontSize: "16px",
+            },
+        },
+        {
+            name: "Categoría",
+            selector: (row) => row.spaceTypeName,
+            sortable: true,
+            style: {
+                backgroundColor: "",
                 fontWeight: "bold",
                 fontSize: "16px",
             },
@@ -106,41 +134,25 @@ export const ListProducts = () => {
         {
             name: "Acción",
             cell: (row) => (
-                <div className="flex gap-4"> {/* Usa flex para alinear los botones en fila */}
-                    <button onClick={() => showMessage("confirm", "¿Estás seguro de eliminar esto?", () => alert("Dato eliminado"))} //deleteProducts //deleteProducts
-                        className="bg-[#F43F5E] text-white px-4 py-1 rounded-full font-bold text-lg transition duration-300 flex items-center gap-2">
-                        <FaTrash />
-                    </button>
+                <div className="flex">
                     <Link to="/edit-products">
-                        <button className="bg-[#111827] text-white px-4 py-1 rounded-full font-bold text-lg transition duration-300 flex items-center gap-2">
+                        <button className="px-4 text-lg flex items-center gap-1">
                             <FaEdit />
                         </button>
                     </Link>
+                    <button onClick={() => showMessage("confirm", "¿Está seguro de eliminar este producto?", () => deleteProducts(row.id))}
+                        className="px-4 text-lg flex items-center gap-1">
+                        <FaTrash />
+                    </button>
                 </div>
             ),
             center: true,
             style: {
-                backgroundColor: "#f0f8ff",
+                backgroundColor: "",
                 fontWeight: "bold",
             },
         },
     ];
-
-    const eliminarFila = (id) => {
-        setProducts(products.filter(product => product.id !== id));
-    };
-
-    useEffect(() => {
-        if (hasRedirected.current) return;
-        // Detecta tipo dispositivo
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        if (isMobile) {
-            alert("Acceso restringido a dispositivos móviles.");
-            hasRedirected.current = true;
-            navigate("/"); // Redirige a inicio
-        }
-    }, []);
 
     //Verifica tamaño de pantalla y redirecciona a access-denied-products
     useEffect(() => {
@@ -157,33 +169,23 @@ export const ListProducts = () => {
     return (
         <>
             <div>
-                <div className="flex justify-between items-center bg-[#111827] flex-col md:flex-row p-4">
-                    <h2 className="ml-4 text-xl font-bold text-white">Panel de administración</h2>
-                    <div className="flex gap-3 mr-2 flex flex-col md:flex-row">
-                        <Link to="/products">
-                            <button className="bg-[#F43F5E] text-white px-6 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 w-auto">
-                                <i className="fas fa-plus"></i> Agregar
-                            </button>
-                        </Link>
-                        <Link to="/">
-                            <button className="bg-[#F43F5E] text-white px-5 py-1 rounded-full cursor-pointer font-bold text-lg transition duration-300 w-auto flex items-center gap-2">
-                                <FaArrowLeft /> Regresar
-                            </button>
-                        </Link>
-                    </div>
-                </div> 
-
-                <div className="flex flex-col mt-10 px-4">
-                    <div className="text-2xl font-bold mb-4">Listado espacios</div>
-
+                <div className="flex flex-col px-4">
                     <div className="mt-4 mb-4 p-4">
+                        <div className="flex">
+                            <div className="text-2xl font-bold mr-5">Listado Productos</div>
+                            <Link to="/products">
+                                <button className="bg-[#F43F5E] text-white px-4 py-1 rounded-full cursor-pointer text-lg transition w-auto">
+                                    <i className="fas fa-plus"></i> Agregar
+                                </button>
+                            </Link>
+                        </div>
                         <div className="flex justify-end mb-4">
                             <div className="relative">
                                 <FaSearch className="absolute left-2 top-3 text-gray-400" />
                                 <input
                                     type="text"
-                                    placeholder="Buscar..."
-                                    className="p-2 pl-8 border border-gray-300 rounded-full w-80 bg-gray-100 focus:ring-2 focus:ring-blue-400"
+                                    placeholder="Buscar producto..."
+                                    className="p-2 pl-8 border border-gray-300 rounded-md w-80 bg-gray-100 focus:ring-2 focus:ring-blue-400"
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
@@ -191,8 +193,8 @@ export const ListProducts = () => {
                         </div>
                         <DataTable
                             columns={columns}
-                            data={products} //filteredProducts
-                            //progressPending={loading}
+                            data={filteredProducts}
+                            progressPending={loading}
                             pagination
                             highlightOnHover
                             responsive
