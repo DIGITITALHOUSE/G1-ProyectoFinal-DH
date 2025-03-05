@@ -1,10 +1,11 @@
-
 import { useEffect, useState } from "react";
 import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
+import { createSpace } from "../../services/spaceService";
+import { getAllSpaceTypes } from "../../services/spaceTypeService";
 
 export const Products = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
-
+  const [spaceTypes, setSpaceTypes] = useState([]);
   const [countries, setCountries] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const [selectedCountry, setSelectedCountry] = useState(null);
@@ -35,6 +36,11 @@ export const Products = () => {
   };
 
   useEffect(() => {
+    // Petición de tipos de espacios
+    getAllSpaceTypes().then((data) => {
+      setSpaceTypes(data);
+    })
+    // Petición de paises
     fetch("https://restcountries.com/v3.1/lang/spanish?fields=name,cca2,flag,flags")
       .then((response) => response.json())
       .then((data) => {
@@ -68,28 +74,63 @@ export const Products = () => {
     }
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    // Revisar los datos del formulario, que no esten vacios
+    let errors = false;
+    formData.forEach((value) => {
+      if (value === "") errors = true;
+    });
+
+    if (errors) alert("Todos los campos deben estar llenos");
+
+    // Convertimos extras en un json
+    const extrasText = formData.get("extras"); // Obtener el texto del campo extras
+    if (extrasText) {
+        const extrasArray = extrasText.split(",").map(item => item.trim()); // Convertir a array
+        const extrasJson = Object.fromEntries(extrasArray.map((item, index) => [index + 1, item])); // Crear JSON
+
+        formData.set("extras", JSON.stringify(extrasJson)); // Reemplazar en formData
+    }
+    console.log(formData);
+
+    if (imagePreviews.length === 0) {
+      alert("Debes seleccionar al menos una imagen");
+      return;
+    }
+
+    if(errors === false){
+        const res = createSpace(formData);
+
+        if (res) {
+            alert("Espacio creado con exito");
+        }
+    }
+  };
+
   return (
     <>
-      <form className="max-w-4xl bg-white shadow-lg rounded-xl p-8 mx-auto grid grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="max-w-4xl bg-white shadow-lg rounded-xl p-8 mx-auto grid grid-cols-2 gap-6">
 
         {/* Información */}
         <div className="flex flex-col gap-4">
           <h3 className="text-2xl font-bold text-gray-700">Información</h3>
           <div className="flex flex-col">
-            <label htmlFor="title" className="font-semibold text-gray-600 mb-1">Nombre:</label>
-            <input type="text" name="title" id="title" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
+            <label htmlFor="name" className="font-semibold text-gray-600 mb-1">Nombre:</label>
+            <input type="text" name="name" id="name" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="describe" className="font-semibold text-gray-600 mb-1">Descripción:</label>
-            <textarea name="describe" id="describe" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg h-20 focus:ring focus:ring-primary"></textarea>
+            <label htmlFor="description" className="font-semibold text-gray-600 mb-1">Descripción:</label>
+            <textarea name="description" id="description" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg h-20 focus:ring focus:ring-primary"></textarea>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="type" className="font-semibold text-gray-600 mb-1">Tipo de espacio:</label>
-            <select name="type" id="type" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
-              <option value="">Seleccione un tipo</option>
-              <option value="oficina">Oficina</option>
-              <option value="coworking">Coworking</option>
-              <option value="sala_reuniones">Sala de reuniones</option>
+            <label htmlFor="spaceTypeId" className="font-semibold text-gray-600 mb-1">Tipo de espacio:</label>
+            <select name="spaceTypeId" id="spaceTypeId" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
+              <option value="">Seleccione un tipo de espacio</option>
+              {spaceTypes.map((spaceType) => (
+                <option key={spaceType.id} value={spaceType.id}>{spaceType.name}</option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col">
@@ -97,8 +138,8 @@ export const Products = () => {
             <input type="number" name="capacity" id="capacity" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="price" className="font-semibold text-gray-600 mb-1">Precio por hora:</label>
-            <input type="text" name="price" id="price" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
+            <label htmlFor="hourPrice" className="font-semibold text-gray-600 mb-1">Precio por hora:</label>
+            <input type="text" name="hourPrice" id="hourPrice" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
         </div>
         {/*Seccion Localizacion*/ } 
@@ -130,8 +171,8 @@ export const Products = () => {
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="region" className="font-semibold text-gray-600 mb-1">Ciudad:</label>
-            <select name="region" id="region" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
+            <label htmlFor="city" className="font-semibold text-gray-600 mb-1">Ciudad:</label>
+            <select name="city" id="city" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg bg-white focus:ring focus:ring-primary">
               <option value="">Seleccione una ciudad</option>
               {cities.map((city) => (
                 <option key={city.name} value={city.name}>{city.name}</option>
@@ -139,27 +180,27 @@ export const Products = () => {
             </select>
           </div>
           <div className="flex flex-col">
-            <label htmlFor="suite" className="font-semibold text-gray-600 mb-1">Localidad:</label>
-            <input type="text" name="suite" id="suite" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
+            <label htmlFor="direction" className="font-semibold text-gray-600 mb-1">Dirección:</label>
+            <input type="text" name="direction" id="direction" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="zip" className="font-semibold text-gray-600 mb-1">Código postal:</label>
-            <input type="text" name="zip" id="zip" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
+            <label htmlFor="zipCode" className="font-semibold text-gray-600 mb-1">Código postal:</label>
+            <input type="text" name="zipCode" id="zipCode" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="extra" className="font-semibold text-gray-600 mb-1">Indicaciones extras:</label>
-            <input type="text" name="extra" id="extra" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" />
+            <label htmlFor="extras" className="font-semibold text-gray-600 mb-1">Extras:</label>
+            <input type="text" name="extras" id="extras" className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring focus:ring-primary" placeholder="extra 1, extra 2, extra 3 etc" />
           </div>
         </div>
         {/*Seccion Imagenes*/ }       
         <div className="col-span-2 flex flex-col gap-4">
           <label htmlFor="img" className="text-xl font-bold text-gray-700">Agrega imágenes:</label>
           <div className="flex items-center gap-4">
-            <label htmlFor="img" className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-[#8A0B57] transition">
+            <label htmlFor="images" className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-[#8A0B57] transition">
               <FaCloudUploadAlt className="text-2xl" />
               <span>Subir imágenes</span>
             </label>
-            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="img" id="img" className="hidden" />
+            <input type="file" multiple accept="image/*" onChange={handleImageChange} name="images" id="images" className="hidden" />
           </div>
           <div className="image-previews grid grid-cols-3 gap-6 mt-4">
             {imagePreviews.map((preview) => (

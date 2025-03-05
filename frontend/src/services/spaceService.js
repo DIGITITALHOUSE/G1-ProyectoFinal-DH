@@ -14,8 +14,7 @@ export const getSpaceById = async (id) => {
 export const createSpace = async (spaceData) => {
     const response = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(spaceData),
+        body: spaceData,
     });
     return response.ok ? response.json() : null;
 };

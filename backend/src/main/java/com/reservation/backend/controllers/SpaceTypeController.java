@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/space-type")
+@CrossOrigin(origins = "*")
 public class SpaceTypeController {
     private final ISpaceTypeService spaceTypeService;
 
