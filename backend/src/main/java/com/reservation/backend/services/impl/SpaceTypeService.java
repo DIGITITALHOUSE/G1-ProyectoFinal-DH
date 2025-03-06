@@ -1,11 +1,11 @@
 package com.reservation.backend.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reservation.backend.dtos.SpaceResponseDto;
+// import com.reservation.backend.dtos.SpaceResponseDto;
 import com.reservation.backend.dtos.SpaceTypeRequestDto;
 import com.reservation.backend.dtos.SpaceTypeRequestToUpdateDto;
 import com.reservation.backend.dtos.SpaceTypeResponseDto;
-import com.reservation.backend.entities.Space;
+// import com.reservation.backend.entities.Space;
 import com.reservation.backend.entities.SpaceType;
 import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.ISpaceTypeRepository;

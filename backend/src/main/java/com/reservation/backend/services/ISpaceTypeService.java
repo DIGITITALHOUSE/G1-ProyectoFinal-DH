@@ -1,6 +1,6 @@
 package com.reservation.backend.services;
 
-import com.reservation.backend.dtos.SpaceResponseDto;
+// import com.reservation.backend.dtos.SpaceResponseDto;
 import com.reservation.backend.dtos.SpaceTypeRequestDto;
 import com.reservation.backend.dtos.SpaceTypeRequestToUpdateDto;
 import com.reservation.backend.dtos.SpaceTypeResponseDto;

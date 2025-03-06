@@ -25,13 +25,13 @@ public class ReservationService implements IReservationService {
     private final IReservationRepository reservationRepository;
     private final IUserRepository userRepository;
     private final ISpaceRepository spaceRepository;
-    private final ObjectMapper objectMapper;
+    // private final ObjectMapper objectMapper;
 
     public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository, ISpaceRepository spaceRepository, ObjectMapper objectMapper) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.spaceRepository = spaceRepository;
-        this.objectMapper = objectMapper;
+        // this.objectMapper = objectMapper;
     }
 
     @Override

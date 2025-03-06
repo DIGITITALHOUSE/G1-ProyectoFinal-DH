@@ -2,7 +2,7 @@ package com.reservation.backend.services.impl;
 
 import com.reservation.backend.dtos.SpaceImageRequestDto;
 import com.reservation.backend.dtos.SpaceImageResponseDto;
-import com.reservation.backend.dtos.SpaceResponseDto;
+// import com.reservation.backend.dtos.SpaceResponseDto;
 import com.reservation.backend.entities.Space;
 import com.reservation.backend.entities.SpaceImage;
 import com.reservation.backend.exceptions.NotFoundException;
@@ -112,7 +112,7 @@ public class SpaceImageService implements ISpaceImageService {
         if (spaceOptional.isPresent()) {
             Space space = spaceOptional.get();
 
-            for (MultipartFile image : spaceImageRequestDto.getImages()) {
+            for (@SuppressWarnings("unused") MultipartFile image : spaceImageRequestDto.getImages()) {
                 SpaceImage spaceImage = new SpaceImage();
                 spaceImage.setSpace(space);
                 spaceImage.setUrl("https://news.airbnb.com/wp-content/uploads/sites/4/2019/06/PJM020719Q202_Luxe_WanakaNZ_LivingRoom_0264-LightOn_R1.jpg?w=2048");
