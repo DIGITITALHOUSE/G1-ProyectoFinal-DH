@@ -29,13 +29,12 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/v3/api-docs/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/spaces/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/reservations/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/space-type/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.POST, "/space-type/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/space-type/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/space-type/**").hasAuthority("ADMIN");
+                    auth.requestMatchers("/users/**").hasAuthority("ADMIN");
+                    auth.requestMatchers("/space-type/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/spaces/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.PUT, "/spaces/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/spaces/**").hasAuthority("ADMIN");
+                    auth.requestMatchers("/reservations/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .csrf(config -> config.disable())
