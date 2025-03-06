@@ -4,6 +4,7 @@ import com.reservation.backend.config.JwtService;
 import com.reservation.backend.entities.Rol;
 import com.reservation.backend.entities.User;
 import com.reservation.backend.repositories.IUserRepository;
+import com.reservation.backend.services.IEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ public class AuthenticationService {
     private final IUserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final IEmailService emailService;
 
     public AuthenticationResponse register (RegisterRequest request){
         User user = User.builder()
@@ -28,6 +30,9 @@ public class AuthenticationService {
                 .build();
         userRepository.save(user);
         String token = jwtService.generateToken(user);
+
+        emailService.sendWelcomeEmail(user.getEmail(), user.getName() + " " + user.getLastName());
+
         return AuthenticationResponse.builder()
                 .token(token)
                 .name(user.getName() + " " + user.getLastName())
