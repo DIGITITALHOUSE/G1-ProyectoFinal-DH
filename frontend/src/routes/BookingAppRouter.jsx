@@ -5,8 +5,10 @@ import { MeetingRooms } from "../views/categories/MeetingRooms";
 import { PrivateOffice } from "../views/categories/PrivateOffice";
 import { DedicatedDesk } from "../views/categories/DedicatedDesk";
 import { Products } from "../views/categories/Products";
+import { Categories } from "../views/categories/Categories";
 import { EditProducts } from "../views/categories/EditProducts";
 import { ListProducts } from "../views/categories/ListProducts";
+import { ListCategories } from "../views/categories/ListCategories";
 import { SpaceDetail } from "../views/SpaceDetail";
 import { Home } from "../views/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -27,8 +29,10 @@ export const BookingAppRouter = () => {
                 <Route path="event" element={<Events />} />
                 <Route path="private-offices" element={<PrivateOffice />} />
                 <Route path="products" element={<Products />} />
+                <Route path="categories" element={<Categories />} />
                 <Route path="list-products" element={<ListProducts />} />
                 <Route path="edit-products" element={<EditProducts />} />
+                <Route path="list-categories" element={<ListCategories />} />
                 <Route path="access-denied-products" element={<AccessDeniedProducts />} />
                 
                 {/* Redirección para cualquier otra ruta no encontrada */}

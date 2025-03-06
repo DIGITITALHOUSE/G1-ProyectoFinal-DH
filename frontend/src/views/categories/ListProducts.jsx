@@ -158,7 +158,11 @@ export const ListProducts = () => {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) {
-                navigate("/access-denied-products", { replace: true });
+                showMessage("info", `El acceso a esta página está restringido para dispositivos móviles.`)
+                const timer = setTimeout(() => {
+                    navigate("/", { replace: true });
+                  }, 3500);
+                return () => clearTimeout(timer);
             }
         };
         handleResize();
@@ -176,6 +180,11 @@ export const ListProducts = () => {
                             <Link to="/products">
                                 <button className="bg-[#F43F5E] text-white px-4 py-1 rounded-full cursor-pointer text-lg transition w-auto">
                                     <i className="fas fa-plus"></i> Agregar
+                                </button>
+                            </Link>
+                            <Link to="/list-categories">
+                                <button className="bg-[#F43F5E] text-white px-4 py-1 rounded-full cursor-pointer text-lg transition w-auto">
+                                    <i className="fas fa-plus"></i> Categorías
                                 </button>
                             </Link>
                         </div>
