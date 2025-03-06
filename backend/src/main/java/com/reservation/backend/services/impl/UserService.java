@@ -9,6 +9,7 @@ import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.IUserRepository;
 import com.reservation.backend.services.IUserService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +22,19 @@ public class UserService implements IUserService {
     private static final Logger logger = Logger.getLogger(UserService.class);
     private final IUserRepository userRepository;
     private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserRepository userRepository, ObjectMapper objectMapper) {
+    public UserService(IUserRepository userRepository, ObjectMapper objectMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserResponseDto create(UserRequestDto userDto) {
         logger.info("Creating user: " + userDto.getName());
         User user = mapToEntity(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user = userRepository.save(user);
         logger.info("User created: " + user.getName());
         return mapToDto(user);
