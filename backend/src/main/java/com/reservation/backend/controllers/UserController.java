@@ -5,6 +5,7 @@ import com.reservation.backend.dtos.UserRequestToUpdateDto;
 import com.reservation.backend.dtos.UserResponseDto;
 import com.reservation.backend.services.IUserService;
 import com.reservation.backend.services.impl.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final IUserService userService;
 
