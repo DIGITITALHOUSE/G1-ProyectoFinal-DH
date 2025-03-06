@@ -123,10 +123,11 @@ public class SpaceService implements ISpaceService {
         spaceResponseDto.setCountry(space.getCountry());
         spaceResponseDto.setZipCode(space.getZipCode());
         spaceResponseDto.setState(space.getState());
+        spaceResponseDto.setExtras(space.getExtras());
 
         if (space.getExtras() != null) {
             try {
-                spaceResponseDto.setExtras(objectMapper.readTree(space.getExtras()));
+                spaceResponseDto.setExtras(space.getExtras());
             } catch (Exception e) {
                 logger.error("Error parsing extras JSON", e);
                 spaceResponseDto.setExtras(null);
@@ -156,7 +157,7 @@ public class SpaceService implements ISpaceService {
         space.setCountry(spaceRequestDto.getCountry());
         space.setZipCode(spaceRequestDto.getZipCode());
         space.setState(spaceRequestDto.getState() != null ? spaceRequestDto.getState() : "Publicado");
-        space.setExtras(spaceRequestDto.getExtras().toString());
+        space.setExtras(spaceRequestDto.getExtras());
 
         if (spaceRequestDto.getSpaceTypeId() != null) {
             Optional<SpaceType> spaceTypeOptional = spaceTypeRepository.findById(spaceRequestDto.getSpaceTypeId());

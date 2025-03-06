@@ -20,7 +20,7 @@ public class SpaceResponseDto {
     private String country;
     private String zipCode;
     private String state;
-    private JsonNode extras;
+    private String extras;
 
     private String spaceTypeName;
     private List<SpaceImageResponseDto> spaceImages;
