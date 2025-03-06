@@ -127,7 +127,7 @@ export const Register = () => {
 
             try {
                 //const response = await createUser(formDataToSend);
-                const response = await fetch("http://localhost:8081/users", {
+                const response = await fetch("http://localhost:8081/auth/register", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export const Register = () => {
                   });
             
                   //const data = await response.json();
-                if (response) {
+                if (response.ok) {
                     showMessage('success', 'Registro exitoso, inicie sesión')
                     setTimeout(() => {
                         navigate("/auth/login", { replace: true });
@@ -155,7 +155,7 @@ export const Register = () => {
         useEffect(() => {
             const allFieldsFilled = Object.entries(formData)
             .filter(([key]) => key !== "avatar") // Avatar no se incluye
-            .every(([_, value]) => (typeof value === "boolean" ? value : value.trim() !== ""));
+            .every(([, value]) => (typeof value === "boolean" ? value : value.trim() !== ""));
 
             const noErrors = Object.values(errors).every((error) => error === "");
         

@@ -27,21 +27,22 @@ export const ListCategories = () => {
     // Función para obtener productos desde la API
     const fetchProducts = async () => {
         try {
+            console.log(localStorage.getItem("token"))
             const response = await fetch(API_URL,{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 },
-                mode: "cors"
             }); // Petición GET
             if (!response.ok) {
-                throw new Error("Error al obtener los productos");
+                throw new Error("Error al obtener las categorías");
             }
             const data = await response.json();
             setProducts(data);
             setFilteredProducts(data);
         } catch (error) {
-            console.error("Error obteniendo los productos:", error);
+            console.error("Error obteniendo las categorías:", error);
         } finally {
             setLoading(false);
         }

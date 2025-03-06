@@ -100,10 +100,10 @@ export const Header = () => {
                 <div className="relative flex items-center gap-3">
                     {/* Imagen de perfil y nombre */}
                     <div className="flex items-center gap-2">
-                        <span className="font-medium">Bienvenido {user}</span>
+                        <span className="font-medium">Bienvenido {user.name}</span>
                         <img
                             //src={user.image}
-                            alt="img perfil"
+                            alt=""
                             className="w-10 h-10 rounded-full border-2 border-gray-300"
                         />
                     </div>

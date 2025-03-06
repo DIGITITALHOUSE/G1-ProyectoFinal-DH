@@ -5,6 +5,7 @@ import { FaBars } from "react-icons/fa";
 import { AiFillCheckCircle, AiFillClockCircle, AiFillSafetyCertificate } from "react-icons/ai";
 import CenteredMessage from "../../components/MessageDialog";
 import { Footer } from "../../components/Footer";
+import { login } from "../../services/authService";
 
 export const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -33,27 +34,38 @@ export const Login = () => {
         setLoading(true); // Activa el estado de carga
 
         try {
-            //(reemplázalo por API)
-            const response = await fetch("http://localhost:8081/users", { //cambiar
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-              });
-            if (response) {
-                localStorage.setItem("token", response.token);
-                localStorage.setItem("user", JSON.stringify({ name: response.name, avatar: response.avatar }));
-                navigate("/");
-            }else{
-                showMessage('error', 'Usuario o contraseña incorrectos')
-            }
+            await login(email, password);
+
+            navigate("/");
         } catch (error) {
             showMessage('error', 'No se puedo iniciar sesión')
             console.error("Error al iniciar sesión", error);
         } finally {
-            setLoading(false); // Desactiva el estado de carga
+            setLoading(false);
         }
+
+        // try {
+        //     //(reemplázalo por API)
+        //     const response = await fetch("http://localhost:8081/users", { //cambiar
+        //         method: "POST",
+        //         headers: {
+        //           "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({ email, password }),
+        //       });
+        //     if (response) {
+        //         localStorage.setItem("token", response.token);
+        //         localStorage.setItem("user", JSON.stringify({ name: response.name, avatar: response.avatar }));
+        //         navigate("/");
+        //     }else{
+        //         showMessage('error', 'Usuario o contraseña incorrectos')
+        //     }
+        // } catch (error) {
+        //     showMessage('error', 'No se puedo iniciar sesión')
+        //     console.error("Error al iniciar sesión", error);
+        // } finally {
+        //     setLoading(false); // Desactiva el estado de carga
+        // }
     };
 
     return (

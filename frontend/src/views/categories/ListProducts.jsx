@@ -30,9 +30,6 @@ export const ListProducts = () => {
         try {
             const response = await fetch(API_URL,{
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
                 mode: "cors"
             }); // Petición GET
             if (!response.ok) {
