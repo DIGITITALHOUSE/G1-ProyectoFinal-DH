@@ -9,6 +9,7 @@ import { Categories } from "../views/categories/Categories";
 import { EditProducts } from "../views/categories/EditProducts";
 import { ListProducts } from "../views/categories/ListProducts";
 import { ListCategories } from "../views/categories/ListCategories";
+import { ListUsers } from "../views/categories/ListUsers";
 import { SpaceDetail } from "../views/SpaceDetail";
 import { Home } from "../views/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -31,8 +32,9 @@ export const BookingAppRouter = () => {
                 <Route path="products" element={<Products />} />
                 <Route path="categories" element={<Categories />} />
                 <Route path="list-products" element={<ListProducts />} />
-                <Route path="edit-products" element={<EditProducts />} />
                 <Route path="list-categories" element={<ListCategories />} />
+                <Route path="list-users" element={<ListUsers />} />
+                <Route path="edit-products" element={<EditProducts />} />
                 <Route path="access-denied-products" element={<AccessDeniedProducts />} />
                 
                 {/* Redirección para cualquier otra ruta no encontrada */}
