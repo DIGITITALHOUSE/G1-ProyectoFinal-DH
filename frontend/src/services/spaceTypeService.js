@@ -5,3 +5,21 @@ export const getAllSpaceTypes = async () => {
     if (!response.ok) return [];
     return response.json();
 };
+
+// export const getSpaceTypeById = async (id) => {
+//     const response = await fetch(`${API_URL}/${id}`);
+//     return response.ok ? response.json() : null;
+// };
+
+export const createSpaceType = async (spaceTypeData) => {
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(spaceTypeData),
+    });
+    const res = await response.json();
+    if (!response.ok) {
+        throw new Error(res.message || "Error");
+    }
+    return res;
+};
