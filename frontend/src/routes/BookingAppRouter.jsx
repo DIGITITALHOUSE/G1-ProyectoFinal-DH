@@ -14,14 +14,15 @@ import { SpaceDetail } from "../views/SpaceDetail";
 import { Home } from "../views/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AccessDeniedProducts from "../views/categories/AccessDeniedProducts";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const BookingAppRouter = () => {
     return (
         <Routes>
-            <Route path="/" element={<BookingLayout/>}>
+            <Route path="/" element={<BookingLayout />}>
                 {/* Definir la ruta principal (index) directamente */}
                 <Route index element={<Home />} />
-                
+
                 {/* Rutas hijas sin usar index */}
                 <Route path="space/:spaceId" element={<SpaceDetail />} />
                 <Route path="meeting-rooms" element={<MeetingRooms />} />
@@ -29,14 +30,56 @@ export const BookingAppRouter = () => {
                 <Route path="full-offices" element={<FullFloorOffice />} />
                 <Route path="event" element={<Events />} />
                 <Route path="private-offices" element={<PrivateOffice />} />
-                <Route path="products" element={<Products />} />
-                <Route path="categories" element={<Categories />} />
-                <Route path="list-products" element={<ListProducts />} />
-                <Route path="list-categories" element={<ListCategories />} />
-                <Route path="list-users" element={<ListUsers />} />
-                <Route path="edit-products" element={<EditProducts />} />
+                <Route
+                    path="products"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <Products />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="categories"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <Categories />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="list-products"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <ListProducts />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="list-categories"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <ListCategories />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="list-users"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <ListUsers />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="edit-products"
+                    element={
+                        <ProtectedRoute allowedRoles={["ADMIN"]}>
+                            <EditProducts />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="access-denied-products" element={<AccessDeniedProducts />} />
-                
+
                 {/* Redirección para cualquier otra ruta no encontrada */}
                 <Route path="/*" element={<Navigate to="/" />} />
             </Route>

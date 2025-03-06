@@ -50,7 +50,9 @@ export const ListProducts = () => {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
                 method: "DELETE",
-                mode: "cors"
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
             });
 
             if (!response.ok) {
