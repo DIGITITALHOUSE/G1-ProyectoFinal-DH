@@ -16,10 +16,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpaceImage extends Base{
-    @Column(name = "url", nullable = false)
-    private String url;
+    @Column(name = "s3_path", nullable = false)
+    private String s3Path;
 
     @ManyToOne
     @JoinColumn(name = "space_id")
+    @JsonIgnore
     private Space space;
 }
