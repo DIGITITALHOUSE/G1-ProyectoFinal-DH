@@ -4,6 +4,7 @@ import com.reservation.backend.dtos.SpaceTypeRequestDto;
 import com.reservation.backend.dtos.SpaceTypeRequestToUpdateDto;
 import com.reservation.backend.dtos.SpaceTypeResponseDto;
 import com.reservation.backend.services.ISpaceTypeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/space-type")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearerAuth")
 public class SpaceTypeController {
     private final ISpaceTypeService spaceTypeService;
 
