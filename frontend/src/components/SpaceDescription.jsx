@@ -1,14 +1,11 @@
 import { FaPeopleLine, FaBuildingUser } from "react-icons/fa6";
 import { FaRegCheckCircle } from "react-icons/fa";
 
-const SpaceDescription = ({ description, features = [] }) => {
-    const hardcodedFeatures = [
-        "WiFi de alta velocidad",
-        "Café ilimitado",
-        "Impresora y escaner",
-        "Sala de conferencias",
-    ];
-    features = [...hardcodedFeatures, ...features];
+const SpaceDescription = ({ description, extras = [] }) => {
+    console.log(extras);
+    // const hardcodedFeatures = [];
+    // extras example = "Wifi, inmobiliario de primera calidad"
+    const items = extras.split(",").map((item) => item.trim());
     return (
         <div className="w-full px-4 sm:px-0">
             {/* Sección Detalles */}
@@ -48,15 +45,23 @@ const SpaceDescription = ({ description, features = [] }) => {
             <section className="mt-4">
                 <h1 className="text-2xl">Características</h1>
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {features.length > 0 ? (
-                        features.map((feature, index) => (
-                            <p key={index} className="flex items-center gap-2">
-                                <FaRegCheckCircle /> {feature}
-                            </p>
+                    {/* Mostrar los extras, cada "," es un extra */}
+                    {items.map((item, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                            <FaRegCheckCircle size={20} className="text-green-600" />
+                            <p>{item}</p>
+                        </div>
+                    ))}
+                    {/* {extras.length > 0 ? (
+                        extras.map((extra) => (
+                            <div key={extra} className="flex items-center gap-2">
+                                <FaRegCheckCircle size={20} className="text-green-600" />
+                                <p>{extra}</p>
+                            </div>
                         ))
                     ) : (
                         <p className="text-gray-500">No hay características disponibles.</p>
-                    )}
+                    )} */}
                 </div>
             </section>
         </div>

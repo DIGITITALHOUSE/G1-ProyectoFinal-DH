@@ -40,7 +40,7 @@ export const SpaceDetail = () => {
         <DetailLayout space={space}>
             {" "}
             {/* Pasamos 'space' para evitar errores */}
-            <SpaceDescription description={space.description} features={space.features || []} />
+            <SpaceDescription description={space.description} extras={space.extras || []} />
         </DetailLayout>
     );
 };

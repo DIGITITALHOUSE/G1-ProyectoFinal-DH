@@ -1,7 +1,13 @@
 const API_URL = import.meta.env.VITE_DATABASE_URL + "/space-type";
 
 export const getAllSpaceTypes = async () => {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
     if (!response.ok) return [];
     return response.json();
 };
@@ -16,7 +22,7 @@ export const createSpaceType = async (spaceTypeData) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(spaceTypeData),
     });

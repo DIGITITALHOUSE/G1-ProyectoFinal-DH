@@ -1,18 +1,31 @@
 const API_URL = import.meta.env.VITE_DATABASE_URL + "/users";
 
 export const getAllUsers = async () => {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
     return response.ok ? response.json() : [];
 };
 
 export const getUserById = async (id) => {
-    const response = await fetch(`${API_URL}/${id}`);
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
     return response.ok ? response.json() : null;
 };
 
 export const createUser = async (userData) => {
     const response = await fetch(API_URL, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: userData,
     });
     return response.ok ? response.json() : null;
