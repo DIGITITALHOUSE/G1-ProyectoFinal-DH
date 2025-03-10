@@ -23,13 +23,13 @@ public class SpaceService implements ISpaceService {
     private final ISpaceTypeRepository spaceTypeRepository;
 
     private final ISpaceImageService spaceImageService;
-    private final ObjectMapper objectMapper;
+    // private final ObjectMapper objectMapper;
 
     public SpaceService(ISpaceRepository spaceRepository, ISpaceTypeRepository spaceTypeRepository, ISpaceImageService spaceImageService, ObjectMapper objectMapper) {
         this.spaceRepository = spaceRepository;
         this.spaceTypeRepository = spaceTypeRepository;
         this.spaceImageService = spaceImageService;
-        this.objectMapper = objectMapper;
+        // this.objectMapper = objectMapper;
     }
 
     @Override
