@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import Button from "./buttons/Button";
 
-export const Header = () => {
+export const Header = ({showUserInformation} ) => {
     let links = [
         { name: "Espacios", link: "/" },
         { name: "Precios", link: "/" },
@@ -57,12 +57,16 @@ export const Header = () => {
                 ))}
             </div>
 
+            {showUserInformation && (
             <div
                 onClick={() => setOpen(!open)}
                 className="text-3xl absolute right-8 cursor-pointer lg:hidden text-primary"
             >
                 <FaBars />
             </div>
+            )}
+            {showUserInformation && (
+            <>
             {islogin ? (
                 <>
                     <ul
@@ -90,7 +94,9 @@ export const Header = () => {
                                 {link.name}
                             </a>
                         ))}
-                        <Button text="Crear Cuenta" filled={false} />
+                        <Link to="/auth/register">
+                            <Button text="Crear Cuenta" filled={false} />
+                        </Link>
                         <Link to="/auth/login">
                             <Button text="Iniciar Sesión" filled={true} />
                         </Link>
@@ -146,6 +152,8 @@ export const Header = () => {
                     )}
                 </div>
             }
+            </>
+            )}
         </header>
     );
 };
