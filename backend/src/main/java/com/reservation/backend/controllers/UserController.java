@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,6 +44,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @Valid @RequestBody UserRequestToUpdateDto userRequestToUpdateDto) {
         return ResponseEntity.ok(userService.update(id, userRequestToUpdateDto));
     }
+
+@PutMapping("/{id}/avatar")
+public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    String imageUrl = userService.uploadAvatar(id, file);
+    return ResponseEntity.ok(imageUrl);
+}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

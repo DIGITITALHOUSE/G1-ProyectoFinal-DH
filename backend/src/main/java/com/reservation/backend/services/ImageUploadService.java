@@ -31,4 +31,9 @@ public class ImageUploadService {
 
         return "Imagen subida con éxito: " + filePath.toString();
     }
+
+    public static String uploadFile(MultipartFile file) {
+      
+        throw new UnsupportedOperationException("Unimplemented method 'uploadFile'");
+    }
 }

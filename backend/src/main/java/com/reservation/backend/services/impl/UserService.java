@@ -8,9 +8,12 @@ import com.reservation.backend.entities.User;
 import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.IUserRepository;
 import com.reservation.backend.services.IUserService;
+import com.reservation.backend.services.ImageUploadService;
+
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,4 +108,17 @@ public class UserService implements IUserService {
     private User mapToEntity(UserRequestDto userDto) {
         return objectMapper.convertValue(userDto, User.class);
     }
+    @Override
+public String uploadAvatar(Long id, MultipartFile file) {
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+
+    String imageUrl = ImageUploadService.uploadFile(file); // Implementa esto en ImageUploadService
+
+    user.setAvatar(imageUrl);
+    userRepository.save(user);
+
+    return imageUrl;
+}
+
 }
