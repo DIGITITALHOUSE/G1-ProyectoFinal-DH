@@ -14,5 +14,5 @@ public class UserRequestToUpdateDto {
     @Email(message = "Invalid email format")
     private String email;
 
-    private Integer cellPhone;
+    private String cellPhone;
 }

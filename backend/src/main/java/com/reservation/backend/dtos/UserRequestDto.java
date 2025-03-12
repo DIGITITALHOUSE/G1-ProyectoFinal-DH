@@ -26,5 +26,5 @@ public class UserRequestDto {
     private String password;
 
     @NotNull(message = "Cellphone is required")
-    private Integer cellPhone;
+    private String cellPhone;
 }

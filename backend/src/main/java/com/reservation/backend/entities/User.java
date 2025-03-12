@@ -24,7 +24,7 @@ public class User extends Base implements UserDetails {
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Column(name = "avatar", nullable = true)
+    @Column(name = "avatar")
     private String avatar;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -33,10 +33,10 @@ public class User extends Base implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "cel_phone", nullable = true)
-    private Integer cellPhone;
+    @Column(name = "cel_phone")
+    private String cellPhone;
 
-    @Column(name = "state", nullable = true)
+    @Column(name = "state")
     private String state;
 
     @Enumerated(EnumType.STRING)
