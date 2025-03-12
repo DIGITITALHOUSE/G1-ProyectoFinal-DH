@@ -54,6 +54,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token)
                 .name(user.getName() + " " + user.getLastName())
+                .rol(user.getRol().name())
                 .build();
     }
 }
