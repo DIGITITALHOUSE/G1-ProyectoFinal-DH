@@ -25,15 +25,18 @@ public class SpaceImageService implements ISpaceImageService {
     private final ISpaceImageRepository spaceImageRepository;
     private final ISpaceRepository spaceRepository;
 
-    public SpaceImageService(ISpaceImageRepository spaceImageRepository, ISpaceRepository spaceRepository) {
+    private final S3Service s3Service;
+
+    public SpaceImageService(ISpaceImageRepository spaceImageRepository, ISpaceRepository spaceRepository, S3Service s3Service) {
         this.spaceImageRepository = spaceImageRepository;
         this.spaceRepository = spaceRepository;
+        this.s3Service = s3Service;
     }
 
     @Override
     public List<SpaceImageResponseDto> save(SpaceImageRequestDto spaceImageRequestDto) {
         logger.info("Creating space images for space id: " + spaceImageRequestDto.getSpaceId());
-        List<SpaceImage> spaceImages = mapToEntity(spaceImageRequestDto);
+        List<SpaceImage> spaceImages = mapToEntity(spaceImageRequestDto,s3Service);
         spaceImages = spaceImageRepository.saveAll(spaceImages);
         logger.info("Space image created: " + spaceImages.size());
         return mapToDtoList(spaceImages);
@@ -104,7 +107,7 @@ public class SpaceImageService implements ISpaceImageService {
         return spaceImageResponseDto;
     }
 
-    private List<SpaceImage> mapToEntity(SpaceImageRequestDto spaceImageRequestDto) {
+    public List<SpaceImage>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   mapToEntity(SpaceImageRequestDto spaceImageRequestDto,S3Service s3Service) {
         List<SpaceImage> spaceImages = new ArrayList<>();
 
         Optional<Space> spaceOptional = spaceRepository.findById(spaceImageRequestDto.getSpaceId());
@@ -113,13 +116,22 @@ public class SpaceImageService implements ISpaceImageService {
             Space space = spaceOptional.get();
 
             for (@SuppressWarnings("unused") MultipartFile image : spaceImageRequestDto.getImages()) {
-                SpaceImage spaceImage = new SpaceImage();
-                spaceImage.setSpace(space);
-                spaceImage.setUrl("https://news.airbnb.com/wp-content/uploads/sites/4/2019/06/PJM020719Q202_Luxe_WanakaNZ_LivingRoom_0264-LightOn_R1.jpg?w=2048");
-                spaceImages.add(spaceImage);
+               try {
+                   String imagenUrl = s3Service.uploadImage(image);
+                   SpaceImage spaceImage = new SpaceImage();
+                   spaceImage.setSpace(space);
+                   spaceImage.setUrl(imagenUrl);
+                   spaceImages.add(spaceImage);
+               }catch (Exception ex){
+                   throw new RuntimeException("Error al subir la imagen a S3",ex);
+               }
             }
         }
 
         return spaceImages;
+    }
+
+    public List<SpaceImage> save(List<SpaceImage> spaceImages) {
+        return spaceImageRepository.saveAll(spaceImages);
     }
 }

@@ -3,6 +3,7 @@ package com.reservation.backend.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reservation.backend.dtos.*;
 import com.reservation.backend.entities.Space;
+import com.reservation.backend.entities.SpaceImage;
 import com.reservation.backend.entities.SpaceType;
 import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.ISpaceRepository;
@@ -138,7 +139,7 @@ public class SpaceService implements ISpaceService {
             spaceResponseDto.setSpaceTypeName(space.getSpaceType().getName());
         }
 
-        if (space.getSpaceImages() != null) {
+        if (space.getImages() != null) {
             List<SpaceImageResponseDto> spaceImageResponseDtoList = spaceImageService.findAll(Optional.of(space.getId()));
             spaceResponseDto.setSpaceImages(spaceImageResponseDtoList);
         }
@@ -166,4 +167,6 @@ public class SpaceService implements ISpaceService {
 
         return space;
     }
+
+
 }

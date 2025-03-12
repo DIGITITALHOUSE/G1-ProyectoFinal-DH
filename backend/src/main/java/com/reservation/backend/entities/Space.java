@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,7 +49,7 @@ public class Space extends Base {
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<SpaceImage> spaceImages;
+    private List<SpaceImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "space")
     @JsonIgnore
