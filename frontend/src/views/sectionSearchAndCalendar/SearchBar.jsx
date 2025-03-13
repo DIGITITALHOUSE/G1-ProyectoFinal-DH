@@ -1,15 +1,7 @@
-import { useState } from "react";
-import { FaSearch } from "react-icons/fa";
 import Section from '../Section';
-import PropTypes from "prop-types";
+import SearchForm from "./SearchForm";
 
-export const SearchBar = ({ setSearchLocation }) => {
-  const [location, setLocation] = useState("");
-
-  const handleSearch = () => {
-    setSearchLocation(location); // Send the input to Home component
-  };
-
+export const SearchBar = () => {
   return (
     <Section>
       <div
@@ -23,39 +15,17 @@ export const SearchBar = ({ setSearchLocation }) => {
       <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg"></div>
 
         <div className="relative z-10 max-w-3xl pl-12 text-left">
-          <h1 className="text-4xl font-bold text-white">
+          <h1 className="text-5xl text-white">
             Encuentra tu espacio ideal para trabajar
           </h1>
           <p className="mt-2 text-lg text-gray-200">
             Descubre espacios de coworking únicos en tu ciudad
           </p>
 
-          <div className="mt-4 flex w-full max-w-md">
-            <input
-              type="text"
-              placeholder="Buscar espacios..."
-              value={location}
-              onChange={(e) => {
-                setLocation(e.target.value);
-                setSearchLocation(e.target.value); // Filtrado dinámico
-              }}
-              className="flex-grow p-2 rounded-l-full text-gray-800 outline-none shadow-md"
-            />
-
-            <button
-              onClick={handleSearch}
-              className="p-2 bg-red-500 rounded-r-full hover:bg-red-600 transition-all shadow-md"
-            >
-              <FaSearch className="text-white text-lg" />
-            </button>
-          </div>
+          <SearchForm />
         </div>
       </div>
 
     </Section>
   );
-};
-
-SearchBar.propTypes = {
-  setSearchLocation: PropTypes.func.isRequired, // Expecting a function
 };
