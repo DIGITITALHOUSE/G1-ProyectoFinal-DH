@@ -1,6 +1,7 @@
 import Section from '../Section';
 import SearchForm from "./SearchForm";
 
+// RENOMBRAR A HeroSection?
 export const SearchBar = () => {
   return (
     <Section>
