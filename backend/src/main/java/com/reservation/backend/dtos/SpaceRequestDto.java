@@ -32,6 +32,10 @@ public class SpaceRequestDto {
     @NotBlank(message = "Country is required")
     private String country;
 
+    private Double latitude;
+
+    private Double longitude;
+
     private String zipCode;
 
     private String state;

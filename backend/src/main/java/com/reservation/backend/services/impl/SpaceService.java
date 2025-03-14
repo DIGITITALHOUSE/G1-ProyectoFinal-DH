@@ -121,6 +121,8 @@ public class SpaceService implements ISpaceService {
         spaceResponseDto.setDirection(space.getDirection());
         spaceResponseDto.setCity(space.getCity());
         spaceResponseDto.setCountry(space.getCountry());
+        spaceResponseDto.setLatitude(space.getLatitude());
+        spaceResponseDto.setLongitude(space.getLongitude());
         spaceResponseDto.setZipCode(space.getZipCode());
         spaceResponseDto.setState(space.getState());
         spaceResponseDto.setExtras(space.getExtras());
@@ -155,6 +157,8 @@ public class SpaceService implements ISpaceService {
         space.setDirection(spaceRequestDto.getDirection());
         space.setCity(spaceRequestDto.getCity());
         space.setCountry(spaceRequestDto.getCountry());
+        space.setLatitude(spaceRequestDto.getLatitude());
+        space.setLongitude(spaceRequestDto.getLongitude());
         space.setZipCode(spaceRequestDto.getZipCode());
         space.setState(spaceRequestDto.getState() != null ? spaceRequestDto.getState() : "Publicado");
         space.setExtras(spaceRequestDto.getExtras());

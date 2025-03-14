@@ -1,5 +1,5 @@
 package com.reservation.backend.entities;
 
 public enum Rol {
-    ADMIN, USER
+    SUPERADMIN, ADMIN, USER
 }

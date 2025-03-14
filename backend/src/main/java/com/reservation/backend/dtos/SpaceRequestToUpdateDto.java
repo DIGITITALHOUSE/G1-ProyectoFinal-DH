@@ -15,6 +15,8 @@ public class SpaceRequestToUpdateDto {
     private String direction;
     private String city;
     private String country;
+    private Double latitude;
+    private Double longitude;
     private String zipCode;
     private String state;
     private JsonNode extras;

@@ -23,14 +23,8 @@ public class DataInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if(userRepository.findByEmail("admin@admin.com").isEmpty()){
-            User admin = new User();
-            admin.setEmail("admin@admin.com");
-            admin.setPassword(passwordEncoder.encode("admin123"));
-            admin.setName("admin");
-            admin.setLastName("admin");
-            admin.setRol(Rol.ADMIN);
-            userRepository.save(admin);
+        if(userRepository.count() == 0){
+            insertarUsers();
         }
 
         if (spaceTypeRepository.count() == 0) {
@@ -39,6 +33,30 @@ public class DataInit implements CommandLineRunner {
         if (spaceRepository.count() == 0) {
             insertarSpaces();
         }
+    }
+
+    private void insertarUsers() {
+        User superadmin = new User();
+        superadmin.setEmail("superadmin@superadmin.com");
+        superadmin.setPassword(passwordEncoder.encode("superadmin123"));
+        superadmin.setName("superadmin");
+        superadmin.setLastName("superadmin");
+        superadmin.setRol(Rol.SUPERADMIN);
+        userRepository.save(superadmin);
+        User admin = new User();
+        admin.setEmail("admin@admin.com");
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setName("admin");
+        admin.setLastName("admin");
+        admin.setRol(Rol.ADMIN);
+        userRepository.save(admin);
+        User user = new User();
+        user.setEmail("user@user.com");
+        user.setPassword(passwordEncoder.encode("user123"));
+        user.setName("user");
+        user.setLastName("user");
+        user.setRol(Rol.USER);
+        userRepository.save(user);
     }
 
     private void insertarSpaceTypes() {
@@ -56,11 +74,11 @@ public class DataInit implements CommandLineRunner {
         List<SpaceType> spaceTypes = spaceTypeRepository.findAll();
 
         List<Space> spaces = List.of(
-                new Space("Sala de reuniones en Centro Empresarial", "Sala equipada con proyector y pizarra", 12, 80, "Av. Principal 123", "Ciudad", "País", "12345", "Activo", "WiFi, Aire acondicionado", List.of(), List.of(), getSpaceType(spaceTypes, "Sala de reuniones")),
-                new Space("Escritorio dedicado en Coworking XYZ", "Escritorio individual en zona coworking", 1, 25, "Calle Secundaria 456", "Ciudad", "País", "67890", "Activo", "WiFi, Silla ergonómica", List.of(), List.of(), getSpaceType(spaceTypes, "Escritorio dedicado")),
-                new Space("Oficina privada con vista a la ciudad", "Oficina privada con capacidad para 4 personas", 4, 120, "Av. Central 789", "Ciudad", "País", "54321", "Activo", "WiFi, Mobiliario moderno", List.of(), List.of(), getSpaceType(spaceTypes, "Oficina privada")),
-                new Space("Piso completo en Edificio Corporativo", "Piso exclusivo con recepción y salas de reuniones", 25, 500, "Torre Empresarial 101", "Ciudad", "País", "98765", "Activo", "Seguridad 24/7, Internet de alta velocidad", List.of(), List.of(), getSpaceType(spaceTypes, "Oficina de piso completo")),
-                new Space("Sala de conferencias en Hotel ABC", "Sala con capacidad para 50 personas", 50, 300, "Boulevard 555", "Ciudad", "País", "23456", "Activo", "Pantalla gigante, Sonido profesional", List.of(), List.of(), getSpaceType(spaceTypes, "Sala de conferencias"))
+                new Space("Sala de reuniones en Centro Empresarial", "Sala equipada con proyector y pizarra", 12, 80, "Av. Principal 123", "Artigas", "Uruguay", 0.0,0.0, "12345", "Activo", "WiFi, Aire acondicionado", List.of(), List.of(), getSpaceType(spaceTypes, "Sala de reuniones")),
+                new Space("Escritorio dedicado en Coworking XYZ", "Escritorio individual en zona coworking", 1, 25, "Calle Secundaria 456", "La Paz", "Bolivia",0.0,0.0, "67890", "Activo", "WiFi, Silla ergonómica", List.of(), List.of(), getSpaceType(spaceTypes, "Escritorio dedicado")),
+                new Space("Oficina privada con vista a la ciudad", "Oficina privada con capacidad para 4 personas", 4, 120, "Av. Central 789", "Antofagasta", "Chile",0.0,0.0, "54321", "Activo", "WiFi, Mobiliario moderno", List.of(), List.of(), getSpaceType(spaceTypes, "Oficina privada")),
+                new Space("Piso completo en Edificio Corporativo", "Piso exclusivo con recepción y salas de reuniones", 25, 500, "Torre Empresarial 101", "Guanajuato", "México",0.0,0.0, "98765", "Activo", "Seguridad 24/7, Internet de alta velocidad", List.of(), List.of(), getSpaceType(spaceTypes, "Oficina de piso completo")),
+                new Space("Sala de conferencias en Hotel ABC", "Sala con capacidad para 50 personas", 50, 300, "Boulevard 555", "Arequipa", "Perú",0.0,0.0, "23456", "Activo", "Pantalla gigante, Sonido profesional", List.of(), List.of(), getSpaceType(spaceTypes, "Sala de conferencias"))
         );
 
         spaceRepository.saveAll(spaces);

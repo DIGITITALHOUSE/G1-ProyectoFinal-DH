@@ -37,6 +37,12 @@ public class Space extends Base {
     @Column(name = "country", nullable = false)
     private String country;
 
+    @Column(name = "latitude", nullable = true)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = true)
+    private Double longitude;
+
     @Column(name = "zip_code", nullable = false)
     private String zipCode;
 
