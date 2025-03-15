@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.IntPredicate;
 
 @Entity
@@ -33,23 +34,26 @@ public class Reservation extends Base {
     @JoinColumn(name = "space_id")
     private Space space;
 
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
     public void setCustomerName(String string) {
-       
+
         throw new UnsupportedOperationException("Unimplemented method 'setCustomerName'");
     }
 
     public void setReservationDate(LocalDateTime now) {
-      
+
         throw new UnsupportedOperationException("Unimplemented method 'setReservationDate'");
     }
 
     public void setStatus(String string) {
-      
+
         throw new UnsupportedOperationException("Unimplemented method 'setStatus'");
     }
 
     public IntPredicate getCustomerName() {
-      
+
         throw new UnsupportedOperationException("Unimplemented method 'getCustomerName'");
     }
 }
