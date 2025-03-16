@@ -8,6 +8,7 @@ import com.reservation.backend.dtos.FavoriteRequestDto;
 import com.reservation.backend.dtos.FavoriteResponseDto;
 import com.reservation.backend.services.IFavoriteService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
@@ -33,11 +34,13 @@ public class FavoriteController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get favorites by user id")
     public ResponseEntity<List<FavoriteResponseDto>> findByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(favoriteService.findByUserId(id));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete favorite by id")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         favoriteService.delete(id);
         return ResponseEntity.noContent().build();

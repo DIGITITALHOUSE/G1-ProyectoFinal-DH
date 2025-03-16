@@ -1,6 +1,5 @@
 package com.reservation.backend.config;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,14 +31,23 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/doc/**").permitAll();
                     auth.requestMatchers("/v3/api-docs/**").permitAll();
+                    // User
+                    auth.requestMatchers("/users/**").hasAnyAuthority("SUPERADMIN", "ADMIN");
+                    // SpaceType
+                    auth.requestMatchers(HttpMethod.GET, "/space-type/**").permitAll();
+                    auth.requestMatchers("/space-type/**").hasAnyAuthority("SUPERADMIN", "ADMIN");
+                    // Space
                     auth.requestMatchers(HttpMethod.GET, "/spaces/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/spaces/**").hasAnyAuthority("SUPERADMIN", "ADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, "/spaces/**").hasAnyAuthority("SUPERADMIN", "ADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/spaces/**").hasAnyAuthority("SUPERADMIN", "ADMIN");
+                    // Reservation
                     auth.requestMatchers(HttpMethod.GET, "/reservations/**").permitAll();
-                    auth.requestMatchers("/users/**").hasAuthority("ADMIN");
-                    auth.requestMatchers("/space-type/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.POST, "/spaces/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/spaces/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/spaces/**").hasAuthority("ADMIN");
                     auth.requestMatchers("/reservations/**").authenticated();
+                    // Favorites
+                    auth.requestMatchers("/favorites/**").authenticated();
+                    // Comments
+                    auth.requestMatchers("/comments/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .csrf(config -> config.disable())
