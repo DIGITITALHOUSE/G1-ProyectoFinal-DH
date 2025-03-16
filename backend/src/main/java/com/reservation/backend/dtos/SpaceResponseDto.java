@@ -5,10 +5,13 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 // import com.fasterxml.jackson.databind.JsonNode;
 
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SpaceResponseDto {
     private Long id;
     private String name;

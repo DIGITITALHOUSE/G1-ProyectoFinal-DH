@@ -55,7 +55,7 @@ public class CommentService implements ICommentService {
     private CommentResponseDto mapToDto(Comment comment) {
         User user = comment.getUser();
         UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setAvatar(user.getAvatar());
+        userResponseDto.setAvatar(user.getAvatar() == null ? "" : user.getAvatar());
         userResponseDto.setName(user.getName());
         userResponseDto.setLastName(user.getLastName());
         CommentResponseDto commentResponseDto = new CommentResponseDto();
