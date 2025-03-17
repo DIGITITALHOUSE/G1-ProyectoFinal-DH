@@ -4,6 +4,7 @@ import com.reservation.backend.dtos.SpaceRequestDto;
 import com.reservation.backend.dtos.SpaceRequestToUpdateDto;
 import com.reservation.backend.dtos.SpaceResponseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ISpaceService {
@@ -12,4 +13,6 @@ public interface ISpaceService {
     SpaceResponseDto findById(Long id);
     SpaceResponseDto update(Long id, SpaceRequestToUpdateDto spaceRequestToUpdateDto);
     void delete(Long id);
+    
+    List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId);
 }

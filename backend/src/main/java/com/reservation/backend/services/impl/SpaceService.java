@@ -8,9 +8,13 @@ import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.ISpaceTypeRepository;
 import com.reservation.backend.services.ISpaceImageService;
 import com.reservation.backend.services.ISpaceService;
+import com.reservation.backend.specifications.SpaceSpecifications;
+
 import org.apache.log4j.Logger;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,6 +119,20 @@ public class SpaceService implements ISpaceService {
         }
         spaceRepository.deleteById(id);
         logger.info("Space deleted with id: " + id);
+    }
+
+    @Override
+    public List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId) {
+        logger.info("Searching spaces by keyword: " + keyword + ", date: " + date + ", spaceTypeId: " + spaceTypeId);
+        Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(keyword))
+        .and(SpaceSpecifications.includeAvailableSpaces(date))
+        .and(SpaceSpecifications.filterBySpaceType(spaceTypeId));
+
+        List<SpaceResponseDto> spaces = spaceRepository.findAll(specs).stream()
+            .map(this::mapToDto)
+            .toList();
+        logger.info("Spaces found: " + spaces.size());
+        return spaces;
     }
 
     private SpaceResponseDto mapToDto(Space space) {

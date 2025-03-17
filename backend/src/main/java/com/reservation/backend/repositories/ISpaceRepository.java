@@ -2,12 +2,13 @@ package com.reservation.backend.repositories;
 
 import com.reservation.backend.entities.Space;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ISpaceRepository extends JpaRepository<Space, Long> {
+public interface ISpaceRepository extends JpaRepository<Space, Long>, JpaSpecificationExecutor<Space> {
 
     // Método para encontrar un espacio por su nombre
     Space findByName(String name);

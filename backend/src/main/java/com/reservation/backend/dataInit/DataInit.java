@@ -130,8 +130,8 @@ public class DataInit implements CommandLineRunner {
         Space space = spaceRepository.findAll().get(0);
         User user = userRepository.findById(3L).orElseThrow(() -> new RuntimeException("User not found"));
         Reservation reservation = new Reservation();
-        reservation.setStartDate(LocalDateTime.now());
-        reservation.setEndDate(LocalDateTime.now().plusHours(2));
+        reservation.setStartDate(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0));
+        reservation.setEndDate(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(0));
         reservation.setUser(user);
         reservation.setSpace(space);
         reservationRepository.save(reservation);

@@ -7,12 +7,16 @@ import com.reservation.backend.services.ISpaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/spaces")
@@ -63,4 +67,16 @@ public class SpaceController {
         spaceService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+    @Operation(summary = "Search spaces filtering by keyword, date and space type")
+    public ResponseEntity<List<SpaceResponseDto>> searchSpaces(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) Long spaceType) {
+        
+        List<SpaceResponseDto> spaces = spaceService.searchSpaces(keyword, date, spaceType);
+        return ResponseEntity.ok(spaces);
+    }
+    
 }
