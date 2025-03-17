@@ -1,6 +1,5 @@
 package com.reservation.backend.services.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reservation.backend.dtos.*;
 import com.reservation.backend.entities.Space;
 import com.reservation.backend.entities.SpaceType;
@@ -9,36 +8,38 @@ import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.ISpaceTypeRepository;
 import com.reservation.backend.services.ISpaceImageService;
 import com.reservation.backend.services.ISpaceService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.apache.log4j.Logger;
 
 @Service
 public class SpaceService implements ISpaceService {
     private static final Logger logger = Logger.getLogger(SpaceService.class);
     private final ISpaceRepository spaceRepository;
     private final ISpaceTypeRepository spaceTypeRepository;
-
     private final ISpaceImageService spaceImageService;
-    // private final ObjectMapper objectMapper;
 
-    public SpaceService(ISpaceRepository spaceRepository, ISpaceTypeRepository spaceTypeRepository, ISpaceImageService spaceImageService, ObjectMapper objectMapper) {
+    public SpaceService(ISpaceRepository spaceRepository, ISpaceTypeRepository spaceTypeRepository, ISpaceImageService spaceImageService) {
         this.spaceRepository = spaceRepository;
         this.spaceTypeRepository = spaceTypeRepository;
         this.spaceImageService = spaceImageService;
-        // this.objectMapper = objectMapper;
     }
 
     @Override
     public SpaceResponseDto create(SpaceRequestDto spaceRequestDto) {
-        logger.info("Creating space :" + spaceRequestDto.getName());
+        logger.info("Creating space with name: " + spaceRequestDto.getName());
+
+        // Mapeo de DTO a entidad
         Space space = mapToEntity(spaceRequestDto);
+        
+        // Guardamos el espacio
         space = spaceRepository.save(space);
+        
         SpaceResponseDto spaceResponseDto = mapToDto(space);
 
+        // Guardar imágenes asociadas si las hay
         if (spaceRequestDto.getImages() != null) {
             SpaceImageRequestDto spaceImageRequestDto = new SpaceImageRequestDto();
             spaceImageRequestDto.setImages(spaceRequestDto.getImages());
@@ -47,7 +48,7 @@ public class SpaceService implements ISpaceService {
             spaceResponseDto.setSpaceImages(images);
         }
 
-        logger.info("Space created: "+ space.getName());
+        logger.info("Space created with id: " + space.getId());
         return spaceResponseDto;
     }
 
@@ -63,52 +64,57 @@ public class SpaceService implements ISpaceService {
 
     @Override
     public SpaceResponseDto findById(Long id) {
-        logger.info("Finding space by id: "+ id);
+        logger.info("Finding space by id: " + id);
         Space space = spaceRepository.findById(id).orElseThrow(
                 () -> {
-                    logger.error("Space with id: "+ id + " not found");
+                    logger.error("Space with id: " + id + " not found");
                     return new NotFoundException("Space with id " + id + " not found");
                 }
         );
-        logger.info("Space found with id: "+ id);
+        logger.info("Space found with id: " + id);
         return mapToDto(space);
     }
 
     @Override
     public SpaceResponseDto update(Long id, SpaceRequestToUpdateDto spaceRequestToUpdateDto) {
-        logger.info("Updating space by id: "+ id);
+        logger.info("Updating space with id: " + id);
 
         Space space = spaceRepository.findById(id).orElseThrow(
                 () -> {
-                    logger.error("Space with id: "+ id + " not found");
+                    logger.error("Space with id: " + id + " not found");
                     return new NotFoundException("Space with id " + id + " not found");
                 }
         );
-        if(spaceRequestToUpdateDto.getName() != null) space.setName(spaceRequestToUpdateDto.getName());
-        if(spaceRequestToUpdateDto.getDescription() != null) space.setDescription(spaceRequestToUpdateDto.getDescription());
-        if(spaceRequestToUpdateDto.getCapacity() != null) space.setCapacity(spaceRequestToUpdateDto.getCapacity());
-        if(spaceRequestToUpdateDto.getHourPrice() != null) space.setHourPrice(spaceRequestToUpdateDto.getHourPrice());
-        if(spaceRequestToUpdateDto.getDirection() != null) space.setDirection(spaceRequestToUpdateDto.getDirection());
-        if(spaceRequestToUpdateDto.getCity() != null) space.setCity(spaceRequestToUpdateDto.getCity());
-        if(spaceRequestToUpdateDto.getCountry() != null) space.setCountry(spaceRequestToUpdateDto.getCountry());
-        if(spaceRequestToUpdateDto.getZipCode() != null) space.setZipCode(spaceRequestToUpdateDto.getZipCode());
-        if(spaceRequestToUpdateDto.getState() != null) space.setState(spaceRequestToUpdateDto.getState());
-        if(spaceRequestToUpdateDto.getExtras() != null) space.setExtras(spaceRequestToUpdateDto.getExtras().toString());
+
+        // Actualización de campos
+        if (spaceRequestToUpdateDto.getName() != null) space.setName(spaceRequestToUpdateDto.getName());
+        if (spaceRequestToUpdateDto.getDescription() != null) space.setDescription(spaceRequestToUpdateDto.getDescription());
+        if (spaceRequestToUpdateDto.getCapacity() != null) space.setCapacity(spaceRequestToUpdateDto.getCapacity());
+        if (spaceRequestToUpdateDto.getHourPrice() != null) space.setHourPrice(spaceRequestToUpdateDto.getHourPrice());
+        if (spaceRequestToUpdateDto.getDirection() != null) space.setDirection(spaceRequestToUpdateDto.getDirection());
+        if (spaceRequestToUpdateDto.getCity() != null) space.setCity(spaceRequestToUpdateDto.getCity());
+        if (spaceRequestToUpdateDto.getCountry() != null) space.setCountry(spaceRequestToUpdateDto.getCountry());
+        if (spaceRequestToUpdateDto.getZipCode() != null) space.setZipCode(spaceRequestToUpdateDto.getZipCode());
+        if (spaceRequestToUpdateDto.getState() != null) space.setState(spaceRequestToUpdateDto.getState());
+        if (spaceRequestToUpdateDto.getExtras() != null) space.setExtras(spaceRequestToUpdateDto.getExtras().toString());
+
+        // Actualización del campo "icono"
+        if (spaceRequestToUpdateDto.getIcono() != null) space.setIcono(spaceRequestToUpdateDto.getIcono());
 
         space = spaceRepository.save(space);
-        logger.info("Space updated with id: "+ id);
+        logger.info("Space updated with id: " + id);
         return mapToDto(space);
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Deleting space by id: "+ id);
+        logger.info("Deleting space with id: " + id);
         Optional<Space> spaceFind = spaceRepository.findById(id);
         if (spaceFind.isEmpty()) {
             throw new NotFoundException("Space with id " + id + " not found");
         }
         spaceRepository.deleteById(id);
-        logger.info("Space deleted with id: "+ id);
+        logger.info("Space deleted with id: " + id);
     }
 
     private SpaceResponseDto mapToDto(Space space) {
@@ -126,6 +132,9 @@ public class SpaceService implements ISpaceService {
         spaceResponseDto.setZipCode(space.getZipCode());
         spaceResponseDto.setState(space.getState());
         spaceResponseDto.setExtras(space.getExtras());
+
+        // Mapeo del campo icono
+        spaceResponseDto.setIcono(space.getIcono());
 
         if (space.getExtras() != null) {
             try {
@@ -162,6 +171,9 @@ public class SpaceService implements ISpaceService {
         space.setZipCode(spaceRequestDto.getZipCode());
         space.setState(spaceRequestDto.getState() != null ? spaceRequestDto.getState() : "Publicado");
         space.setExtras(spaceRequestDto.getExtras());
+
+        // Establecer el campo "icono" si se proporciona
+        space.setIcono(spaceRequestDto.getIcono());
 
         if (spaceRequestDto.getSpaceTypeId() != null) {
             Optional<SpaceType> spaceTypeOptional = spaceTypeRepository.findById(spaceRequestDto.getSpaceTypeId());

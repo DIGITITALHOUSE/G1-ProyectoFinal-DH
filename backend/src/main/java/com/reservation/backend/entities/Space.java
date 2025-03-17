@@ -52,6 +52,9 @@ public class Space extends Base {
     @Column(name = "extras", nullable = false)
     private String extras;
 
+    @Column(name = "icon", nullable = true) // Nuevo campo para el nombre del ícono
+    private String icono;
+
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<SpaceImage> spaceImages;

@@ -47,4 +47,6 @@ public class SpaceRequestDto {
     private Long spaceTypeId;
 
     private List<MultipartFile> images;
+
+    private String icono; // Nuevo campo para el nombre del ícono
 }

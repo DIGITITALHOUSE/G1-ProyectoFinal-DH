@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-// import com.fasterxml.jackson.databind.JsonNode;
 
 @Getter
 @Setter
@@ -29,4 +26,6 @@ public class SpaceResponseDto {
 
     private String spaceTypeName;
     private List<SpaceImageResponseDto> spaceImages;
+
+    private String icono; // Nuevo campo para el nombre del ícono
 }

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-// import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,32 +24,41 @@ public class SpaceController {
         this.spaceService = spaceService;
     }
 
+    // Endpoint para crear un espacio
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Create spaces", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<SpaceResponseDto> create(
-            @ModelAttribute @Valid SpaceRequestDto requestDto
-    ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(spaceService.create(requestDto));
+    @Operation(summary = "Create space", security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<SpaceResponseDto> create(@ModelAttribute @Valid SpaceRequestDto requestDto) {
+        SpaceResponseDto createdSpace = spaceService.create(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSpace);
     }
 
+    // Endpoint para obtener todos los espacios
     @GetMapping
+    @Operation(summary = "Get all spaces", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<List<SpaceResponseDto>> findAll() {
-        return ResponseEntity.ok(spaceService.findAll());
+        List<SpaceResponseDto> spaces = spaceService.findAll();
+        return ResponseEntity.ok(spaces);
     }
 
+    // Endpoint para obtener un espacio por ID
     @GetMapping("/{id}")
+    @Operation(summary = "Get space by id", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<SpaceResponseDto> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(spaceService.findById(id));
+        SpaceResponseDto space = spaceService.findById(id);
+        return ResponseEntity.ok(space);
     }
 
+    // Endpoint para actualizar un espacio por ID
     @PutMapping("/{id}")
-    @Operation(summary = "Update spaces", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Update space", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<SpaceResponseDto> update(@PathVariable Long id, @Valid @RequestBody SpaceRequestToUpdateDto requestToUpdateDto) {
-        return ResponseEntity.ok(spaceService.update(id, requestToUpdateDto));
+        SpaceResponseDto updatedSpace = spaceService.update(id, requestToUpdateDto);
+        return ResponseEntity.ok(updatedSpace);
     }
 
+    // Endpoint para eliminar un espacio por ID
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete spaces", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Delete space", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         spaceService.delete(id);
         return ResponseEntity.noContent().build();
