@@ -12,10 +12,6 @@ export const getAllSpaceTypes = async () => {
     return response.json();
 };
 
-// export const getSpaceTypeById = async (id) => {
-//     const response = await fetch(`${API_URL}/${id}`);
-//     return response.ok ? response.json() : null;
-// };
 
 export const createSpaceType = async (spaceTypeData) => {
     const response = await fetch(API_URL, {

@@ -7,6 +7,7 @@ export const Home = () => {
     // Se usarán search params
     // eslint-disable-next-line no-unused-vars
     const [searchLocation, setSearchLocation] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     return (
         <>
@@ -14,7 +15,7 @@ export const Home = () => {
             <CategoriesAndRecommended />
             <div className="mt-6 px-4">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Espacios de Coworking</h2>
-                <CoworkingList searchLocation={searchLocation} />
+                <CoworkingList selectedCategory={selectedCategory} searchLocation={searchLocation} />
             </div>
         </>
     );

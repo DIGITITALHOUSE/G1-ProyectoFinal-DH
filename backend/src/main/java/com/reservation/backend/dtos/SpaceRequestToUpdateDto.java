@@ -20,4 +20,5 @@ public class SpaceRequestToUpdateDto {
     private String zipCode;
     private String state;
     private JsonNode extras;
+    private String icono;
 }

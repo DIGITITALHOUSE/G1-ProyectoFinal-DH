@@ -1,9 +1,4 @@
 import { BookingLayout } from "../components/layouts/BookingLayout";
-import { Events } from "../views/categories/Events";
-import { FullFloorOffice } from "../views/categories/FullFloorOffice";
-import { MeetingRooms } from "../views/categories/MeetingRooms";
-import { PrivateOffice } from "../views/categories/PrivateOffice";
-import { DedicatedDesk } from "../views/categories/DedicatedDesk";
 import { Products } from "../views/categories/Products";
 import { Categories } from "../views/categories/Categories";
 import { EditProducts } from "../views/categories/EditProducts";
@@ -15,21 +10,37 @@ import { Home } from "../views/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AccessDeniedProducts from "../views/categories/AccessDeniedProducts";
 import ProtectedRoute from "./ProtectedRoute";
+import { getAllSpaceTypes } from "../services/spaceTypeService";
+import { useEffect, useState } from "react";
+
 
 export const BookingAppRouter = () => {
+    const [categoriesData, setCategoriesData] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await getAllSpaceTypes();
+            setCategoriesData(data);
+        };
+        fetchCategories();
+    }, []);
+    
     return (
         <Routes>
             <Route path="/" element={<BookingLayout />}>
                 {/* Definir la ruta principal (index) directamente */}
                 <Route index element={<Home />} />
-
-                {/* Rutas hijas sin usar index */}
                 <Route path="space/:spaceId" element={<SpaceDetail />} />
-                <Route path="meeting-rooms" element={<MeetingRooms />} />
-                <Route path="dedicated-desk" element={<DedicatedDesk />} />
-                <Route path="full-offices" element={<FullFloorOffice />} />
-                <Route path="event" element={<Events />} />
-                <Route path="private-offices" element={<PrivateOffice />} />
+
+                {/* Generar dinámicamente las rutas de categorías */}
+                {categoriesData.map((category) => (
+                    <Route
+                        key={category.categoriaId}
+                        path={category.nombre.toLowerCase().replace(/\s+/g, "-")}
+                        element={<Categories />}
+                    />
+                ))}
+
                 <Route
                     path="products"
                     element={
