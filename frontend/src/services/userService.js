@@ -34,7 +34,10 @@ export const createUser = async (userData) => {
 export const updateUser = async (id, userData) => {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+         },
         body: JSON.stringify(userData),
     });
     return response.ok ? response.json() : null;

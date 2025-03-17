@@ -15,4 +15,6 @@ public class UserRequestToUpdateDto {
     private String email;
 
     private String cellPhone;
+
+    private String rol;
 }

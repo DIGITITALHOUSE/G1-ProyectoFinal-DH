@@ -1,16 +1,22 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { FaTrash, FaSearch, FaEdit } from "react-icons/fa";
+import { FaCheck,FaSearch, FaEdit } from "react-icons/fa";
 import CenteredMessage from "../../components/MessageDialog";
+import { getAllUsers,updateUser } from "../../services/userService";
 
 export const ListUsers = () => {
-    const [loading, setLoading] = useState(true);
+    const rolesEnum = ["ADMIN", "USER"];
+    const [loading, setLoading] = useState(false);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [search, setSearch] = useState("");
     const [products, setProducts] = useState([]);
     const [message, setMessage] = useState({ isOpen: false, type: "info", message: "", onConfirm: null });
-    const API_URL = "http://localhost:8081/users";
+    //const API_URL = "http://localhost:8081/users";
+    // Estado para controlar si el select de cada usuario está habilitado
+    const [editMode, setEditMode] = useState({}); 
+    const [selectedRoles, setSelectedRoles] = useState({});
+    
     // Cargar datos cuando el componente se monte
     useEffect(() => {
         fetchProducts()
@@ -24,22 +30,25 @@ export const ListUsers = () => {
         setMessage((prev) => ({ ...prev, isOpen: false })); // 🔹 Cierra el mensaje correctamente
     };
 
+    // Habilitar edición para un usuario específico
+    const enableEdit = (userId) => {
+        setEditMode((prev) => ({ ...prev, [userId]: true }));
+    };
+
+    // Manejar cambio de rol en el select
+    const handleRoleChange = (userId, newRole) => {
+        setSelectedRoles((prev) => ({ ...prev, [userId]: newRole }));
+    };
+
     // Función para obtener usuarios desde la API
     const fetchProducts = async () => {
         try {
-            const response = await fetch(API_URL,{
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                mode: "cors"
-            }); // Petición GET
-            if (!response.ok) {
-                throw new Error("Error al obtener los usuarios");
+            setLoading(true);
+            let response = await getAllUsers();
+            if (response) {
+                setProducts(response);
+                setFilteredProducts(response);
             }
-            const data = await response.json();
-            setProducts(data);
-            setFilteredProducts(data);
         } catch (error) {
             console.error("Error obteniendo los usuarios:", error);
         } finally {
@@ -48,7 +57,7 @@ export const ListUsers = () => {
     };
 
     // Función para eliminar producto desde la API con fetch
-    const deleteProducts = async (id) => {
+    /*const deleteProducts = async (id) => {
         try {
             const response = await fetch(`${API_URL}/${id}`, {
                 method: "DELETE",
@@ -67,7 +76,41 @@ export const ListUsers = () => {
             console.error("Error al eliminar el usuario:", error);
             showMessage("error", `${error}`)
         }
+    };*/
+
+    // Enviar actualización al backend
+    const saveRoleChange = (userId) => {
+        const user = products.find((u) => u.id === userId); // Obtener usuario completo por ID
+        if (!user) return showMessage('error', 'Usuario no valido'); // Evitar errores si no se encuentra
+        const updatedUser = {
+            name: user.name,
+            lastName: user.lastName,
+            email: user.email,
+            cellPhone: user.cellPhone,
+            rol: selectedRoles[userId] || user.rol, // Si no cambió, usa el mismo rol
+        };
+
+        try {
+            setLoading(true);
+            let response = updateUser(userId,updatedUser)
+            if (response) {
+                showMessage('success', 'Usuario actualizado correctamente');
+                setProducts((prevProducts) =>
+                    prevProducts.map((p) =>
+                        p.id === userId ? { ...p, rol: updatedUser.rol } : p
+                    )
+                );
+        
+                // Deshabilitar edición después de actualizar
+                setEditMode((prev) => ({ ...prev, [userId]: false }));
+            }
+        } catch (error) {
+            console.log('Se produjo un error'+error)
+        } finally{
+            setLoading(false);
+        }
     };
+
     // Para buscar datos
     useEffect(() => {
         const filtered = products.filter((product) =>
@@ -121,18 +164,40 @@ export const ListUsers = () => {
             },
         },
         {
+            name: "Rol",
+            cell: (row) => (
+                <select
+                    value={selectedRoles[row.id] || row.rol} // Usa el rol actual o el seleccionado
+                    onChange={(e) => handleRoleChange(row.id, e.target.value)}
+                    disabled={!editMode[row.id]} // Deshabilitado hasta presionar "Editar"
+                    style={{ padding: "5px", borderRadius: "5px", backgroundColor: editMode[row.id] ? "#fff" : "#ddd" }}
+                >
+                    {rolesEnum.map((role) => (
+                        <option key={role} value={role}>
+                            {role}
+                        </option>
+                    ))}
+                </select>
+            ),
+            sortable: true,
+            style: { fontWeight: "bold", fontSize: "16px" },
+        },
+        {
             name: "Acción",
             cell: (row) => (
                 <div className="flex">
-                    <Link to="">
-                        <button className="px-4 text-lg flex items-center gap-1">
-                            <FaEdit />
-                        </button>
-                    </Link>
-                    <button onClick={() => showMessage("confirm", "¿Está seguro de eliminar este usuario?", () => deleteProducts(row.id))}
+                    <button className="px-4 text-lg flex items-center gap-1" onClick={() => enableEdit(row.id)}>
+                        <FaEdit />
+                    </button>
+                    {editMode[row.id] && (
+                    <button className="px-4 text-lg flex items-center gap-1" onClick={() => showMessage("confirm", "Se actualizara el rol del usuario ¿Continuar?", () => saveRoleChange(row.id))}>
+                        <FaCheck />
+                    </button>
+                    )}
+                    {/*<button onClick={() => showMessage("confirm", "¿Está seguro de eliminar este usuario?", () => deleteProducts(row.id))}
                         className="px-4 text-lg flex items-center gap-1">
                         <FaTrash />
-                    </button>
+                    </button>*/}
                 </div>
             ),
             center: true,
@@ -150,11 +215,11 @@ export const ListUsers = () => {
                     <div className="mt-4 mb-4 p-4">
                         <div className="flex">
                             <div className="text-2xl font-bold mr-5">Listado Usuarios</div>
-                            <Link to="">
+                            {/*<Link to="">
                                 <button className="bg-[#F43F5E] text-white px-4 py-1 rounded-full cursor-pointer text-lg transition w-auto">
                                     <i className="fas fa-plus"></i> Agregar
                                 </button>
-                            </Link>
+                            </Link>*/}
                         </div>
                         <div className="flex justify-end mb-4">
                             <div className="relative">

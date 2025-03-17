@@ -17,6 +17,7 @@ export const ListProducts = () => {
         fetchProducts()
     }, []);
 
+
     const showMessage = (type, message, onConfirm = null) => {
         setMessage({ isOpen: true, type, message, onConfirm });
     };
@@ -76,7 +77,7 @@ export const ListProducts = () => {
         );
         setFilteredProducts(filtered)
     }, [search, products]);
-
+    //showMessage("warning", "Ten cuidado con esta acción")
     // Definir columnas para la tabla
     const columns = [
         {

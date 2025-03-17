@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaAlignJustify } from "react-icons/fa";
 import Button from "./buttons/Button";
+import Avatar from './Avatar';
 
 export const Header = ({showUserInformation} ) => {
     let links = [
@@ -14,12 +15,15 @@ export const Header = ({showUserInformation} ) => {
     let [isOpen, setIsOpen] = useState(false);
     let [islogin, setIsLogin] = useState(true);
     let [user, setUser] = useState("");
+    let [rol, setRol] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         if (localStorage.getItem("token")) {
             setIsLogin(false)
             const user = localStorage.getItem("user");
+            const rol = localStorage.getItem("rol");
+            setRol(rol)
             setUser(user ? JSON.parse(user) : "");
         }
     }, []);
@@ -28,6 +32,7 @@ export const Header = ({showUserInformation} ) => {
         // Eliminar el token del localStorage
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("rol");
         setIsLogin(true);
         setIsOpen(false);
         // Redirigir a inicio
@@ -73,9 +78,9 @@ export const Header = ({showUserInformation} ) => {
                         className={`hidden lg:flex lg:items-center lg:pb-0 pb-6 absolute lg:static bg-white lg:z-auto lg:gap-4 z-50 left-0 w-full lg:w-auto transition-all duration-500 ease-in ${open ? "top-[113px]" : "top-[-490px]"
                             }`}
                     >
-                        <a href="/list-products" className="hidden lg:block">
+                        {/*<a href="/list-products" className="hidden lg:block">
                             Administrar
-                        </a>
+                        </a>*/}
                         <Link to="/auth/register">
                             <Button text="Crear Cuenta" filled={false} />
                         </Link>
@@ -107,18 +112,19 @@ export const Header = ({showUserInformation} ) => {
                     {/* Imagen de perfil y nombre */}
                     <div className="flex items-center gap-2">
                         <span className="font-medium">Bienvenido {user.name}</span>
-                        <img
+                        <Avatar username={user.name} />
+                        {/*<img
                             //src={user.image}
                             alt=""
                             className="w-10 h-10 rounded-full border-2 border-gray-300"
-                        />
+                        />*/}
                     </div>
                     {/* Botón de menú {user.name} */}
                     <button
                         className="px-3 py-2 rounded-lg focus:outline-none"
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        ☰
+                        <FaAlignJustify />
                     </button>
 
                     {/* Contenido del dropdown */}
@@ -136,9 +142,11 @@ export const Header = ({showUserInformation} ) => {
                             <button onClick={() => handleNavigation("/favoritos")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Favoritos
                             </button>
+                            {rol != "USER" && (
                             <button onClick={() => handleNavigation("/list-products")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Administración
                             </button>
+                            )}
                             <button onClick={() => handleNavigation("/ayuda")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Centro de Ayuda
                             </button>

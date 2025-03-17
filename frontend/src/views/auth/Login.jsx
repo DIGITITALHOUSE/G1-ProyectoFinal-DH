@@ -29,7 +29,7 @@ export const Login = () => {
 
             navigate("/");
         } catch (error) {
-            showMessage('error', 'No se puedo iniciar sesión')
+            showMessage('error', 'Credenciales incorrectas')
             console.error("Error al iniciar sesión", error);
         } finally {
             setLoading(false);

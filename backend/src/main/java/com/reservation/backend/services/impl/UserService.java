@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reservation.backend.dtos.UserRequestDto;
 import com.reservation.backend.dtos.UserRequestToUpdateDto;
 import com.reservation.backend.dtos.UserResponseDto;
+import com.reservation.backend.entities.Rol;
 import com.reservation.backend.entities.User;
 import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.IUserRepository;
@@ -82,6 +83,9 @@ public class UserService implements IUserService {
         if (userRequestToUpdateDto.getLastName() != null) user.setLastName(userRequestToUpdateDto.getLastName());
         if (userRequestToUpdateDto.getEmail() != null) user.setEmail(userRequestToUpdateDto.getEmail());
         if (userRequestToUpdateDto.getCellPhone() != null) user.setCellPhone(userRequestToUpdateDto.getCellPhone());
+        if (userRequestToUpdateDto.getRol() != null) {
+            user.setRol(Rol.valueOf(userRequestToUpdateDto.getRol().toUpperCase())); //String en Enum
+        }
 
         user = userRepository.save(user);
 

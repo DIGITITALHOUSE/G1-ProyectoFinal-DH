@@ -17,4 +17,5 @@ public class UserResponseDto {
     private String password;
     private String cellPhone;
     private String state;
+    private String rol;
 }
