@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
-import java.time.LocalTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 

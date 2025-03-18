@@ -4,7 +4,6 @@ package com.reservation.backend.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 
