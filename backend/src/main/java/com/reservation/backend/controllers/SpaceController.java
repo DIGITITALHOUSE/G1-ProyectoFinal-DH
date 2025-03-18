@@ -1,5 +1,6 @@
 package com.reservation.backend.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.reservation.backend.dtos.SpaceRequestDto;
 import com.reservation.backend.dtos.SpaceRequestToUpdateDto;
 import com.reservation.backend.dtos.SpaceResponseDto;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -38,7 +42,7 @@ public class SpaceController {
 
     // Endpoint para obtener todos los espacios
     @GetMapping
-    @Operation(summary = "Get all spaces", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get all spaces")
     public ResponseEntity<List<SpaceResponseDto>> findAll() {
         List<SpaceResponseDto> spaces = spaceService.findAll();
         return ResponseEntity.ok(spaces);
@@ -46,7 +50,7 @@ public class SpaceController {
 
     // Endpoint para obtener un espacio por ID
     @GetMapping("/{id}")
-    @Operation(summary = "Get space by id", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Get space by id")
     public ResponseEntity<SpaceResponseDto> findById(@PathVariable Long id) {
         SpaceResponseDto space = spaceService.findById(id);
         return ResponseEntity.ok(space);
@@ -77,6 +81,13 @@ public class SpaceController {
         
         List<SpaceResponseDto> spaces = spaceService.searchSpaces(keyword, date, spaceType);
         return ResponseEntity.ok(spaces);
+    }
+
+    @GetMapping("/availability/{id}/{date}")
+    @Operation(summary = "Check availability for a specific space and date")
+    public ResponseEntity<JsonNode> checkAvailability(@PathVariable Long id, @PathVariable LocalDate date) {
+        JsonNode availability = spaceService.checkAvailability(id, date);
+        return ResponseEntity.ok(availability);
     }
     
 }

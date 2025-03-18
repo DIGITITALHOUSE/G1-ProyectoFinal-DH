@@ -1,9 +1,14 @@
 package com.reservation.backend.services.impl;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.reservation.backend.dtos.*;
+import com.reservation.backend.entities.Reservation;
 import com.reservation.backend.entities.Space;
 import com.reservation.backend.entities.SpaceType;
 import com.reservation.backend.exceptions.NotFoundException;
+import com.reservation.backend.repositories.IReservationRepository;
 import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.ISpaceTypeRepository;
 import com.reservation.backend.services.ISpaceImageService;
@@ -14,7 +19,10 @@ import org.apache.log4j.Logger;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +32,14 @@ public class SpaceService implements ISpaceService {
     private final ISpaceRepository spaceRepository;
     private final ISpaceTypeRepository spaceTypeRepository;
     private final ISpaceImageService spaceImageService;
+    private final IReservationRepository reservationRepository;
 
-    public SpaceService(ISpaceRepository spaceRepository, ISpaceTypeRepository spaceTypeRepository, ISpaceImageService spaceImageService) {
+    public SpaceService(ISpaceRepository spaceRepository, ISpaceTypeRepository spaceTypeRepository,
+            ISpaceImageService spaceImageService, IReservationRepository reservationRepository) {
         this.spaceRepository = spaceRepository;
         this.spaceTypeRepository = spaceTypeRepository;
         this.spaceImageService = spaceImageService;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -37,10 +48,10 @@ public class SpaceService implements ISpaceService {
 
         // Mapeo de DTO a entidad
         Space space = mapToEntity(spaceRequestDto);
-        
+
         // Guardamos el espacio
         space = spaceRepository.save(space);
-        
+
         SpaceResponseDto spaceResponseDto = mapToDto(space);
 
         // Guardar imágenes asociadas si las hay
@@ -73,8 +84,7 @@ public class SpaceService implements ISpaceService {
                 () -> {
                     logger.error("Space with id: " + id + " not found");
                     return new NotFoundException("Space with id " + id + " not found");
-                }
-        );
+                });
         logger.info("Space found with id: " + id);
         return mapToDto(space);
     }
@@ -87,23 +97,33 @@ public class SpaceService implements ISpaceService {
                 () -> {
                     logger.error("Space with id: " + id + " not found");
                     return new NotFoundException("Space with id " + id + " not found");
-                }
-        );
+                });
 
         // Actualización de campos
-        if (spaceRequestToUpdateDto.getName() != null) space.setName(spaceRequestToUpdateDto.getName());
-        if (spaceRequestToUpdateDto.getDescription() != null) space.setDescription(spaceRequestToUpdateDto.getDescription());
-        if (spaceRequestToUpdateDto.getCapacity() != null) space.setCapacity(spaceRequestToUpdateDto.getCapacity());
-        if (spaceRequestToUpdateDto.getHourPrice() != null) space.setHourPrice(spaceRequestToUpdateDto.getHourPrice());
-        if (spaceRequestToUpdateDto.getDirection() != null) space.setDirection(spaceRequestToUpdateDto.getDirection());
-        if (spaceRequestToUpdateDto.getCity() != null) space.setCity(spaceRequestToUpdateDto.getCity());
-        if (spaceRequestToUpdateDto.getCountry() != null) space.setCountry(spaceRequestToUpdateDto.getCountry());
-        if (spaceRequestToUpdateDto.getZipCode() != null) space.setZipCode(spaceRequestToUpdateDto.getZipCode());
-        if (spaceRequestToUpdateDto.getState() != null) space.setState(spaceRequestToUpdateDto.getState());
-        if (spaceRequestToUpdateDto.getExtras() != null) space.setExtras(spaceRequestToUpdateDto.getExtras().toString());
+        if (spaceRequestToUpdateDto.getName() != null)
+            space.setName(spaceRequestToUpdateDto.getName());
+        if (spaceRequestToUpdateDto.getDescription() != null)
+            space.setDescription(spaceRequestToUpdateDto.getDescription());
+        if (spaceRequestToUpdateDto.getCapacity() != null)
+            space.setCapacity(spaceRequestToUpdateDto.getCapacity());
+        if (spaceRequestToUpdateDto.getHourPrice() != null)
+            space.setHourPrice(spaceRequestToUpdateDto.getHourPrice());
+        if (spaceRequestToUpdateDto.getDirection() != null)
+            space.setDirection(spaceRequestToUpdateDto.getDirection());
+        if (spaceRequestToUpdateDto.getCity() != null)
+            space.setCity(spaceRequestToUpdateDto.getCity());
+        if (spaceRequestToUpdateDto.getCountry() != null)
+            space.setCountry(spaceRequestToUpdateDto.getCountry());
+        if (spaceRequestToUpdateDto.getZipCode() != null)
+            space.setZipCode(spaceRequestToUpdateDto.getZipCode());
+        if (spaceRequestToUpdateDto.getState() != null)
+            space.setState(spaceRequestToUpdateDto.getState());
+        if (spaceRequestToUpdateDto.getExtras() != null)
+            space.setExtras(spaceRequestToUpdateDto.getExtras().toString());
 
         // Actualización del campo "icono"
-        if (spaceRequestToUpdateDto.getIcono() != null) space.setIcono(spaceRequestToUpdateDto.getIcono());
+        if (spaceRequestToUpdateDto.getIcono() != null)
+            space.setIcono(spaceRequestToUpdateDto.getIcono());
 
         space = spaceRepository.save(space);
         logger.info("Space updated with id: " + id);
@@ -125,14 +145,51 @@ public class SpaceService implements ISpaceService {
     public List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId) {
         logger.info("Searching spaces by keyword: " + keyword + ", date: " + date + ", spaceTypeId: " + spaceTypeId);
         Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(keyword))
-        .and(SpaceSpecifications.includeAvailableSpaces(date))
-        .and(SpaceSpecifications.filterBySpaceType(spaceTypeId));
+                .and(SpaceSpecifications.includeAvailableSpaces(date))
+                .and(SpaceSpecifications.filterBySpaceType(spaceTypeId));
 
         List<SpaceResponseDto> spaces = spaceRepository.findAll(specs).stream()
-            .map(this::mapToDto)
-            .toList();
+                .map(this::mapToDto)
+                .toList();
         logger.info("Spaces found: " + spaces.size());
         return spaces;
+    }
+
+    @Override
+    public JsonNode checkAvailability(Long spaceId, LocalDate date) {
+        logger.info("Checking availability for space with id: " + spaceId + " and date: " + date);
+        Space space = spaceRepository.findById(spaceId).orElseThrow(
+                () -> {
+                    logger.error("Space with id: " + spaceId + " not found");
+                    return new NotFoundException("Space with id " + spaceId + " not found");
+                });
+        List<Reservation> reservations = reservationRepository.findBySpace_IdAndReservationDate(spaceId, date);
+        List<ObjectNode> availability = new ArrayList<>();
+
+        LocalTime openAt = space.getOpenAt().toLocalTime();
+        LocalTime closeAt = space.getCloseAt().toLocalTime();
+
+        while (!openAt.isAfter(closeAt.minusHours(1))) {
+            LocalTime currentHour = openAt;
+
+            // Comprobar si este horario está ocupado por alguna reserva
+            boolean isAvailable = reservations.stream().noneMatch(reservation -> {
+                LocalTime reservationStart = reservation.getStartHour().toLocalTime();
+                LocalTime reservationEnd = reservation.getEndHour().toLocalTime();
+                return !currentHour.isBefore(reservationStart) && currentHour.isBefore(reservationEnd);
+            });
+
+            // Crear un nodo JSON con la hora y la disponibilidad
+            ObjectNode hourNode = JsonNodeFactory.instance.objectNode();
+            hourNode.put("hour", currentHour.toString());
+            hourNode.put("available", isAvailable);
+            availability.add(hourNode);
+
+            openAt = openAt.plusHours(1);
+        }
+        ObjectNode result = JsonNodeFactory.instance.objectNode();
+        result.set("availability", JsonNodeFactory.instance.arrayNode().addAll(availability));
+        return result;
     }
 
     private SpaceResponseDto mapToDto(Space space) {
@@ -150,6 +207,8 @@ public class SpaceService implements ISpaceService {
         spaceResponseDto.setZipCode(space.getZipCode());
         spaceResponseDto.setState(space.getState());
         spaceResponseDto.setExtras(space.getExtras());
+        spaceResponseDto.setOpenAt(space.getOpenAt());
+        spaceResponseDto.setCloseAt(space.getCloseAt());
 
         // Mapeo del campo icono
         spaceResponseDto.setIcono(space.getIcono());
@@ -168,7 +227,8 @@ public class SpaceService implements ISpaceService {
         }
 
         if (space.getSpaceImages() != null) {
-            List<SpaceImageResponseDto> spaceImageResponseDtoList = spaceImageService.findAll(Optional.of(space.getId()));
+            List<SpaceImageResponseDto> spaceImageResponseDtoList = spaceImageService
+                    .findAll(Optional.of(space.getId()));
             spaceResponseDto.setSpaceImages(spaceImageResponseDtoList);
         }
 
@@ -189,7 +249,9 @@ public class SpaceService implements ISpaceService {
         space.setZipCode(spaceRequestDto.getZipCode());
         space.setState(spaceRequestDto.getState() != null ? spaceRequestDto.getState() : "Publicado");
         space.setExtras(spaceRequestDto.getExtras());
-
+        // TODO Convertir las horas recibidas a Time, hardcoded
+        space.setOpenAt(Time.valueOf("09:00:00"));
+        space.setCloseAt(Time.valueOf("18:00:00"));
         // Establecer el campo "icono" si se proporciona
         space.setIcono(spaceRequestDto.getIcono());
 

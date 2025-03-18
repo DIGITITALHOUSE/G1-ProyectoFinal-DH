@@ -4,14 +4,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class ReservationRequestToUpdateDto {
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    private LocalDateTime startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate reservationDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
-    private LocalDateTime endDate;
+    @JsonFormat(pattern = "HH:mm:ss")
+    private Time startHour;
+
+    @JsonFormat(pattern = "HH:mm:ss")
+    private Time endHour;
 }

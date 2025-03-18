@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -42,6 +44,10 @@ public class SpaceRequestDto {
 
     @NotNull(message = "Extras is required")
     private String extras;
+
+    private String openAt;
+
+    private String closeAt;
 
     @NotNull(message = "Space type id is required")
     private Long spaceTypeId;

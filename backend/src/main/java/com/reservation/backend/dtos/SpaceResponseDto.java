@@ -3,6 +3,8 @@ package com.reservation.backend.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -23,6 +25,8 @@ public class SpaceResponseDto {
     private String zipCode;
     private String state;
     private String extras;
+    private Time openAt;
+    private Time closeAt;
 
     private String spaceTypeName;
     private List<SpaceImageResponseDto> spaceImages;

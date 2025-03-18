@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.IntPredicate;
 
@@ -17,11 +19,15 @@ import java.util.function.IntPredicate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Reservation extends Base {
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    @Column(name = "reservation_date", nullable = false)
+    private LocalDate reservationDate;
+
+    @Column(name = "start_hour", nullable = false)
+    private Time startHour;
+
+    @Column(name = "end_hour", nullable = false)
+    private Time endHour;
 
     @Column(name = "state", nullable = true)
     private String state;
@@ -42,10 +48,10 @@ public class Reservation extends Base {
         throw new UnsupportedOperationException("Unimplemented method 'setCustomerName'");
     }
 
-    public void setReservationDate(LocalDateTime now) {
+    // public void setReservationDate(LocalDateTime now) {
 
-        throw new UnsupportedOperationException("Unimplemented method 'setReservationDate'");
-    }
+    //     throw new UnsupportedOperationException("Unimplemented method 'setReservationDate'");
+    // }
 
     public void setStatus(String string) {
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Time;
 import java.util.List;
 
 @Entity
@@ -54,6 +55,12 @@ public class Space extends Base {
 
     @Column(name = "icon", nullable = true) // Nuevo campo para el nombre del ícono
     private String icono;
+
+    @Column(name = "open_at", nullable = false)
+    private Time openAt;
+
+    @Column(name = "close_at", nullable = false)
+    private Time closeAt;
 
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

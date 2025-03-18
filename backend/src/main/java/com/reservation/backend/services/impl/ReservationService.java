@@ -13,6 +13,7 @@ import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.IUserRepository;
 import com.reservation.backend.services.IReservationService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,11 +77,11 @@ public class ReservationService implements IReservationService {
                 }
         );
 
-        if (reservationRequestToUpdateDto.getStartDate() != null) {
-            reservation.setStartDate(reservationRequestToUpdateDto.getStartDate());
+        if (reservationRequestToUpdateDto.getStartHour() != null) {
+            reservation.setStartHour(reservationRequestToUpdateDto.getStartHour());
         }
-        if (reservationRequestToUpdateDto.getEndDate() != null) {
-            reservation.setEndDate(reservationRequestToUpdateDto.getEndDate());
+        if (reservationRequestToUpdateDto.getEndHour() != null) {
+            reservation.setStartHour(reservationRequestToUpdateDto.getEndHour());
         }
 
         reservation = reservationRepository.save(reservation);
@@ -100,12 +101,33 @@ public class ReservationService implements IReservationService {
         reservationRepository.deleteById(id);
         logger.info("Reservation deleted with id: "+ id);
     }
+    
+    @Override
+    public List<ReservationResponseDto> findBySpace_Id(Long spaceId) {
+        logger.info("Finding reservations by space id: "+ spaceId);
+        List<ReservationResponseDto> reservations = reservationRepository.findBySpace_Id(spaceId).stream()
+                .map(this::mapToDto)
+                .toList();
+        logger.info("Reservations found: "+ reservations.size());
+        return reservations;
+    }
+
+    @Override
+    public List<ReservationResponseDto> findBySpace_IdAndReservationDate(Long spaceId, LocalDate date) {
+        logger.info("Finding reservations by space id: "+ spaceId + " and date: "+ date);
+        List<ReservationResponseDto> reservations = reservationRepository.findBySpace_IdAndReservationDate(spaceId, date).stream()
+                .map(this::mapToDto)
+                .toList();
+        logger.info("Reservations found: "+ reservations.size());
+        return reservations;
+    }
 
     private ReservationResponseDto mapToDto(Reservation reservation) {
         ReservationResponseDto reservationResponseDto = new ReservationResponseDto();
         reservationResponseDto.setId(reservation.getId());
-        reservationResponseDto.setStartDate(reservation.getStartDate());
-        reservationResponseDto.setEndDate(reservation.getEndDate());
+        reservationResponseDto.setReservationDate(reservation.getReservationDate());
+        reservationResponseDto.setStartHour(reservation.getStartHour());
+        reservationResponseDto.setEndHour(reservation.getEndHour());
         reservationResponseDto.setState(reservation.getState());
 
         if (reservation.getUser() != null) {
@@ -121,8 +143,9 @@ public class ReservationService implements IReservationService {
 
     private Reservation mapToEntity(ReservationRequestDto reservationRequestDto) {
         Reservation reservation = new Reservation();
-        reservation.setStartDate(reservationRequestDto.getStartDate());
-        reservation.setEndDate(reservationRequestDto.getEndDate());
+        reservation.setReservationDate(reservationRequestDto.getReservationDate());
+        reservation.setStartHour(reservationRequestDto.getStartHour());
+        reservation.setEndHour(reservationRequestDto.getEndHour());
 
         if (reservationRequestDto.getUserId() != null) {
             Optional<User> userOptional = userRepository.findById(reservationRequestDto.getUserId());

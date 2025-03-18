@@ -12,7 +12,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Component
@@ -86,22 +91,38 @@ public class DataInit implements CommandLineRunner {
         List<Space> spaces = List.of(
                 new Space("Sala de reuniones en Centro Empresarial", "Sala equipada con proyector y pizarra", 12, 80,
                         "Av. Principal 123", "Artigas", "Uruguay", 0.0, 0.0, "12345", "Activo",
-                        "WiFi, Aire acondicionado","prueba", List.of(), List.of(),
+                        "WiFi, Aire acondicionado", "prueba",
+                        Time.valueOf("09:00:00"),
+                        Time.valueOf("18:00:00"),
+                        List.of(), List.of(),
                         getSpaceType(spaceTypes, "Sala de reuniones")),
                 new Space("Escritorio dedicado en Coworking XYZ", "Escritorio individual en zona coworking", 1, 25,
                         "Calle Secundaria 456", "La Paz", "Bolivia", 0.0, 0.0, "67890", "Activo",
-                        "WiFi, Silla ergonómica","prueba", List.of(), List.of(),
+                        "WiFi, Silla ergonómica", "prueba",
+                        Time.valueOf("09:00:00"),
+                        Time.valueOf("18:00:00"),
+                        List.of(), List.of(),
                         getSpaceType(spaceTypes, "Escritorio dedicado")),
                 new Space("Oficina privada con vista a la ciudad", "Oficina privada con capacidad para 4 personas", 4,
                         120, "Av. Central 789", "Antofagasta", "Chile", 0.0, 0.0, "54321", "Activo",
-                        "WiFi, Mobiliario moderno","prueba", List.of(), List.of(), getSpaceType(spaceTypes, "Oficina privada")),
+                        "WiFi, Mobiliario moderno", "prueba",
+                        Time.valueOf("09:00:00"),
+                        Time.valueOf("18:00:00"),
+                        List.of(), List.of(),
+                        getSpaceType(spaceTypes, "Oficina privada")),
                 new Space("Piso completo en Edificio Corporativo", "Piso exclusivo con recepción y salas de reuniones",
                         25, 500, "Torre Empresarial 101", "Guanajuato", "México", 0.0, 0.0, "98765", "Activo",
-                        "Seguridad 24/7, Internet de alta velocidad","prueba", List.of(), List.of(),
+                        "Seguridad 24/7, Internet de alta velocidad", "prueba",
+                        Time.valueOf("09:00:00"),
+                        Time.valueOf("18:00:00"),
+                        List.of(), List.of(),
                         getSpaceType(spaceTypes, "Oficina de piso completo")),
                 new Space("Sala de conferencias en Hotel ABC", "Sala con capacidad para 50 personas", 50, 300,
                         "Boulevard 555", "Arequipa", "Perú", 0.0, 0.0, "23456", "Activo",
-                        "Pantalla gigante, Sonido profesional","prueba", List.of(), List.of(),
+                        "Pantalla gigante, Sonido profesional", "prueba",
+                        Time.valueOf("09:00:00"),
+                        Time.valueOf("18:00:00"),
+                        List.of(), List.of(),
                         getSpaceType(spaceTypes, "Sala de conferencias")));
 
         spaceRepository.saveAll(spaces);
@@ -130,8 +151,9 @@ public class DataInit implements CommandLineRunner {
         Space space = spaceRepository.findAll().get(0);
         User user = userRepository.findById(3L).orElseThrow(() -> new RuntimeException("User not found"));
         Reservation reservation = new Reservation();
-        reservation.setStartDate(LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0));
-        reservation.setEndDate(LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(0));
+        reservation.setReservationDate(LocalDate.now());
+        reservation.setStartHour(Time.valueOf("09:00:00"));
+        reservation.setEndHour(Time.valueOf("18:00:00"));
         reservation.setUser(user);
         reservation.setSpace(space);
         reservationRepository.save(reservation);

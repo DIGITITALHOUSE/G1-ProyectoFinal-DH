@@ -4,14 +4,17 @@ package com.reservation.backend.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class ReservationResponseDto {
     private Long id;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate reservationDate;
+    private Time startHour;
+    private Time endHour;
     private String user;
     private String state;
     private String spaceName;

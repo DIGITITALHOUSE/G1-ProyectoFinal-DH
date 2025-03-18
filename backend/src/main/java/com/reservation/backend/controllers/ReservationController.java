@@ -1,6 +1,5 @@
 package com.reservation.backend.controllers;
 
-
 import com.reservation.backend.dtos.ReservationRequestDto;
 import com.reservation.backend.dtos.ReservationRequestToUpdateDto;
 import com.reservation.backend.dtos.ReservationResponseDto;
@@ -12,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -40,7 +40,8 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationResponseDto> update(@PathVariable Long id, @Valid @RequestBody ReservationRequestToUpdateDto requestToUpdateDto) {
+    public ResponseEntity<ReservationResponseDto> update(@PathVariable Long id,
+            @Valid @RequestBody ReservationRequestToUpdateDto requestToUpdateDto) {
         return ResponseEntity.ok(reservationService.update(id, requestToUpdateDto));
     }
 
@@ -49,4 +50,16 @@ public class ReservationController {
         reservationService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/space/{id}")
+    public ResponseEntity<List<ReservationResponseDto>> findBySpaceId(@PathVariable Long id) {
+        return ResponseEntity.ok(reservationService.findBySpace_Id(id));
+    }
+
+    @GetMapping("/space/{id}/{date}")
+    public ResponseEntity<List<ReservationResponseDto>> findBySpaceIdAndDate(@PathVariable Long id,
+            @PathVariable LocalDate date) {
+        return ResponseEntity.ok(reservationService.findBySpace_IdAndReservationDate(id, date));
+    }
+
 }
