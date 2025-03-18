@@ -55,6 +55,7 @@ public class AuthenticationService {
                 .token(token)
                 .name(user.getName() + " " + user.getLastName())
                 .rol(user.getRol().name())
+                .id(user.getId())
                 .build();
     }
 }
