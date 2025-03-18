@@ -5,6 +5,7 @@ import Section from "../views/Section";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Pagination from "./Pagination";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -18,6 +19,7 @@ const shuffleArray = (array) => {
 export const CoworkingList = ({ searchLocation }) => {
     const [spacesData, setSpacesData] = useState([]);
     const [filteredSpaces, setFilteredSpaces] = useState([]);
+    const [favorites, setFavorites] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
@@ -36,12 +38,18 @@ export const CoworkingList = ({ searchLocation }) => {
             });
         } else {
             getAllSpaces().then((data) => {
-                console.log(data);
                 setSpacesData(data);
                 setFilteredSpaces(shuffleArray(data));
             });
         }
     }, [location.search]);
+
+    const toggleFavorite = (id) => {
+        setFavorites((prevFavorites) => ({
+            ...prevFavorites,
+            [id]: !prevFavorites[id],
+        }));
+    };
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentSpaces = filteredSpaces.slice(startIndex, startIndex + itemsPerPage);
@@ -55,8 +63,21 @@ export const CoworkingList = ({ searchLocation }) => {
                             <Link
                                 to={`/space/${space.id}`}
                                 key={space.id}
-                                className="rounded-lg bg-white p-4 shadow-md"
+                                className="relative rounded-lg bg-white p-4 shadow-md"
                             >
+                               <button
+                                    className={`absolute top-6 right-5 flex items-center justify-center rounded-full p-2 bg-white bg-opacity-50 shadow-md cursor-pointer transition-all`}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        toggleFavorite(space.id);
+                                    }}
+                                >
+                                    {favorites[space.id] ? (
+                                        <MdFavorite className="text-[#F43F5E]" />  
+                                    ) : (
+                                        <MdFavoriteBorder className="text-gray-700" /> 
+                                    )}
+                                </button>
                                 <img
                                     src="https://news.airbnb.com/wp-content/uploads/sites/4/2019/06/PJM020719Q202_Luxe_WanakaNZ_LivingRoom_0264-LightOn_R1.jpg?w=2048"
                                     alt={space.name}
