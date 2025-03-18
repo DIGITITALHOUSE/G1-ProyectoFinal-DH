@@ -3,6 +3,8 @@ package com.reservation.backend.repositories;
 import com.reservation.backend.entities.Space;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +31,6 @@ public interface ISpaceRepository extends JpaRepository<Space, Long>, JpaSpecifi
     List<Space> findBySpaceType_Id(Long spaceTypeId);
 
     // Puedes agregar más métodos personalizados aquí según las necesidades
+    @Query("SELECT DISTINCT CONCAT(s.city, ', ', s.country) FROM Space s WHERE LOWER(s.city) LIKE LOWER(CONCAT(:searchTerm, '%'))")
+    List<String> findCityCountryBySearchTerm(@Param("searchTerm") String searchTerm);
 }

@@ -149,14 +149,48 @@ public class DataInit implements CommandLineRunner {
 
     private void insertarReservations() {
         Space space = spaceRepository.findAll().get(0);
+        Space space2 = spaceRepository.findAll().get(1);
+        Space space3 = spaceRepository.findAll().get(2);
         User user = userRepository.findById(3L).orElseThrow(() -> new RuntimeException("User not found"));
         Reservation reservation = new Reservation();
         reservation.setReservationDate(LocalDate.now());
-        reservation.setStartHour(Time.valueOf("09:00:00"));
-        reservation.setEndHour(Time.valueOf("18:00:00"));
+        reservation.setStartHour(Time.valueOf("10:00:00"));
+        reservation.setEndHour(Time.valueOf("12:00:00"));
         reservation.setUser(user);
         reservation.setSpace(space);
         reservationRepository.save(reservation);
+
+        Reservation reservation2 = new Reservation();
+        reservation2.setReservationDate(LocalDate.now());
+        reservation2.setStartHour(Time.valueOf("12:00:00"));
+        reservation2.setEndHour(Time.valueOf("14:00:00"));
+        reservation2.setUser(user);
+        reservation2.setSpace(space);
+        reservationRepository.save(reservation2);
+
+        Reservation reservation3 = new Reservation();
+        reservation3.setReservationDate(LocalDate.now());
+        reservation3.setStartHour(Time.valueOf("09:00:00"));
+        reservation3.setEndHour(Time.valueOf("13:00:00"));
+        reservation3.setUser(user);
+        reservation3.setSpace(space2);
+        reservationRepository.save(reservation3);
+
+        Reservation reservation4 = new Reservation();
+        reservation4.setReservationDate(LocalDate.now());
+        reservation4.setStartHour(Time.valueOf("13:00:00"));
+        reservation4.setEndHour(Time.valueOf("18:00:00"));
+        reservation4.setUser(user);
+        reservation4.setSpace(space2);
+        reservationRepository.save(reservation4);
+
+        Reservation reservation5 = new Reservation();
+        reservation5.setReservationDate(LocalDate.now().plusDays(1));
+        reservation5.setStartHour(Time.valueOf("15:00:00"));
+        reservation5.setEndHour(Time.valueOf("17:00:00"));
+        reservation5.setUser(user);
+        reservation5.setSpace(space3);
+        reservationRepository.save(reservation5);
     }
 
     private void insertarComments() {

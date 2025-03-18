@@ -192,6 +192,15 @@ public class SpaceService implements ISpaceService {
         return result;
     }
 
+    @Override
+    public List<String> getCityCountryRecommendations(String searchTerm) {
+        logger.info("Getting city and country recommendations for search term: " + searchTerm);
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return spaceRepository.findCityCountryBySearchTerm(searchTerm);
+    }
+
     private SpaceResponseDto mapToDto(Space space) {
         SpaceResponseDto spaceResponseDto = new SpaceResponseDto();
         spaceResponseDto.setId(space.getId());

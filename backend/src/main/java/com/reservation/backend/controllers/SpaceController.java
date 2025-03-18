@@ -20,8 +20,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
 @RestController
 @RequestMapping("/spaces")
 @CrossOrigin(origins = "*")
@@ -59,7 +57,8 @@ public class SpaceController {
     // Endpoint para actualizar un espacio por ID
     @PutMapping("/{id}")
     @Operation(summary = "Update space", security = @SecurityRequirement(name = "bearerAuth"))
-    public ResponseEntity<SpaceResponseDto> update(@PathVariable Long id, @Valid @RequestBody SpaceRequestToUpdateDto requestToUpdateDto) {
+    public ResponseEntity<SpaceResponseDto> update(@PathVariable Long id,
+            @Valid @RequestBody SpaceRequestToUpdateDto requestToUpdateDto) {
         SpaceResponseDto updatedSpace = spaceService.update(id, requestToUpdateDto);
         return ResponseEntity.ok(updatedSpace);
     }
@@ -78,7 +77,7 @@ public class SpaceController {
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(required = false) Long spaceType) {
-        
+
         List<SpaceResponseDto> spaces = spaceService.searchSpaces(keyword, date, spaceType);
         return ResponseEntity.ok(spaces);
     }
@@ -89,5 +88,12 @@ public class SpaceController {
         JsonNode availability = spaceService.checkAvailability(id, date);
         return ResponseEntity.ok(availability);
     }
-    
+
+    @GetMapping("/recommendations")
+    @Operation(summary = "Get city and country recommendations for a search term")
+    public ResponseEntity<List<String>> getCityCountryRecommendations(@RequestParam String searchTerm) {
+        List<String> recommendations = spaceService.getCityCountryRecommendations(searchTerm);
+        return ResponseEntity.ok(recommendations);
+    }
+
 }

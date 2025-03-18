@@ -39,34 +39,32 @@ public class SpaceSpecifications {
             if (date == null) {
                 return criteriaBuilder.conjunction();
             }
+            // Subquery para obtener la suma de horas reservadas en un día específico por
+            // cada espacio
             Subquery<Long> subquery = query.subquery(Long.class);
             Root<Reservation> reservationRoot = subquery.from(Reservation.class);
 
-            LocalDateTime startOfDay = date.atStartOfDay(); // aaaa-mm-dd 00:00:00
-            LocalDateTime endOfDay = date.atTime(LocalTime.MAX); // aaaa-mm-dd 23:59:59
+            // Calcular la diferencia de horas entre startHour y endHour
+            Expression<Long> totalHorasReservadas = criteriaBuilder.sum(
+                    criteriaBuilder.diff(reservationRoot.get("endHour"), reservationRoot.get("startHour")));
 
-            // Calcular la cantidad de tiempo reservado (en minutos) en un día
-            // Expression<Long> reservedMinutes = criteriaBuilder.coalesce(
-            //         criteriaBuilder.sum(
-            //                 criteriaBuilder.function(
-            //                         "timestampdiff",
-            //                         Long.class,
-            //                         criteriaBuilder.literal("MINUTE"), // Aseguramos que sea reconocido
-            //                         reservationRoot.get("startDate"),
-            //                         reservationRoot.get("endDate"))),
-            //         criteriaBuilder.literal(0L) // Si no hay reservas, devolver 0
-            // );
+            Predicate mismoEspacio = criteriaBuilder.equal(reservationRoot.get("space").get("id"), root.get("id"));
+            Predicate mismaFecha = criteriaBuilder.equal(reservationRoot.get("reservationDate"), date);
 
-            subquery.select(criteriaBuilder.count(reservationRoot))
-                .where(
-                    criteriaBuilder.equal(reservationRoot.get("space"), root),
-                    criteriaBuilder.lessThanOrEqualTo(reservationRoot.get("startDate"), endOfDay),
-                    criteriaBuilder.greaterThanOrEqualTo(reservationRoot.get("endDate"), startOfDay)
-                );
+            subquery.select(totalHorasReservadas)
+                    .where(mismoEspacio, mismaFecha);
 
+            // Calcular la diferencia de horas entre closeAt y openAt para obtener el total
+            // disponible
+            Expression<Long> totalHorasDisponibles = criteriaBuilder.diff(root.get("closeAt"), root.get("openAt"));
+
+            // Excluir los espacios donde la suma de las reservas iguala o supera las horas
+            // disponibles
             return criteriaBuilder.or(
-                    criteriaBuilder.lessThan(subquery, criteriaBuilder.literal(1440L)),
-                    criteriaBuilder.isNull(subquery));
+                    criteriaBuilder.isNull(subquery.getSelection()), // Si no hay reservas, incluir el espacio
+                    criteriaBuilder.lessThan(subquery.getSelection(), totalHorasDisponibles) // Si aún hay horas
+                                                                                             // disponibles
+            );
         };
     }
 }

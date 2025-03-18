@@ -17,4 +17,5 @@ public interface ISpaceService {
     
     List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId);
     JsonNode checkAvailability(Long spaceId, LocalDate date);
+    List<String> getCityCountryRecommendations(String searchTerm);
 }
