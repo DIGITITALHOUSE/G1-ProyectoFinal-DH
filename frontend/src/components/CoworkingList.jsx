@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getAllSpaces } from "../services/spaceService";
+import { useLocation } from "react-router-dom";
+import { getAllSpaces, searchSpaces } from "../services/spaceService";
 import Section from "../views/Section";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -14,40 +15,33 @@ const shuffleArray = (array) => {
     return shuffled;
 };
 
-export const CoworkingList = ({ searchLocation, selectedCategory }) => {
+export const CoworkingList = ({ searchLocation }) => {
     const [spacesData, setSpacesData] = useState([]);
     const [filteredSpaces, setFilteredSpaces] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    useEffect(() => {
-        getAllSpaces().then((data) => {
-            setSpacesData(data);
-            setFilteredSpaces(data);
-            console.log(data);
-        });
-    }, []);
+    const location = useLocation();
 
     useEffect(() => {
-        let filtered = spacesData;
+        const params = new URLSearchParams(location.search);
+        const keyword = params.get("keyword") || "";
+        const date = params.get("date") || "";
+        const spaceType = params.get("spaceType") || "";
 
-        // Filtrar por categoría seleccionada si existe
-        if (selectedCategory) {
-            filtered = filtered.filter((space) => space.categoria === selectedCategory);
+        if (keyword || date || spaceType) {
+            searchSpaces({ keyword, date, spaceType }).then((data) => {
+                setSpacesData(data);
+                setFilteredSpaces(data);
+            });
+        } else {
+            getAllSpaces().then((data) => {
+                console.log(data);
+                setSpacesData(data);
+                setFilteredSpaces(shuffleArray(data));
+            });
         }
-
-        // Filtrar por ubicación si se proporciona
-        const searchTerm = (searchLocation || "").toLowerCase();
-        filtered = filtered.filter(
-            (space) =>
-                searchTerm === "" ||
-                (space.ciudad && space.ciudad.toLowerCase().includes(searchTerm)) ||
-                (space.pais && space.pais.toLowerCase().includes(searchTerm))
-        );
-
-        // Mostrar en orden aleatorio si no hay categoría seleccionada
-        setFilteredSpaces(selectedCategory ? filtered : shuffleArray(filtered));
-    }, [spacesData, searchLocation, selectedCategory]);
+    }, [location.search]);
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentSpaces = filteredSpaces.slice(startIndex, startIndex + itemsPerPage);
@@ -94,5 +88,4 @@ export const CoworkingList = ({ searchLocation, selectedCategory }) => {
 
 CoworkingList.propTypes = {
     searchLocation: PropTypes.string.isRequired,
-    selectedCategory: PropTypes.string, 
 };

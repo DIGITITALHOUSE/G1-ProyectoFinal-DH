@@ -32,14 +32,14 @@ export const BookingAppRouter = () => {
                 <Route index element={<Home />} />
                 <Route path="space/:spaceId" element={<SpaceDetail />} />
 
-                {/* Generar dinámicamente las rutas de categorías */}
+                {/* Generar dinámicamente las rutas de categorías
                 {categoriesData.map((category) => (
                     <Route
-                        key={category.categoriaId}
-                        path={category.nombre.toLowerCase().replace(/\s+/g, "-")}
+                        key={category.id}
+                        path={category.name.toLowerCase().replace(/\s+/g, "-")}
                         element={<Categories />}
                     />
-                ))}
+                ))} */}
 
                 <Route
                     path="products"

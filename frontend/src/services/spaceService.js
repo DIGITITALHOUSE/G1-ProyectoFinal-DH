@@ -42,3 +42,25 @@ export const deleteSpace = async (id) => {
         },
     });
 };
+
+export const searchSpaces = async ({ keyword, date, spaceType }) => {
+    try {
+        const params = new URLSearchParams({
+            ...(keyword && { keyword }),
+            ...(date && { date }),
+            ...(spaceType && { spaceType })
+        });
+
+        const response = await fetch(`${API_URL}/search?${params.toString()}`);
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener espacios: ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching spaces:', error);
+        throw error; // Permite manejar el error en el componente que llama el servicio
+    }
+};
+
