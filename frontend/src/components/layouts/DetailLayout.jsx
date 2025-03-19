@@ -25,7 +25,7 @@ const DetailLayout = ({ children, space }) => {
                 <div className="flex justify-end md:w-1/3">
                     {" "}
                     {/* Alinea el BookingPanel a la derecha */}
-                    <BookingPanel price={space.price} />
+                    <BookingPanel price={space.hourPrice} />
                 </div>
             </div>
         </div>

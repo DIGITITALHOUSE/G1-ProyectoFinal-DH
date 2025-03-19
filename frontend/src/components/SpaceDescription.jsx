@@ -1,11 +1,20 @@
 import { FaPeopleLine, FaBuildingUser } from "react-icons/fa6";
+import { useState } from "react";
+import StarRating from "./StarRating";
 import { FaRegCheckCircle } from "react-icons/fa";
+
 
 const SpaceDescription = ({ description, extras = [] }) => {
     console.log(extras);
     // const hardcodedFeatures = [];
     // extras example = "Wifi, inmobiliario de primera calidad"
     const items = extras.split(",").map((item) => item.trim());
+    const [hoverValue, setHoverValue] = useState(0);
+
+    const updateRating = (newRating) => {
+        setHoverValue(newRating); // Actualiza la calificación cuando se hace clic
+    };
+
     return (
         <div className="w-full px-4 sm:px-0">
             {/* Sección Detalles */}
@@ -62,6 +71,41 @@ const SpaceDescription = ({ description, extras = [] }) => {
                     ) : (
                         <p className="text-gray-500">No hay características disponibles.</p>
                     )} */}
+                </div>
+            </section>
+            <hr className="mt-4" />
+            <section className="mt-2">
+                <h1 className="text-2xl">Valoración</h1>
+                <div className="flex mt-4">
+                    <p className="text-3xl mr-6">4.8</p>
+                    <div className="flex space-x-2">
+                        <StarRating value={hoverValue} onChange={updateRating} />
+                    </div>
+                </div>
+            </section>
+            <hr className="mt-4" />
+            <section className="mt-2">
+                <h1 className="text-2xl">Reseñas</h1>
+                <div className="mt-4">
+                    <div className="flex">
+                        <img src="" alt="img" />
+                        <div className="ml-6">
+                            <h2>Maria Gonzales</h2>
+                            <div className="flex">
+                                <div className="flex space-x-2">
+                                    <StarRating value={hoverValue} onChange={updateRating} />
+                                </div>
+                                <p className="ml-2 mt-1">Febrero 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p className="text-justify">
+                            Excelente espacio de trabajo, muy limpio y profesional. 
+                            La ubicación es perfecta y el personal muy atento. 
+                            Definitivamente volveré a reservar.
+                        </p>
+                    </div>
                 </div>
             </section>
         </div>

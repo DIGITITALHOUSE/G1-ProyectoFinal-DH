@@ -64,3 +64,8 @@ export const searchSpaces = async ({ keyword, date, spaceType }) => {
     }
 };
 
+export const getSpacesAvailability = async (id, date) => {
+    const response = await fetch(`${API_URL}/availability/${id}/${date}`);
+    if (!response.ok) return [];
+    return response.json();
+};
