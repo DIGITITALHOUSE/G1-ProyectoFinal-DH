@@ -33,6 +33,7 @@ export const Header = ({showUserInformation} ) => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("rol");
+        localStorage.removeItem("id");
         setIsLogin(true);
         setIsOpen(false);
         // Redirigir a inicio

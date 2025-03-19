@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/favorites")
+@RequestMapping("/favoritess")
 @SecurityRequirement(name = "bearerAuth")
 public class FavoriteController {
     private final IFavoriteService favoriteService;

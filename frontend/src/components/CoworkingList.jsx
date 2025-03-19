@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { getAllSpaces, searchSpaces } from "../services/spaceService";
+import { getFavorites, addFavorite, removeFavorite } from "../services/favoriteService";
 import Section from "../views/Section";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -24,27 +25,52 @@ export const CoworkingList = ({ searchLocation }) => {
     const itemsPerPage = 10;
 
     const location = useLocation();
+    const [alertMessage, setAlertMessage] = useState("");
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const keyword = params.get("keyword") || "";
         const date = params.get("date") || "";
         const spaceType = params.get("spaceType") || "";
-
+    
+        const userId = localStorage.getItem("id");
+    
         if (keyword || date || spaceType) {
             searchSpaces({ keyword, date, spaceType }).then((data) => {
                 setSpacesData(data);
-                setFilteredSpaces(data);
+                setFilteredSpaces(shuffleArray(data));
             });
         } else {
             getAllSpaces().then((data) => {
                 setSpacesData(data);
                 setFilteredSpaces(shuffleArray(data));
+    
+                if (userId) {
+                    getFavorites(userId).then((favs) => {
+                        const favMap = {};
+                        favs.forEach((fav) => (favMap[fav.id] = true));
+                        setFavorites(favMap);  
+                    });
+                }
             });
         }
     }, [location.search]);
 
-    const toggleFavorite = (id) => {
+    const toggleFavorite = async (id) => {
+        const userId = localStorage.getItem("id");
+    
+        if (!userId) {
+            setAlertMessage("Por favor, inicia sesión para agregar favoritos.");
+            setTimeout(() => setAlertMessage(""), 1000); 
+            return;
+        }
+    
+        if (favorites[id]) {
+            await removeFavorite(userId, id);
+        } else {
+            await addFavorite(userId, id);
+        }
+    
         setFavorites((prevFavorites) => ({
             ...prevFavorites,
             [id]: !prevFavorites[id],
@@ -57,6 +83,11 @@ export const CoworkingList = ({ searchLocation }) => {
     return (
         <Section>
             <div className="container mx-auto max-w-7xl p-4">
+                {alertMessage && (
+                    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg">
+                        {alertMessage}
+                    </div>
+                )}
                 {currentSpaces.length > 0 ? (
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         {currentSpaces.map((space) => (
@@ -65,17 +96,17 @@ export const CoworkingList = ({ searchLocation }) => {
                                 key={space.id}
                                 className="relative rounded-lg bg-white p-4 shadow-md"
                             >
-                               <button
-                                    className={`absolute top-6 right-5 flex items-center justify-center rounded-full p-2 bg-white bg-opacity-50 shadow-md cursor-pointer transition-all`}
+                                <button
+                                    className="absolute top-6 right-5 flex items-center justify-center rounded-full p-2 bg-white bg-opacity-50 shadow-md cursor-pointer transition-all"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         toggleFavorite(space.id);
                                     }}
                                 >
                                     {favorites[space.id] ? (
-                                        <MdFavorite className="text-[#F43F5E]" />  
+                                        <MdFavorite className="text-[#F43F5E]" />
                                     ) : (
-                                        <MdFavoriteBorder className="text-gray-700" /> 
+                                        <MdFavoriteBorder className="text-gray-700" />
                                     )}
                                 </button>
                                 <img
