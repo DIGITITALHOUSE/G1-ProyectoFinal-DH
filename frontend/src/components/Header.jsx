@@ -140,7 +140,7 @@ export const Header = ({showUserInformation} ) => {
                             <button onClick={() => handleNavigation("/mensajes")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Mensajes
                             </button>
-                            <button onClick={() => handleNavigation("/favoritos")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                            <button onClick={() => handleNavigation("/favorites")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Favoritos
                             </button>
                             {rol != "USER" && (

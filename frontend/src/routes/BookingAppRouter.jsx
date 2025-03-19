@@ -12,6 +12,7 @@ import AccessDeniedProducts from "../views/categories/AccessDeniedProducts";
 import ProtectedRoute from "./ProtectedRoute";
 import { getAllSpaceTypes } from "../services/spaceTypeService";
 import { useEffect, useState } from "react";
+import { FavoriteSpaces }   from "../views/favorites/FavoriteSpaces";
 
 
 export const BookingAppRouter = () => {
@@ -40,7 +41,15 @@ export const BookingAppRouter = () => {
                         element={<Categories />}
                     />
                 ))} */}
-
+                 <Route 
+                    path="/favorites" 
+                    element={
+                        <ProtectedRoute>
+                            <FavoriteSpaces />
+                        </ProtectedRoute>
+                    } 
+                />
+                    {/* Rutas protegidas */}
                 <Route
                     path="products"
                     element={
