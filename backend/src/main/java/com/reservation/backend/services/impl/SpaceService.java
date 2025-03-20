@@ -144,7 +144,10 @@ public class SpaceService implements ISpaceService {
     @Override
     public List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId) {
         logger.info("Searching spaces by keyword: " + keyword + ", date: " + date + ", spaceTypeId: " + spaceTypeId);
-        Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(keyword))
+        // Split the keyword into individual words by ", "
+        String[] keywords = keyword.split(", ");
+        Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(keywords[0]))
+                .or(SpaceSpecifications.filterByCountry(keywords[1]))
                 .and(SpaceSpecifications.includeAvailableSpaces(date))
                 .and(SpaceSpecifications.filterBySpaceType(spaceTypeId));
 

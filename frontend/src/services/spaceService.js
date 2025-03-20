@@ -48,7 +48,7 @@ export const searchSpaces = async ({ keyword, date, spaceType }) => {
         const params = new URLSearchParams({
             ...(keyword && { keyword }),
             ...(date && { date }),
-            ...(spaceType && { spaceType })
+            ...(spaceType && { spaceType }),
         });
 
         const response = await fetch(`${API_URL}/search?${params.toString()}`);
@@ -59,9 +59,20 @@ export const searchSpaces = async ({ keyword, date, spaceType }) => {
 
         return await response.json();
     } catch (error) {
-        console.error('Error fetching spaces:', error);
+        console.error("Error fetching spaces:", error);
         throw error; // Permite manejar el error en el componente que llama el servicio
     }
+};
+
+export const getSpacesRecommendations = async (searchTerm) => {
+    const params = new URLSearchParams({
+        ...(searchTerm && { searchTerm }),
+    });
+    const response = await fetch(`${API_URL}/recommendations?${params.toString()}`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    console.log(data);
+    return data;
 };
 
 export const getSpacesAvailability = async (id, date) => {

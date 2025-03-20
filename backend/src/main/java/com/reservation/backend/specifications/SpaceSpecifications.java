@@ -20,6 +20,15 @@ public class SpaceSpecifications {
         };
     }
 
+    public static Specification<Space> filterByCountry(String country) {
+        return (root, query, criteriaBuilder) -> {
+            if (country == null || country.isEmpty()) {
+                return criteriaBuilder.conjunction();
+            }
+            return criteriaBuilder.like(criteriaBuilder.lower(root.get("country")), "%" + country.toLowerCase() + "%");
+        };
+    }
+
     public static Specification<Space> filterBySpaceType(Long spaceTypeId) {
         return (root, query, criteriaBuilder) -> {
             if (spaceTypeId == null) {
