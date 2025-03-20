@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import TermsModal from "./TermsModal";
 
 export const Footer = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const linksLeft = [
         { name: "Sobre nosotros", link: "/" },
         { name: "Espacios", link: "/" },
@@ -10,7 +14,7 @@ export const Footer = () => {
     const linksRight = [
         { name: "Centro de ayuda", link: "/" },
         { name: "Contacto", link: "/" },
-        { name: "Términos y condiciones", link: "/" },
+        { name: "Términos y condiciones", action: "openTermsModal" },
     ];
     return (
         <footer className="bg-[#111827] px-16 sm:px-10 md:px-20 xl:px-0">
@@ -38,14 +42,26 @@ export const Footer = () => {
                 <div className="order-3">
                     <p className="text-xl text-white">Soporte</p>
                     <ul className="mt-3 flex flex-col gap-2">
-                        {linksRight.map((link) => (
-                            <li key={link.name}>
-                                <Link to={link.link} className="text-gray-400 duration-500 hover:text-gray-300">
-                                    {link.name}
-                                </Link>
+                        {linksRight.map((item) => (
+                            <li key={item.name}>
+                                {item.action === "openTermsModal" ? (
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="text-gray-400 duration-500 hover:text-gray-300"
+                                    >
+                                        {item.name}
+                                    </button>
+                                ) : (
+                                    <a href={item.link} className="text-gray-400 duration-500 hover:text-gray-300">
+                                        {item.name}
+                                    </a>
+                                )}
                             </li>
                         ))}
                     </ul>
+
+                    {/* Modal */}
+                    <TermsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
                 </div>
 
                 <div className="order-2 md:order-4">
