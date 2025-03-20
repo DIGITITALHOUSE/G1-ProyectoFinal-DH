@@ -50,9 +50,9 @@ export const Header = ({showUserInformation} ) => {
         <header className="px-8 flex items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30 h-20">
             {/* <header className="px-[5%] lg:px-[2%] grid grid-cols-3 items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30 h-20"> */}
             <div className="flex items-center gap-3">
-                <a href="/" className="flex items-center text-center space-y-2 gap-5">
+                <Link to="/" className="flex items-center text-center space-y-2 gap-5">
                     <img className="max-w-[150px] max-h-[60px]" src="/src/assets/logo.png" alt="logo" />
-                </a>
+                </Link>
             </div>
 
             <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:flex items-center gap-4">
