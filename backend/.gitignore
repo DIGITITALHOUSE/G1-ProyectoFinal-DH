@@ -33,3 +33,5 @@ build/
 .vscode/
 
 mvc.log*
+
+.env*

@@ -1,0 +1,42 @@
+version: '3.8'
+
+networks:
+  reservation-db:
+    name: reservation-db
+  nginx-proxy:
+    name: nginx-proxy
+    external: true
+
+services:
+  backend:
+    container_name: reservation-backend
+    image: reservation-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - reservation-db
+    networks:
+      - reservation-db
+      - nginx-proxy
+
+  reservation-db:
+    container_name: reservation-db
+    image: mysql:8.4.4
+    restart: unless-stopped
+    env_file:
+      - .env.db
+    ports:
+      - 3308:3306
+    volumes:
+      - reservation-db:/var/lib/mysql
+    networks:
+      - reservation-db
+
+volumes:
+  reservation-db:

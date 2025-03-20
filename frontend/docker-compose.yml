@@ -1,5 +1,10 @@
 version: '3'
 
+networks:
+  nginx-proxy:
+    name: nginx-proxy
+    external: true
+
 services:
   reservation-front:
     container_name: reservation-front
@@ -8,5 +13,9 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
       - 3030:80
+    networks:
+      - nginx-proxy
