@@ -134,8 +134,8 @@ export const Header = ({showUserInformation} ) => {
                             <button onClick={() => handleNavigation("/perfil")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Mi Perfil
                             </button>
-                            <button onClick={() => handleNavigation("/reservar")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                Reservar
+                            <button onClick={() => handleNavigation("/reservations")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                                Reservas
                             </button>
                             <button onClick={() => handleNavigation("/mensajes")} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Mensajes
