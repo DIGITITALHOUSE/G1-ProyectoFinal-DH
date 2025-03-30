@@ -1,21 +1,6 @@
-import { AiOutlineClose } from "react-icons/ai";
-
-const TermsModal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
+const TermsModal = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
-      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[85vh] overflow-hidden">
-        {/* Botón de cerrar */}
-        <div className="sticky -top-4 -right-4 flex justify-end p-4 z-10">
-          <button
-            onClick={onClose}
-            className=" text-gray-800 rounded-full p-2 shadow-lg hover:bg-gray-300 transition"
-          >
-            <AiOutlineClose className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="p-6 text-gray-700 text-sm space-y-4 max-h-[70vh] overflow-y-auto">
+    <>
         <h2 className="text-2xl font-bold mb-4">Términos y Condiciones</h2>
         <h5 className="text-gray-400 mb-3">Última actualización: 18/03/2025</h5>
         <h3 className="font-bold mb-3">1. Introducción</h3>
@@ -160,9 +145,7 @@ const TermsModal = ({ isOpen, onClose }) => {
             Aceptar
           </button>
         </div>
-        </div>
-      </div>
-    </div>
+        </>
   );
 };
 
