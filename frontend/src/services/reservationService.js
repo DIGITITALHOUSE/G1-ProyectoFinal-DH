@@ -1,14 +1,18 @@
 const API_URL = import.meta.env.VITE_DATABASE_URL + "/reservations";
 
-export const getAllReservation = async () => {
-    const response = await fetch(API_URL, {
+export const getReservations = async (userId) => {
+    const response = await fetch(`${API_URL}/user/${userId}`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     });
-    return response.ok ? response.json() : [];
+
+    if (!response.ok) {
+        throw new Error("Error fetching reservations");
+    }
+
+    return response.json();
 };
 
 export const getReservationById = async (id) => {
@@ -44,6 +48,15 @@ export const updateReservation = async (id, userData) => {
         body: JSON.stringify(userData),
     });
     return response.ok ? response.json() : null;
+};
+
+export const cancelReservation = async (reservationId) => {
+    await fetch(`${API_URL}/${reservationId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
 };
 
 export const deleteReservation = async (id) => {
