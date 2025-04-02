@@ -5,7 +5,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 
 
 const SpaceDescription = ({ description, extras = [] }) => {
-    console.log(extras);
+    //console.log(extras);
     // const hardcodedFeatures = [];
     // extras example = "Wifi, inmobiliario de primera calidad"
     const items = extras.split(",").map((item) => item.trim());

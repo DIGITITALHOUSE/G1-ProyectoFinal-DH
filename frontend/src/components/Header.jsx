@@ -34,6 +34,7 @@ export const Header = ({showUserInformation} ) => {
         localStorage.removeItem("user");
         localStorage.removeItem("rol");
         localStorage.removeItem("id");
+        localStorage.removeItem("correo");
         setIsLogin(true);
         setIsOpen(false);
         // Redirigir a inicio

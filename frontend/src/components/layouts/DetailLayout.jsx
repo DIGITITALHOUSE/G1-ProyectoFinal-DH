@@ -67,7 +67,7 @@ const DetailLayout = ({ children, space }) => {
             <div className="mt-8 flex flex-col gap-6 md:flex-row">
                 <div className="md:w-2/3">{children}</div>
                 <div className="flex justify-end md:w-1/3">
-                    <BookingPanel price={space.hourPrice} />
+                    <BookingPanel price={space.hourPrice} name={space.name} img={space.images} id={space.id} />
                 </div>
             </div>
         </div>

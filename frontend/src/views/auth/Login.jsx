@@ -26,7 +26,6 @@ export const Login = () => {
 
         try {
             await login(email, password);
-
             navigate("/");
         } catch (error) {
             showMessage('error', 'Credenciales incorrectas')
