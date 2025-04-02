@@ -13,7 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { getAllSpaceTypes } from "../services/spaceTypeService";
 import { useEffect, useState } from "react";
 import { FavoriteSpaces }   from "../views/favorites/FavoriteSpaces";
-
+import { ReservationSpaces }   from "../views/reservation/ReservationSpaces";
 
 export const BookingAppRouter = () => {
     const [categoriesData, setCategoriesData] = useState([]);
@@ -46,6 +46,14 @@ export const BookingAppRouter = () => {
                     element={
                         <ProtectedRoute>
                             <FavoriteSpaces />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/reservations" 
+                    element={
+                        <ProtectedRoute>
+                            <ReservationSpaces />
                         </ProtectedRoute>
                     } 
                 />

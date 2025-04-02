@@ -145,9 +145,15 @@ public class SpaceService implements ISpaceService {
     public List<SpaceResponseDto> searchSpaces(String keyword, LocalDate date, Long spaceTypeId) {
         logger.info("Searching spaces by keyword: " + keyword + ", date: " + date + ", spaceTypeId: " + spaceTypeId);
         // Split the keyword into individual words by ", "
+        if (keyword == null || keyword.isEmpty()) {
+            keyword = " , ";
+        }
         String[] keywords = keyword.split(", ");
-        Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(keywords[0]))
-                .or(SpaceSpecifications.filterByCountry(keywords[1]))
+
+        String firstKeyword = keywords.length > 0 ? keywords[0] : "";
+        String secondKeyword = keywords.length > 1 ? keywords[1] : "";
+        Specification<Space> specs = Specification.where(SpaceSpecifications.filterByKeyword(firstKeyword))
+                .or(SpaceSpecifications.filterByCountry(secondKeyword))
                 .and(SpaceSpecifications.includeAvailableSpaces(date))
                 .and(SpaceSpecifications.filterBySpaceType(spaceTypeId));
 

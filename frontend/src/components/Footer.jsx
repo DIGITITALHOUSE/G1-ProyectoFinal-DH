@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 import TermsModal from "./TermsModal";
+import ModalBase from "./modal/ModalBase";
 
 export const Footer = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,7 +62,10 @@ export const Footer = () => {
                     </ul>
 
                     {/* Modal */}
-                    <TermsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+                    {/* <TermsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
+                    <ModalBase isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                        <TermsModal onClose={() => setIsModalOpen(false)} />
+                    </ModalBase>
                 </div>
 
                 <div className="order-2 md:order-4">
