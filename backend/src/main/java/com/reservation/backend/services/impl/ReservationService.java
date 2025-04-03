@@ -11,6 +11,7 @@ import com.reservation.backend.exceptions.NotFoundException;
 import com.reservation.backend.repositories.IReservationRepository;
 import com.reservation.backend.repositories.ISpaceRepository;
 import com.reservation.backend.repositories.IUserRepository;
+import com.reservation.backend.services.IEmailService;
 import com.reservation.backend.services.IReservationService;
 
 import java.time.LocalDate;
@@ -26,13 +27,15 @@ public class ReservationService implements IReservationService {
     private final IReservationRepository reservationRepository;
     private final IUserRepository userRepository;
     private final ISpaceRepository spaceRepository;
+    private final IEmailService emailService;
     // private final ObjectMapper objectMapper;
 
     public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository,
-            ISpaceRepository spaceRepository, ObjectMapper objectMapper) {
+            ISpaceRepository spaceRepository, IEmailService emailService, ObjectMapper objectMapper) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.spaceRepository = spaceRepository;
+        this.emailService = emailService;
         // this.objectMapper = objectMapper;
     }
 
@@ -42,6 +45,9 @@ public class ReservationService implements IReservationService {
         Reservation reservation = mapToEntity(reservationDto);
         reservation = reservationRepository.save(reservation);
         logger.info("Reservation created for user: " + reservation.getUser());
+        User user = reservation.getUser();
+        Space space = reservation.getSpace();
+        emailService.sendReservationDoneEmail(user.getEmail(), user, space, reservation);
         return mapToDto(reservation);
     }
 
