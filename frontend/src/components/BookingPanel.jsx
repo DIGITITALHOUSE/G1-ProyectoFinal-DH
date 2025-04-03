@@ -14,7 +14,7 @@ const hardcodedImages = [
     "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ];
 
-const BookingPanel = ({ price, name, img, id }) => {
+const BookingPanel = ({ price, name, img, id, phone = null }) => {
     const { spaceId } = useParams();
     const [showModal, setShowModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
@@ -101,6 +101,14 @@ const BookingPanel = ({ price, name, img, id }) => {
     return (
         <div className="w-full bg-white p-4 shadow-lg rounded-lg">
             <h2 className="text-3xl font-semibold">${price} <span className="text-2xl text-gray-400">/hora</span></h2>
+            <a 
+                href={`https://wa.me/593997183585?text=Hola,%20estoy%20interesado%20en%20reservar%20${name}.`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-green-500 text-white w-full p-2 rounded mt-4 text-center block"
+            >
+                Contactar al dueño
+            </a>
             <button className="bg-[#F43F5E] text-white w-full p-2 rounded mt-4" onClick={() => validatorReserve()}>
                 Reservar ahora
             </button>

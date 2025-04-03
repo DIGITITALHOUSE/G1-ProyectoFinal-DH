@@ -136,6 +136,7 @@ export class SpaceModel {
       extras,
       spaceImages = [],
       spaceType = {},
+      phone = null, // Initialize phone number as null
     }) {
       this.id = id;
       this.name = name;
@@ -150,6 +151,7 @@ export class SpaceModel {
       this.extras = extras;
       this.spaceImages = spaceImages;
       this.spaceType = spaceType;
+      this.phone = phone; // Initialize phone number as null
     }
   }
   
