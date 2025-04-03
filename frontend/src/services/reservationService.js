@@ -15,6 +15,22 @@ export const getReservations = async (userId) => {
     return response.json();
 };
 
+export const getUserReservations = async (userId) => {
+    const response = await fetch(`${API_URL}`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Error fetching reservations");
+    }
+
+    const reservations = await response.json();
+    return reservations.filter(reservation => reservation.userId === parseInt(userId));
+};
+
 export const getReservationById = async (id) => {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "GET",
