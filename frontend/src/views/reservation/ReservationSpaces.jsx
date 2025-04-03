@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getReservations, cancelReservation } from "../../services/reservationService";
+import { getUserReservations } from "../../services/reservationService";
 import Section from "../Section";
 import { Link } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
@@ -10,19 +10,16 @@ export const ReservationSpaces = () => {
 
     useEffect(() => {
         if (userId) {
-            getReservations(userId)
-                .then(setReservations)
-                .catch(() => setReservations([]));
+            getUserReservations(userId)
+                .then((reservations) => {
+                })
+                .catch((error) => {
+                    setReservations([]);
+                });
         } else {
             setReservations([]);
         }
     }, [userId]);
-
-    const handleCancelReservation = async (reservationId) => {
-        await cancelReservation(reservationId);
-        setReservations((prev) => prev.filter((res) => res.id !== reservationId));
-    };
-
     return (
         <Section>
             <div className="container mx-auto max-w-7xl p-4">
@@ -35,16 +32,6 @@ export const ReservationSpaces = () => {
                                 key={res.id}
                                 className="relative rounded-lg bg-white p-4 shadow-md"
                             >
-                                <button
-                                    className="absolute top-6 right-5 flex items-center justify-center rounded-full p-2 bg-white bg-opacity-50 shadow-md cursor-pointer transition-all"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleCancelReservation(res.id);
-                                    }}
-                                >
-                                    <MdCancel className="text-[#F43F5E]" />
-                                </button>
-
                                 <img
                                     src="https://news.airbnb.com/wp-content/uploads/sites/4/2019/06/PJM020719Q202_Luxe_WanakaNZ_LivingRoom_0264-LightOn_R1.jpg?w=2048"
                                     alt={res.space.name}
@@ -66,3 +53,4 @@ export const ReservationSpaces = () => {
         </Section>
     );
 };
+
