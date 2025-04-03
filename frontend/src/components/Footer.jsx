@@ -71,23 +71,30 @@ export const Footer = () => {
                 <div className="order-2 md:order-4">
                     <p className="text-xl text-white">Síguenos</p>
                     <div className="mt-3 flex gap-4 text-gray-400">
-                        <Link
-                            href="https://www.facebook.com/"
-                            target="_blank"
-                            className="duration-500 hover:text-gray-300"
-                        >
-                            <FaFacebook size={20} />
-                        </Link>
-                        <Link href="https://www.x.com/" target="_blank" className="duration-500 hover:text-gray-300">
-                            <FaTwitter size={20} />
-                        </Link>
-                        <Link
-                            href="https://www.instagram.com/"
-                            target="_blank"
-                            className="duration-500 hover:text-gray-300"
-                        >
-                            <FaInstagram size={20} />
-                        </Link>
+                    <a
+                        href="https://www.facebook.com/profile.php?id=61574996487584"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="duration-500 hover:text-gray-300"
+                    >
+                        <FaFacebook size={20} />
+                    </a>
+                    <a
+                        href="https://www.instagram.com/cowork_dh/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="duration-500 hover:text-gray-300"
+                    >
+                        <FaInstagram size={20} />
+                    </a>
+                    <a
+                        href="https://www.x.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="duration-500 hover:text-gray-300"
+                    >
+                        <FaTwitter size={20} />
+                    </a>
                     </div>
                 </div>
             </div>
