@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/reservations")
@@ -60,6 +62,11 @@ public class ReservationController {
     public ResponseEntity<List<ReservationResponseDto>> findBySpaceIdAndDate(@PathVariable Long id,
             @PathVariable LocalDate date) {
         return ResponseEntity.ok(reservationService.findBySpace_IdAndReservationDate(id, date));
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ReservationResponseDto>> findByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(reservationService.findByUser_Id(id));
     }
 
 }
