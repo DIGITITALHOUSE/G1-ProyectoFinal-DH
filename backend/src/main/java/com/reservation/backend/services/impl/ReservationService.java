@@ -28,7 +28,8 @@ public class ReservationService implements IReservationService {
     private final ISpaceRepository spaceRepository;
     // private final ObjectMapper objectMapper;
 
-    public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository, ISpaceRepository spaceRepository, ObjectMapper objectMapper) {
+    public ReservationService(IReservationRepository reservationRepository, IUserRepository userRepository,
+            ISpaceRepository spaceRepository, ObjectMapper objectMapper) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.spaceRepository = spaceRepository;
@@ -40,7 +41,7 @@ public class ReservationService implements IReservationService {
         logger.info("Creating reservation for user: " + reservationDto.getUserId());
         Reservation reservation = mapToEntity(reservationDto);
         reservation = reservationRepository.save(reservation);
-        logger.info("Reservation created for user: "+ reservation.getUser());
+        logger.info("Reservation created for user: " + reservation.getUser());
         return mapToDto(reservation);
     }
 
@@ -50,32 +51,30 @@ public class ReservationService implements IReservationService {
         List<ReservationResponseDto> reservations = reservationRepository.findAll().stream()
                 .map(this::mapToDto)
                 .toList();
-        logger.info("Reservations found: "+ reservations.size());
+        logger.info("Reservations found: " + reservations.size());
         return reservations;
     }
 
     @Override
     public ReservationResponseDto findById(Long id) {
-        logger.info("Finding reservation by id: "+ id);
+        logger.info("Finding reservation by id: " + id);
         Reservation reservation = reservationRepository.findById(id).orElseThrow(
                 () -> {
-                    logger.error("Reservation with id: "+ id + " not found");
+                    logger.error("Reservation with id: " + id + " not found");
                     return new NotFoundException("Reservation with id " + id + " not found");
-                }
-        );
-        logger.info("Reservation found with id: "+ id);
+                });
+        logger.info("Reservation found with id: " + id);
         return mapToDto(reservation);
     }
 
     @Override
     public ReservationResponseDto update(Long id, ReservationRequestToUpdateDto reservationRequestToUpdateDto) {
-        logger.info("Updating reservation by id: "+ id);
+        logger.info("Updating reservation by id: " + id);
         Reservation reservation = reservationRepository.findById(id).orElseThrow(
                 () -> {
-                    logger.error("Reservation with id: "+ id + " not found");
+                    logger.error("Reservation with id: " + id + " not found");
                     return new NotFoundException("Reservation with id " + id + " not found");
-                }
-        );
+                });
 
         if (reservationRequestToUpdateDto.getStartHour() != null) {
             reservation.setStartHour(reservationRequestToUpdateDto.getStartHour());
@@ -86,39 +85,50 @@ public class ReservationService implements IReservationService {
 
         reservation = reservationRepository.save(reservation);
 
-        logger.info("Reservation updated with id: "+ id);
+        logger.info("Reservation updated with id: " + id);
 
         return mapToDto(reservation);
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Deleting Reservation by id: "+ id);
+        logger.info("Deleting Reservation by id: " + id);
         Optional<Reservation> reservationFind = reservationRepository.findById(id);
-        if(reservationFind.isEmpty()) {
+        if (reservationFind.isEmpty()) {
             throw new NotFoundException("Reservation with id " + id + " not found");
         }
         reservationRepository.deleteById(id);
-        logger.info("Reservation deleted with id: "+ id);
+        logger.info("Reservation deleted with id: " + id);
     }
-    
+
     @Override
     public List<ReservationResponseDto> findBySpace_Id(Long spaceId) {
-        logger.info("Finding reservations by space id: "+ spaceId);
+        logger.info("Finding reservations by space id: " + spaceId);
         List<ReservationResponseDto> reservations = reservationRepository.findBySpace_Id(spaceId).stream()
                 .map(this::mapToDto)
                 .toList();
-        logger.info("Reservations found: "+ reservations.size());
+        logger.info("Reservations found: " + reservations.size());
+        return reservations;
+    }
+
+    @Override
+    public List<ReservationResponseDto> findByUser_Id(Long userId) {
+        logger.info("Finding reservations by user id: " + userId);
+        List<ReservationResponseDto> reservations = reservationRepository.findByUser_Id(userId).stream()
+                .map(this::mapToDto)
+                .toList();
+        logger.info("Reservations found: " + reservations.size());
         return reservations;
     }
 
     @Override
     public List<ReservationResponseDto> findBySpace_IdAndReservationDate(Long spaceId, LocalDate date) {
-        logger.info("Finding reservations by space id: "+ spaceId + " and date: "+ date);
-        List<ReservationResponseDto> reservations = reservationRepository.findBySpace_IdAndReservationDate(spaceId, date).stream()
+        logger.info("Finding reservations by space id: " + spaceId + " and date: " + date);
+        List<ReservationResponseDto> reservations = reservationRepository
+                .findBySpace_IdAndReservationDate(spaceId, date).stream()
                 .map(this::mapToDto)
                 .toList();
-        logger.info("Reservations found: "+ reservations.size());
+        logger.info("Reservations found: " + reservations.size());
         return reservations;
     }
 
@@ -132,10 +142,12 @@ public class ReservationService implements IReservationService {
 
         if (reservation.getUser() != null) {
             reservationResponseDto.setUser(reservation.getUser().getName() + " " + reservation.getUser().getLastName());
+            reservationResponseDto.setUserId(reservation.getUser().getId());
         }
 
         if (reservation.getSpace() != null) {
             reservationResponseDto.setSpaceName(reservation.getSpace().getName());
+            reservationResponseDto.setSpaceId(reservation.getSpace().getId());
         }
 
         return reservationResponseDto;
@@ -159,4 +171,5 @@ public class ReservationService implements IReservationService {
 
         return reservation;
     }
+
 }

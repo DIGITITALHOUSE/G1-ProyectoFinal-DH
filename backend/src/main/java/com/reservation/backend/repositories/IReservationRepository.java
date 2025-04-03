@@ -15,4 +15,5 @@ public interface IReservationRepository extends JpaRepository<Reservation, Long>
     // @Column(name = "reservation_date", nullable = false)
     // private LocalDate reservationDate;
     List<Reservation> findBySpace_IdAndReservationDate(Long spaceId, LocalDate date);
+    List<Reservation> findByUser_Id(Long userId);
 }

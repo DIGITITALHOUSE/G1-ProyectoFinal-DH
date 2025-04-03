@@ -15,6 +15,8 @@ public class ReservationResponseDto {
     private Time startHour;
     private Time endHour;
     private String user;
+    private Long userId;
     private String state;
     private String spaceName;
+    private Long spaceId;
 }

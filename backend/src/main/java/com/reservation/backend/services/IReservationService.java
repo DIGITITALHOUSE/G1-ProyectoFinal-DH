@@ -16,4 +16,5 @@ public interface IReservationService {
 
     List<ReservationResponseDto> findBySpace_Id(Long spaceId);
     List<ReservationResponseDto> findBySpace_IdAndReservationDate(Long spaceId, LocalDate date);
+    List<ReservationResponseDto> findByUser_Id(Long userId);
 }
