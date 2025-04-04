@@ -52,7 +52,7 @@ export const Header = ({showUserInformation} ) => {
             {/* <header className="px-[5%] lg:px-[2%] grid grid-cols-3 items-center justify-between shadow-lg top-0 w-full bg-white sticky z-30 h-20"> */}
             <div className="flex items-center gap-3">
                 <Link to="/" className="flex items-center text-center space-y-2 gap-5">
-                    <img className="max-w-[150px] max-h-[60px]" src="/src/assets/logo.png" alt="logo" />
+                    <img className="max-w-[150px] max-h-[60px]" src="/logo.png" alt="logo" />
                 </Link>
             </div>
 
