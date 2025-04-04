@@ -1,8 +1,6 @@
 import { AiOutlineClose } from "react-icons/ai";
 
-const TermsModal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-
+const TermsModal = ({ onClose }) => {
     return (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
             <div className="relative bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[85vh] overflow-hidden">
