@@ -12,6 +12,7 @@ export const SpaceDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        
         getSpaceById(spaceId)
             .then((data) => {
                 setSpace(data);
@@ -22,6 +23,7 @@ export const SpaceDetail = () => {
             .finally(() => {
                 setLoading(false);
             });
+            
     }, [spaceId]);
 
     // if (!space) {
