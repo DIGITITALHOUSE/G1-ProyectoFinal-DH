@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { FaBars, FaAlignJustify } from "react-icons/fa";
 import Button from "./buttons/Button";
 import Avatar from './Avatar';
-import ThemeToggle from "./themetoggle";
+import ThemeToggle from "./ThemeToggle";
 
 export const Header = ({showUserInformation} ) => {
     let links = [
