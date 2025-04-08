@@ -117,7 +117,7 @@ export const Register = () => {
 
             try {
                 //const response = await createUser(formDataToSend);
-                const response = await fetch("http://api-cowork.iriscompany.io/auth/register", {
+                const response = await fetch("https://api-cowork.iriscompany.io/auth/register", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",

@@ -11,7 +11,7 @@ export const ListProducts = () => {
     const [search, setSearch] = useState("");
     const [products, setProducts] = useState([]);
     const [message, setMessage] = useState({ isOpen: false, type: "info", message: "", onConfirm: null });
-    const API_URL = "http://api-cowork.iriscompany.io/spaces";
+    const API_URL = "https://api-cowork.iriscompany.io/spaces";
     // Cargar datos cuando el componente se monte
     useEffect(() => {
         fetchProducts()
